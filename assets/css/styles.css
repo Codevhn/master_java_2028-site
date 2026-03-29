@@ -116,6 +116,7 @@ body.sidebar-hidden #sidebar-wrapper {
 
 /* Fase (nivel superior) */
 details.fase {
+    display: block;
     overflow: hidden;
     border-bottom: 0.5px solid #2c3e50;
 }
@@ -158,6 +159,7 @@ details.fase[open] > summary {
     
     /* Tema (nivel intermedio) */
     details.tema {
+        display: block;
         background-color: #dce1e7;
         border-left: 3px solid #2c3e50;
         box-shadow: inset 0 1px 0 rgba(41, 41, 41, 0.15);
@@ -206,11 +208,18 @@ details.fase[open] > summary {
         ================================== */
         
         .subtemas {
+            display: block;
             list-style: none;
             margin-bottom: 8px;
             background-color: #fff;
             border-bottom: 0.5px dotted #34495e;
+            width: 100%;
     }
+
+        .subtemas li {
+            display: block;
+            width: 100%;
+        }
 
         .subtemas a {
             padding: 10px 10px 10px 2px;
