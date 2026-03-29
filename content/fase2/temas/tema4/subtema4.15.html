@@ -32,7 +32,7 @@ public static void main(String[] args) {
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>error: class, interface, or enum expected</code></pre>
+<pre class="language-none"><code>error: class, interface, or enum expected</code></pre>
 
 <p>El compilador espera encontrar una declaración de clase, interfaz, o enumeración, pero en su lugar encuentra
 directamente un método.</p>
@@ -65,7 +65,7 @@ directamente un método.</p>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>Programa.java:1: error: class Calculadora is public, should be declared in a file named Calculadora.java
+<pre class="language-none"><code>Programa.java:1: error: class Calculadora is public, should be declared in a file named Calculadora.java
 public class Calculadora {
        ^</code></pre>
 
@@ -109,7 +109,7 @@ Cualquier variación hace que la JVM no lo reconozca como punto de entrada.</p>
 
 <p><strong>Error en ejecución:</strong></p>
 
-<pre><code>Error: Main method is not static in class Ejemplo, please define the main method as:
+<pre class="language-none"><code>Error: Main method is not static in class Ejemplo, please define the main method as:
    public static void main(String[] args)</code></pre>
 
 <p><strong>Solución:</strong></p>
@@ -130,7 +130,7 @@ Cualquier variación hace que la JVM no lo reconozca como punto de entrada.</p>
 
 <p><strong>Mensaje de error en ejecución:</strong></p>
 
-<pre><code>Error: Main method not found in class Ejemplo</code></pre>
+<pre class="language-none"><code>Error: Main method not found in class Ejemplo</code></pre>
 
 <p><strong>Solución:</strong></p>
 
@@ -151,7 +151,7 @@ Cualquier variación hace que la JVM no lo reconozca como punto de entrada.</p>
 
 <p><strong>Mensaje de error en ejecución:</strong></p>
 
-<pre><code>Error: Main method must return a value of type void in class Ejemplo</code></pre>
+<pre class="language-none"><code>Error: Main method must return a value of type void in class Ejemplo</code></pre>
 
 <p><strong>Solución:</strong></p>
 
@@ -171,7 +171,7 @@ Cualquier variación hace que la JVM no lo reconozca como punto de entrada.</p>
 
 <p><strong>Mensaje de error en ejecución:</strong></p>
 
-<pre><code>Error: Main method not found in class Ejemplo</code></pre>
+<pre class="language-none"><code>Error: Main method not found in class Ejemplo</code></pre>
 
 <p>La JVM busca <code>main</code> con minúscula inicial, no <code>Main</code> con mayúscula.</p>
 
@@ -198,7 +198,7 @@ Cualquier variación hace que la JVM no lo reconozca como punto de entrada.</p>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorLlaves.java:6: error: reached end of file while parsing
+<pre class="language-none"><code>ErrorLlaves.java:6: error: reached end of file while parsing
 }
 ^</code></pre>
 
@@ -229,7 +229,7 @@ Cualquier variación hace que la JVM no lo reconozca como punto de entrada.</p>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorLlaveExtra.java:6: error: class, interface, or enum expected
+<pre class="language-none"><code>ErrorLlaveExtra.java:6: error: class, interface, or enum expected
 }
 ^</code></pre>
 
@@ -253,7 +253,7 @@ Cualquier variación hace que la JVM no lo reconozca como punto de entrada.</p>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorPuntoYComa.java:3: error: ';' expected
+<pre class="language-none"><code>ErrorPuntoYComa.java:3: error: ';' expected
         double precio = 500.00
                              ^</code></pre>
 
@@ -299,7 +299,7 @@ causa error pero es incorrecto estilísticamente.</p>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorVariableNoDeclarada.java:3: error: cannot find symbol
+<pre class="language-none"><code>ErrorVariableNoDeclarada.java:3: error: cannot find symbol
         precio = 100.0;
         ^
 symbol:   variable precio
@@ -345,7 +345,7 @@ double total = precio + impuesto; // Ahora precio e impuesto existen</code>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorTipoIncompatible.java:3: error: incompatible types: possible lossy conversion from double to int
+<pre class="language-none"><code>ErrorTipoIncompatible.java:3: error: incompatible types: possible lossy conversion from double to int
         int cantidad = 25.5;
                        ^</code></pre>
 
@@ -376,7 +376,7 @@ double total = precio + impuesto; // Ahora precio e impuesto existen</code>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorTextoANumero.java:3: error: incompatible types: String cannot be converted to double
+<pre class="language-none"><code>ErrorTextoANumero.java:3: error: incompatible types: String cannot be converted to double
         double precio = "100.00";
                         ^</code></pre>
 
@@ -400,7 +400,7 @@ double total = precio + impuesto; // Ahora precio e impuesto existen</code>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorImportFaltante.java:3: error: cannot find symbol
+<pre class="language-none"><code>ErrorImportFaltante.java:3: error: cannot find symbol
         LocalDate fecha = LocalDate.now();
         ^
 symbol:   class LocalDate
@@ -432,7 +432,7 @@ import java.time.LocalDate; // Error: import después de clase</code>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>error: class, interface, or enum expected
+<pre class="language-none"><code>error: class, interface, or enum expected
 import java.time.LocalDate;
 ^</code></pre>
 
@@ -463,7 +463,7 @@ de las comillas ASCII que Java espera.</p>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorCaracteres.java:4: error: illegal character: '\u201c'
+<pre class="language-none"><code>ErrorCaracteres.java:4: error: illegal character: '\u201c'
         System.out.println("Precio: " + precio);
                            ^</code></pre>
 
@@ -486,7 +486,7 @@ documentos formateados.</p>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorCodigoInalcanzable.java:5: error: unreachable statement
+<pre class="language-none"><code>ErrorCodigoInalcanzable.java:5: error: unreachable statement
         System.out.println("Este código nunca se ejecuta");
         ^</code></pre>
 
@@ -511,7 +511,7 @@ diferentes.</p>
 
 <p><strong>Mensaje de error:</strong></p>
 
-<pre><code>ErrorMayusculas.java:4: error: cannot find symbol
+<pre class="language-none"><code>ErrorMayusculas.java:4: error: cannot find symbol
         System.out.println(precio);
                            ^
 symbol:   variable precio

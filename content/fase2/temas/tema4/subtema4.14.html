@@ -121,7 +121,7 @@ al código fuente y las escribe en el archivo <code>.class</code>.</p>
 
 <p><strong>Mensaje del compilador:</strong></p>
 
-<pre><code>ErrorPuntoYComa.java:3: error: ';' expected
+<pre class="language-none"><code>ErrorPuntoYComa.java:3: error: ';' expected
         double precio = 100.0
                              ^
 1 error</code></pre>
@@ -147,7 +147,7 @@ después del último token correcto donde debería estar el <code>;</code>.</p>
 
 <p><strong>Mensaje del compilador:</strong></p>
 
-<pre><code>ErrorTipo.java:3: error: incompatible types: possible lossy conversion from double to int
+<pre class="language-none"><code>ErrorTipo.java:3: error: incompatible types: possible lossy conversion from double to int
         int cantidad = 25.5;
                        ^
 1 error</code></pre>
@@ -180,7 +180,7 @@ variable de tipo <code>int</code> (entero), y esto podría perder información (
 
 <p><strong>Mensaje del compilador:</strong></p>
 
-<pre><code>ErrorVariableNoDeclarada.java:3: error: cannot find symbol
+<pre class="language-none"><code>ErrorVariableNoDeclarada.java:3: error: cannot find symbol
         precio = 100.0;
         ^
 symbol:   variable precio
@@ -208,7 +208,7 @@ location: class ErrorVariableNoDeclarada
 
 <p><strong>Mensaje del compilador:</strong></p>
 
-<pre><code>ErrorLlaves.java:6: error: reached end of file while parsing
+<pre class="language-none"><code>ErrorLlaves.java:6: error: reached end of file while parsing
 }
 ^
 1 error</code></pre>
@@ -241,7 +241,7 @@ la clase).</p>
 
 <p><strong>Mensaje del compilador:</strong></p>
 
-<pre><code>Programa.java:1: error: class Calculadora is public, should be declared in a file named Calculadora.java
+<pre class="language-none"><code>Programa.java:1: error: class Calculadora is public, should be declared in a file named Calculadora.java
 public class Calculadora {
        ^
 1 error</code></pre>
@@ -253,7 +253,7 @@ public class Calculadora {
 
 <p>Los mensajes de error de <code>javac</code> siguen un formato consistente que facilita su interpretación:</p>
 
-<pre><code>NombreArchivo.java:NumeroLinea: error: Descripción del error
+<pre class="language-none"><code>NombreArchivo.java:NumeroLinea: error: Descripción del error
 Línea de código donde ocurrió el error
 ^</code></pre>
 
@@ -270,7 +270,7 @@ Línea de código donde ocurrió el error
 
 <p><strong>Ejemplo de interpretación:</strong></p>
 
-<pre><code>CalculadoraDescuento.java:5: error: ';' expected
+<pre class="language-none"><code>CalculadoraDescuento.java:5: error: ';' expected
         double descuento = precio * 0.15
                                        ^</code></pre>
 
@@ -303,7 +303,7 @@ reporta todos:</p>
 
 <p><strong>Mensajes del compilador:</strong></p>
 
-<pre><code>MultiplesErrores.java:3: error: ';' expected
+<pre class="language-none"><code>MultiplesErrores.java:3: error: ';' expected
         double precio = 500.00
                              ^
 MultiplesErrores.java:4: error: incompatible types: possible lossy conversion from double to int
@@ -445,7 +445,7 @@ problemáticos.</p>
 
 <p><strong>Salida:</strong></p>
 
-<pre><code>===== SISTEMA DE INVENTARIO =====
+<pre class="language-none"><code>===== SISTEMA DE INVENTARIO =====
 Código: PROD-550
 Producto: Teclado Mecánico
 Stock actual: 75 unidades
@@ -501,7 +501,7 @@ Corregir el primer error y recompilar puede hacer que múltiples errores subsecu
 <p><strong>Mantener archivos .java y .class organizados.</strong> Considerar usar estructura de directorios que separe
 código fuente de archivos compilados:</p>
 
-<pre><code>proyecto/
+<pre class="language-none"><code>proyecto/
 ├── src/
 │   └── SistemaInventario.java
 └── bin/
