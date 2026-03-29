@@ -1,0 +1,523 @@
+<h2>4.14: Compilación de la estructura del programa</h2>
+
+<p>La compilación es el proceso que transforma el código fuente Java que escribimos en archivos <code>.java</code> en
+bytecode almacenado en archivos <code>.class</code> que la JVM puede ejecutar. Este proceso no es una simple traducción
+sino una transformación compleja que involucra análisis sintáctico, verificación de tipos, resolución de referencias, y
+generación de código intermedio. Comprender qué sucede durante la compilación, qué verifica el compilador, qué errores
+puede detectar, y cómo interpretar los mensajes del compilador es esencial para desarrollar código Java correctamente y
+resolver problemas cuando surgen.</p>
+
+<p>El compilador de Java, <code>javac</code>, es más que un traductor de código. Es un verificador estricto que rechaza
+código que viola las reglas del lenguaje Java, incluso si ese código podría tener algún significado razonable. Esta
+estrictez puede parecer frustrante cuando el compilador rechaza código que "debería funcionar", pero en realidad esta
+verificación rigurosa previene innumerables errores que de otro modo solo se descubrirían durante la ejecución, cuando
+son más difíciles y costosos de corregir.</p>
+
+<p>Cuando ejecutamos <code>javac</code>, iniciamos un proceso de múltiples etapas que examina cada aspecto de nuestro
+código. El compilador verifica la sintaxis, los tipos de datos, la accesibilidad de variables y métodos, la existencia
+de clases referenciadas, y docenas de otras reglas. Solo si el código pasa todas estas verificaciones, el compilador
+genera el archivo <code>.class</code>. Si hay aunque sea un error, la compilación falla y no se genera ningún archivo
+<code>.class</code>, garantizando que código con errores conocidos nunca llegue a ejecutarse.</p>
+
+<h3>El comando javac</h3>
+
+<p>La compilación se invoca mediante el comando <code>javac</code> seguido del nombre del archivo fuente:</p>
+
+<pre class="language-bash">
+  <code>javac CalculadoraDescuento.java</code>
+</pre>
+
+<p>Este comando simple desencadena el compilador Java. Si la compilación es exitosa, <code>javac</code> no produce ninguna
+salida visible, solo crea silenciosamente el archivo <code>CalculadoraDescuento.class</code> en el mismo directorio. La
+ausencia de mensajes es señal de éxito. Si hay errores, <code>javac</code> muestra mensajes detallados describiendo cada
+problema encontrado.</p>
+
+<p>Consideremos un programa simple:</p>
+
+<pre class="language-java">
+  <code>public class CalculadoraDescuento {
+    public static void main(String[] args) {
+        double precio = 500.00;
+        double descuento = precio * 0.15;
+        double precioFinal = precio - descuento;
+        System.out.println("Precio final: Lps " + precioFinal);
+    }
+}</code>
+</pre>
+
+<p><strong>Compilación exitosa:</strong></p>
+
+<pre class="language-bash">
+  <code>javac CalculadoraDescuento.java</code>
+</pre>
+
+<p><strong>Resultado:</strong> Silencio. Ningún mensaje. El compilador crea <code>CalculadoraDescuento.class</code>
+exitosamente.</p>
+
+<p><strong>Verificar que el archivo .class fue creado:</strong></p>
+
+<pre class="language-bash">
+  <code>ls -l
+# Muestra:
+# CalculadoraDescuento.java
+# CalculadoraDescuento.class</code>
+</pre>
+
+<p>El archivo <code>.class</code> es bytecode binario, no es legible por humanos. Si intentamos abrirlo con un editor de
+texto, veremos caracteres sin sentido porque está en formato binario diseñado para la JVM, no para lectura humana.</p>
+
+<h3>Fases del proceso de compilación</h3>
+
+<p>Aunque desde nuestra perspectiva la compilación parece instantánea, internamente el compilador ejecuta múltiples fases:</p>
+
+<p><strong>Fase 1: Análisis léxico</strong></p>
+
+<p>El compilador lee el archivo <code>.java</code> como secuencia de caracteres y lo divide en tokens (palabras clave,
+identificadores, operadores, literales, símbolos de puntuación). Por ejemplo, la línea
+<code>double precio = 500.00;</code> se divide en los tokens: <code>double</code>, <code>precio</code>, <code>=</code>,
+<code>500.00</code>, <code>;</code>.</p>
+
+<p>Si el código contiene caracteres inválidos o combinaciones de caracteres que no forman tokens válidos, el análisis
+léxico falla y reporta error.</p>
+
+<p><strong>Fase 2: Análisis sintáctico</strong></p>
+
+<p>El compilador verifica que los tokens forman estructuras sintácticas válidas según la gramática de Java. Por ejemplo,
+<code>double precio = 500.00;</code> es sintácticamente válido (declaración con inicialización), pero
+<code>double = precio 500.00;</code> es sintácticamente inválido porque los tokens están en orden incorrecto.</p>
+
+<p>Esta fase construye un árbol de sintaxis abstracta que representa la estructura del programa.</p>
+
+<p><strong>Fase 3: Análisis semántico</strong></p>
+
+<p>El compilador verifica el significado del código. Aquí se detectan errores como:</p>
+
+<ul>
+  <li>Usar una variable antes de declararla</li>
+  <li>Asignar un valor de tipo incorrecto a una variable</li>
+  <li>Llamar métodos que no existen</li>
+  <li>Referenciar clases que no están disponibles</li>
+</ul>
+
+<p>Esta es la fase donde la mayoría de errores de programación se detectan.</p>
+
+<p><strong>Fase 4: Generación de bytecode</strong></p>
+
+<p>Si todas las fases anteriores completan sin errores, el compilador genera las instrucciones de bytecode correspondientes
+al código fuente y las escribe en el archivo <code>.class</code>.</p>
+
+<h3>Errores de compilación comunes</h3>
+
+<p><strong>Error: Olvidar punto y coma</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorPuntoYComa {
+    public static void main(String[] args) {
+        double precio = 100.0 // Falta ;
+        System.out.println(precio);
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje del compilador:</strong></p>
+
+<pre><code>ErrorPuntoYComa.java:3: error: ';' expected
+        double precio = 100.0
+                             ^
+1 error</code></pre>
+
+<p>El compilador indica exactamente dónde esperaba encontrar el punto y coma. El símbolo <code>^</code> apunta al lugar
+después del último token correcto donde debería estar el <code>;</code>.</p>
+
+<p><strong>Corrección:</strong> Agregar <code>;</code> al final de la línea.</p>
+
+<pre class="language-java">
+  <code>double precio = 100.0; // Correcto</code>
+</pre>
+
+<p><strong>Error: Tipo de dato incorrecto</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorTipo {
+    public static void main(String[] args) {
+        int cantidad = 25.5; // Intentar asignar decimal a int
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje del compilador:</strong></p>
+
+<pre><code>ErrorTipo.java:3: error: incompatible types: possible lossy conversion from double to int
+        int cantidad = 25.5;
+                       ^
+1 error</code></pre>
+
+<p>El compilador explica que <code>25.5</code> es de tipo <code>double</code> (decimal) pero se intenta asignar a una
+variable de tipo <code>int</code> (entero), y esto podría perder información (la parte decimal).</p>
+
+<p><strong>Corrección:</strong> Usar el tipo correcto.</p>
+
+<pre class="language-java">
+  <code>double cantidad = 25.5; // Correcto</code>
+</pre>
+
+<p>O si realmente se necesita un entero, usar valor entero:</p>
+
+<pre class="language-java">
+  <code>int cantidad = 25; // Correcto</code>
+</pre>
+
+<p><strong>Error: Variable no declarada</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorVariableNoDeclarada {
+    public static void main(String[] args) {
+        precio = 100.0; // precio no fue declarada
+        System.out.println(precio);
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje del compilador:</strong></p>
+
+<pre><code>ErrorVariableNoDeclarada.java:3: error: cannot find symbol
+        precio = 100.0;
+        ^
+symbol:   variable precio
+location: class ErrorVariableNoDeclarada
+1 error</code></pre>
+
+<p>El compilador no puede "encontrar el símbolo" <code>precio</code> porque nunca fue declarado.</p>
+
+<p><strong>Corrección:</strong> Declarar la variable.</p>
+
+<pre class="language-java">
+  <code>double precio = 100.0; // Correcto</code>
+</pre>
+
+<p><strong>Error: Llaves desbalanceadas</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorLlaves {
+    public static void main(String[] args) {
+        double precio = 100.0;
+        System.out.println(precio);
+    }
+    // Falta cerrar llave de clase</code>
+</pre>
+
+<p><strong>Mensaje del compilador:</strong></p>
+
+<pre><code>ErrorLlaves.java:6: error: reached end of file while parsing
+}
+^
+1 error</code></pre>
+
+<p>El compilador llegó al final del archivo mientras esperaba encontrar más código (específicamente, la llave de cierre de
+la clase).</p>
+
+<p><strong>Corrección:</strong> Agregar la llave faltante.</p>
+
+<pre class="language-java">
+  <code>public class ErrorLlaves {
+    public static void main(String[] args) {
+        double precio = 100.0;
+        System.out.println(precio);
+    }
+} // Correcto</code>
+</pre>
+
+<p><strong>Error: Nombre de clase no coincide con nombre de archivo</strong></p>
+
+<p><strong>Archivo:</strong> <code>Programa.java</code></p>
+
+<pre class="language-java">
+  <code>public class Calculadora { // Nombre no coincide con archivo
+    public static void main(String[] args) {
+        System.out.println("Hola");
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje del compilador:</strong></p>
+
+<pre><code>Programa.java:1: error: class Calculadora is public, should be declared in a file named Calculadora.java
+public class Calculadora {
+       ^
+1 error</code></pre>
+
+<p><strong>Corrección:</strong> Renombrar archivo a <code>Calculadora.java</code> o cambiar nombre de clase a
+<code>Programa</code>.</p>
+
+<h3>Interpretar mensajes de error del compilador</h3>
+
+<p>Los mensajes de error de <code>javac</code> siguen un formato consistente que facilita su interpretación:</p>
+
+<pre><code>NombreArchivo.java:NumeroLinea: error: Descripción del error
+Línea de código donde ocurrió el error
+^</code></pre>
+
+<p><strong>Componentes del mensaje:</strong></p>
+
+<ul>
+  <li><strong>NombreArchivo.java</strong> — Archivo que contiene el error</li>
+  <li><strong>NumeroLinea</strong> — Número de línea donde el compilador detectó el error</li>
+  <li><strong>error:</strong> — Indica que es un error (no advertencia)</li>
+  <li><strong>Descripción</strong> — Explica qué está mal</li>
+  <li><strong>Línea de código</strong> — Muestra la línea problemática</li>
+  <li><strong>^</strong> — Apunta al lugar específico del error</li>
+</ul>
+
+<p><strong>Ejemplo de interpretación:</strong></p>
+
+<pre><code>CalculadoraDescuento.java:5: error: ';' expected
+        double descuento = precio * 0.15
+                                       ^</code></pre>
+
+<p>Interpretación:</p>
+
+<ul>
+  <li>Archivo: <code>CalculadoraDescuento.java</code></li>
+  <li>Línea: 5</li>
+  <li>Problema: Falta punto y coma</li>
+  <li>Ubicación exacta: Después de <code>0.15</code></li>
+</ul>
+
+<p><strong>Acción:</strong> Ir a línea 5, agregar <code>;</code> al final.</p>
+
+<h3>Múltiples errores en una compilación</h3>
+
+<p>Si el código tiene múltiples errores, el compilador intenta detectar tantos como sea posible en una sola pasada y
+reporta todos:</p>
+
+<pre class="language-java">
+  <code>public class MultiplesErrores {
+    public static void main(String[] args) {
+        double precio = 500.00
+        int cantidad = 5.5;
+        double total = precio * cantidad
+        System.out.println(total)
+    }
+}</code>
+</pre>
+
+<p><strong>Mensajes del compilador:</strong></p>
+
+<pre><code>MultiplesErrores.java:3: error: ';' expected
+        double precio = 500.00
+                             ^
+MultiplesErrores.java:4: error: incompatible types: possible lossy conversion from double to int
+        int cantidad = 5.5;
+                       ^
+MultiplesErrores.java:5: error: ';' expected
+        double total = precio * cantidad
+                                        ^
+MultiplesErrores.java:6: error: ';' expected
+        System.out.println(total)
+                                 ^
+4 errors</code></pre>
+
+<p>El compilador encontró 4 errores y los reportó todos. La estrategia más efectiva es corregir los errores uno por uno,
+comenzando desde el primero, porque errores tempranos frecuentemente causan errores en cascada que desaparecen al
+corregir el error original.</p>
+
+<p><strong>Corrección:</strong></p>
+
+<pre class="language-java">
+  <code>public class MultiplesErrores {
+    public static void main(String[] args) {
+        double precio = 500.00;   // Agregado ;
+        double cantidad = 5.5;    // Cambiado int a double
+        double total = precio * cantidad;  // Agregado ;
+        System.out.println(total);         // Agregado ;
+    }
+}</code>
+</pre>
+
+<h3>Compilar múltiples archivos</h3>
+
+<p>Si un proyecto tiene múltiples archivos <code>.java</code>, se pueden compilar todos juntos:</p>
+
+<pre class="language-bash">
+  <code>javac *.java</code>
+</pre>
+
+<p>Esto compila todos los archivos <code>.java</code> en el directorio actual. El compilador determina automáticamente las
+dependencias entre archivos y los compila en el orden correcto.</p>
+
+<p>También se pueden especificar múltiples archivos explícitamente:</p>
+
+<pre class="language-bash">
+  <code>javac Calculadora.java Reporte.java Sistema.java</code>
+</pre>
+
+<p>Si algún archivo tiene errores, la compilación completa falla y se muestran errores de todos los archivos
+problemáticos.</p>
+
+<h3>Opciones útiles de javac</h3>
+
+<p><strong>Especificar directorio de salida:</strong></p>
+
+<pre class="language-bash">
+  <code>javac -d bin CalculadoraDescuento.java</code>
+</pre>
+
+<p>Esto compila <code>CalculadoraDescuento.java</code> y coloca el archivo <code>.class</code> resultante en el directorio
+<code>bin</code> en lugar del directorio actual. Útil para mantener archivos fuente y compilados separados.</p>
+
+<p><strong>Mostrar advertencias:</strong></p>
+
+<pre class="language-bash">
+  <code>javac -Xlint CalculadoraDescuento.java</code>
+</pre>
+
+<p>Muestra advertencias sobre prácticas cuestionables que no son errores pero podrían indicar problemas.</p>
+
+<p><strong>Especificar versión de Java:</strong></p>
+
+<pre class="language-bash">
+  <code>javac -source 17 -target 17 CalculadoraDescuento.java</code>
+</pre>
+
+<p>Compila el código para que sea compatible con Java 17 específicamente.</p>
+
+<h3>Ejemplo completo: Proceso de compilación paso a paso</h3>
+
+<p><strong>Código fuente — SistemaInventario.java:</strong></p>
+
+<pre class="language-java">
+  <code>public class SistemaInventario {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== SISTEMA DE INVENTARIO =====");
+
+        // Datos del producto
+        String codigoProducto = "PROD-550";
+        String nombreProducto = "Teclado Mecánico";
+        int stockActual = 75;
+        int stockMinimo = 20;
+
+        // Calcular estado
+        int diferenciaStock = stockActual - stockMinimo;
+
+        // Mostrar información
+        System.out.println("Código: " + codigoProducto);
+        System.out.println("Producto: " + nombreProducto);
+        System.out.println("Stock actual: " + stockActual + " unidades");
+        System.out.println("Stock mínimo: " + stockMinimo + " unidades");
+        System.out.println("Diferencia: " + diferenciaStock + " unidades");
+
+        if (stockActual < stockMinimo) {
+            System.out.println("ALERTA: Stock bajo mínimo");
+        } else {
+            System.out.println("Estado: Normal");
+        }
+
+    }
+
+}</code>
+</pre>
+
+<p><strong>Paso 1: Escribir el código fuente</strong></p>
+<p>Guardamos el código en archivo <code>SistemaInventario.java</code>.</p>
+
+<p><strong>Paso 2: Compilar</strong></p>
+
+<pre class="language-bash">
+  <code>javac SistemaInventario.java</code>
+</pre>
+
+<p><strong>Paso 3: Verificar archivo .class generado</strong></p>
+
+<pre class="language-bash">
+  <code>ls -l
+# Muestra:
+# SistemaInventario.java
+# SistemaInventario.class</code>
+</pre>
+
+<p><strong>Paso 4: Ejecutar</strong></p>
+
+<pre class="language-bash">
+  <code>java SistemaInventario</code>
+</pre>
+
+<p><strong>Salida:</strong></p>
+
+<pre><code>===== SISTEMA DE INVENTARIO =====
+Código: PROD-550
+Producto: Teclado Mecánico
+Stock actual: 75 unidades
+Stock mínimo: 20 unidades
+Diferencia: 55 unidades
+Estado: Normal</code></pre>
+
+<h3>Compilación versus ejecución</h3>
+
+<p>Es importante distinguir claramente entre errores de compilación y errores de ejecución.</p>
+
+<p><strong>Errores de compilación</strong> se detectan por <code>javac</code> antes de que el programa ejecute. Incluyen:</p>
+
+<ul>
+  <li>Errores de sintaxis (falta punto y coma, llaves desbalanceadas)</li>
+  <li>Errores de tipo (asignar double a int)</li>
+  <li>Variables no declaradas</li>
+  <li>Nombres de clase incorrectos</li>
+</ul>
+
+<p>Si hay errores de compilación, NO se genera archivo <code>.class</code> y el programa NO puede ejecutarse.</p>
+
+<p><strong>Errores de ejecución</strong> ocurren cuando el programa se ejecuta. El código compila correctamente pero algo
+sale mal durante la ejecución. Por ejemplo, dividir por cero causa error de ejecución, pero el compilador no puede
+detectarlo porque depende de los valores en tiempo de ejecución.</p>
+
+<pre class="language-java">
+  <code>public class ErrorEjecucion {
+    public static void main(String[] args) {
+        int dividendo = 100;
+        int divisor = 0;
+        int resultado = dividendo / divisor; // Error en ejecución, no compilación
+        System.out.println(resultado);
+    }
+}</code>
+</pre>
+
+<p>Este código compila sin errores porque sintácticamente es correcto. Pero cuando se ejecuta, lanza
+<code>ArithmeticException</code> porque no se puede dividir por cero.</p>
+
+<h3>Buenas prácticas de compilación</h3>
+
+<p><strong>Compilar frecuentemente.</strong> No esperar a terminar todo el programa para compilar. Compilar después de
+agregar cada pocas líneas de código permite detectar errores temprano cuando son más fáciles de identificar y
+corregir.</p>
+
+<p><strong>Leer mensajes de error completos.</strong> No solo mirar el número de línea. Leer la descripción completa del
+error para entender qué está mal.</p>
+
+<p><strong>Corregir errores de arriba hacia abajo.</strong> Los primeros errores frecuentemente causan errores en cascada.
+Corregir el primer error y recompilar puede hacer que múltiples errores subsecuentes desaparezcan.</p>
+
+<p><strong>Mantener archivos .java y .class organizados.</strong> Considerar usar estructura de directorios que separe
+código fuente de archivos compilados:</p>
+
+<pre><code>proyecto/
+├── src/
+│   └── SistemaInventario.java
+└── bin/
+    └── SistemaInventario.class</code></pre>
+
+<p>Compilar con:</p>
+
+<pre class="language-bash">
+  <code>javac -d bin src/SistemaInventario.java</code>
+</pre>
+
+<p><strong>No versionar archivos .class.</strong> En sistemas de control de versiones como Git, solo versionar archivos
+<code>.java</code>, nunca archivos <code>.class</code>. Los archivos <code>.class</code> son generados y deben estar en
+<code>.gitignore</code>.</p>
+
+<p>La compilación es el puente entre el código que escribimos y el programa que ejecuta. Comprender este proceso, saber
+interpretar mensajes del compilador, y desarrollar buenos hábitos de compilación frecuente facilita enormemente el
+desarrollo de programas Java correctos y reduce el tiempo dedicado a depuración de errores sintácticos que el compilador
+habría detectado si se hubiera invocado oportunamente.</p>

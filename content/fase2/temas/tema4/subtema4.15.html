@@ -1,0 +1,554 @@
+<h2>4.15: Errores estructurales comunes en programas Java</h2>
+
+<p>Los errores estructurales son aquellos que violan las reglas fundamentales de organización y sintaxis del lenguaje Java.
+A diferencia de errores lógicos que producen resultados incorrectos pero permiten que el programa compile y ejecute, los
+errores estructurales impiden que el código compile o ejecute correctamente. Estos errores son particularmente comunes
+en programadores principiantes que aún están internalizando las reglas estrictas de Java sobre cómo debe estructurarse
+el código.</p>
+
+<p>La buena noticia sobre errores estructurales es que el compilador los detecta automáticamente y proporciona mensajes
+indicando exactamente qué está mal y dónde. La mala noticia es que los mensajes del compilador pueden ser crípticos para
+principiantes que aún no han desarrollado la habilidad de traducir la terminología técnica del compilador a conceptos
+comprensibles. Este subtema cataloga los errores estructurales más comunes, explica por qué ocurren, muestra cómo
+reconocerlos por sus mensajes de error, y proporciona soluciones claras.</p>
+
+<p>Comprender estos errores comunes acelera dramáticamente el proceso de aprendizaje porque permite reconocer patrones.
+Cuando se ve un mensaje de error particular por quinta o décima vez, el cerebro automáticamente sabe qué está mal y cómo
+corregirlo sin necesidad de analizar detenidamente el mensaje. Esta familiaridad con errores comunes es una de las
+diferencias clave entre principiantes que luchan con cada error y programadores con experiencia que corrigen errores
+rápidamente casi por reflejo.</p>
+
+<h3>Error estructural 1: Olvidar declarar la clase</h3>
+
+<p>Java requiere que todo código ejecutable esté dentro de una clase. No puede haber código "suelto" en un archivo
+<code>.java</code>.</p>
+
+<pre class="language-java">
+  <code>// Error: código sin clase contenedora
+public static void main(String[] args) {
+    System.out.println("Hola");
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>error: class, interface, or enum expected</code></pre>
+
+<p>El compilador espera encontrar una declaración de clase, interfaz, o enumeración, pero en su lugar encuentra
+directamente un método.</p>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>public class MiPrograma {
+    public static void main(String[] args) {
+        System.out.println("Hola");
+    }
+}</code>
+</pre>
+
+<p>Todo el código debe estar encerrado dentro de la declaración de clase con sus llaves correspondientes.</p>
+
+<h3>Error estructural 2: Nombre de clase no coincide con nombre de archivo</h3>
+
+<p>La clase pública debe tener exactamente el mismo nombre que el archivo que la contiene.</p>
+
+<p><strong>Archivo:</strong> <code>Programa.java</code></p>
+
+<pre class="language-java">
+  <code>public class Calculadora {
+    public static void main(String[] args) {
+        System.out.println("Calculando...");
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>Programa.java:1: error: class Calculadora is public, should be declared in a file named Calculadora.java
+public class Calculadora {
+       ^</code></pre>
+
+<p>El compilador detecta que el nombre de la clase (<code>Calculadora</code>) no coincide con el nombre del archivo
+(<code>Programa.java</code>).</p>
+
+<p><strong>Soluciones:</strong></p>
+
+<p>Opción 1: Renombrar el archivo para que coincida con la clase:</p>
+
+<pre class="language-bash">
+  <code>mv Programa.java Calculadora.java</code>
+</pre>
+
+<p>Opción 2: Cambiar el nombre de la clase para que coincida con el archivo:</p>
+
+<pre class="language-java">
+  <code>public class Programa {
+    public static void main(String[] args) {
+        System.out.println("Calculando...");
+    }
+}</code>
+</pre>
+
+<h3>Error estructural 3: Método main con firma incorrecta</h3>
+
+<p>El método <code>main</code> debe tener exactamente la firma <code>public static void main(String[] args)</code>.
+Cualquier variación hace que la JVM no lo reconozca como punto de entrada.</p>
+
+<p><strong>Error: Falta <code>static</code></strong></p>
+
+<pre class="language-java">
+  <code>public class Ejemplo {
+    public void main(String[] args) { // Falta static
+        System.out.println("Hola");
+    }
+}</code>
+</pre>
+
+<p><strong>Compilación:</strong> Exitosa (no hay error de compilación)</p>
+
+<p><strong>Error en ejecución:</strong></p>
+
+<pre><code>Error: Main method is not static in class Ejemplo, please define the main method as:
+   public static void main(String[] args)</code></pre>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>public static void main(String[] args) { // Correcto</code>
+</pre>
+
+<p><strong>Error: Falta <code>public</code></strong></p>
+
+<pre class="language-java">
+  <code>public class Ejemplo {
+    static void main(String[] args) { // Falta public
+        System.out.println("Hola");
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error en ejecución:</strong></p>
+
+<pre><code>Error: Main method not found in class Ejemplo</code></pre>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>public static void main(String[] args) { // Correcto</code>
+</pre>
+
+<p><strong>Error: Tipo de retorno incorrecto</strong></p>
+
+<pre class="language-java">
+  <code>public class Ejemplo {
+    public static int main(String[] args) { // int en vez de void
+        System.out.println("Hola");
+        return 0;
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error en ejecución:</strong></p>
+
+<pre><code>Error: Main method must return a value of type void in class Ejemplo</code></pre>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>public static void main(String[] args) { // void es correcto</code>
+</pre>
+
+<p><strong>Error: Nombre incorrecto (mayúscula)</strong></p>
+
+<pre class="language-java">
+  <code>public class Ejemplo {
+    public static void Main(String[] args) { // Main con mayúscula
+        System.out.println("Hola");
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error en ejecución:</strong></p>
+
+<pre><code>Error: Main method not found in class Ejemplo</code></pre>
+
+<p>La JVM busca <code>main</code> con minúscula inicial, no <code>Main</code> con mayúscula.</p>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>public static void main(String[] args) { // Minúscula</code>
+</pre>
+
+<h3>Error estructural 4: Llaves desbalanceadas</h3>
+
+<p>Cada llave de apertura <code>{</code> debe tener su correspondiente llave de cierre <code>}</code>.</p>
+
+<p><strong>Falta llave de cierre del método:</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorLlaves {
+    public static void main(String[] args) {
+        double precio = 100.0;
+        System.out.println(precio);
+        // Falta cerrar main
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorLlaves.java:6: error: reached end of file while parsing
+}
+^</code></pre>
+
+<p>El compilador llegó al final del archivo esperando encontrar más código (la llave de cierre del método
+<code>main</code>).</p>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorLlaves {
+    public static void main(String[] args) {
+        double precio = 100.0;
+        System.out.println(precio);
+    } // Cierra main
+} // Cierra clase</code>
+</pre>
+
+<p><strong>Llave extra:</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorLlaveExtra {
+    public static void main(String[] args) {
+        System.out.println("Hola");
+    }
+}
+} // Llave extra</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorLlaveExtra.java:6: error: class, interface, or enum expected
+}
+^</code></pre>
+
+<p>El compilador encontró una llave de cierre que no corresponde a ninguna apertura.</p>
+
+<p><strong>Solución:</strong> Eliminar la llave extra.</p>
+
+<h3>Error estructural 5: Punto y coma faltante</h3>
+
+<p>Cada sentencia ejecutable debe terminar con punto y coma.</p>
+
+<pre class="language-java">
+  <code>public class ErrorPuntoYComa {
+    public static void main(String[] args) {
+        double precio = 500.00 // Falta ;
+        double descuento = 75.00;
+        System.out.println(precio);
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorPuntoYComa.java:3: error: ';' expected
+        double precio = 500.00
+                             ^</code></pre>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>double precio = 500.00; // Agregado ;</code>
+</pre>
+
+<p><strong>Punto y coma después de llaves (error sutil):</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorPuntoYComaDespuesLlave {
+    public static void main(String[] args) {
+        System.out.println("Hola");
+    }; // Error: ; después de }
+}</code>
+</pre>
+
+<p>Esto técnicamente compila pero el <code>;</code> después de <code>}</code> se interpreta como sentencia vacía. No
+causa error pero es incorrecto estilísticamente.</p>
+
+<p><strong>Correcto:</strong></p>
+
+<pre class="language-java">
+  <code>public static void main(String[] args) {
+    System.out.println("Hola");
+} // Sin ;</code>
+</pre>
+
+<h3>Error estructural 6: Variables no declaradas o usadas antes de declaración</h3>
+
+<p>Una variable debe ser declarada antes de poder usarse.</p>
+
+<pre class="language-java">
+  <code>public class ErrorVariableNoDeclarada {
+    public static void main(String[] args) {
+        precio = 100.0; // precio nunca fue declarada
+        System.out.println(precio);
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorVariableNoDeclarada.java:3: error: cannot find symbol
+        precio = 100.0;
+        ^
+symbol:   variable precio
+location: class ErrorVariableNoDeclarada</code></pre>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>double precio = 100.0; // Declarar primero</code>
+</pre>
+
+<p><strong>Usar variable antes de declararla:</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorOrdenDeclaracion {
+    public static void main(String[] args) {
+        total = precio + impuesto; // precio e impuesto no existen aún
+        double precio = 100.0;
+        double impuesto = 15.0;
+    }
+}</code>
+</pre>
+
+<p><strong>Solución:</strong> Declarar variables antes de usarlas.</p>
+
+<pre class="language-java">
+  <code>double precio = 100.0;
+double impuesto = 15.0;
+double total = precio + impuesto; // Ahora precio e impuesto existen</code>
+</pre>
+
+<h3>Error estructural 7: Tipos de datos incompatibles</h3>
+
+<p>Asignar un valor de un tipo a una variable de otro tipo incompatible.</p>
+
+<pre class="language-java">
+  <code>public class ErrorTipoIncompatible {
+    public static void main(String[] args) {
+        int cantidad = 25.5; // Asignar double a int
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorTipoIncompatible.java:3: error: incompatible types: possible lossy conversion from double to int
+        int cantidad = 25.5;
+                       ^</code></pre>
+
+<p>El compilador detecta que <code>25.5</code> es tipo <code>double</code> pero se intenta asignar a tipo
+<code>int</code>, lo que perdería la parte decimal.</p>
+
+<p><strong>Solución:</strong> Usar tipo apropiado.</p>
+
+<pre class="language-java">
+  <code>double cantidad = 25.5; // Correcto</code>
+</pre>
+
+<p>O si realmente se necesita entero:</p>
+
+<pre class="language-java">
+  <code>int cantidad = 25; // Correcto</code>
+</pre>
+
+<p><strong>Asignar texto a número:</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorTextoANumero {
+    public static void main(String[] args) {
+        double precio = "100.00"; // String a double
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorTextoANumero.java:3: error: incompatible types: String cannot be converted to double
+        double precio = "100.00";
+                        ^</code></pre>
+
+<p><strong>Solución:</strong></p>
+
+<pre class="language-java">
+  <code>double precio = 100.00; // Sin comillas</code>
+</pre>
+
+<h3>Error estructural 8: Imports incorrectos o faltantes</h3>
+
+<p>Usar una clase que requiere importación sin importarla.</p>
+
+<pre class="language-java">
+  <code>public class ErrorImportFaltante {
+    public static void main(String[] args) {
+        LocalDate fecha = LocalDate.now(); // LocalDate no importado
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorImportFaltante.java:3: error: cannot find symbol
+        LocalDate fecha = LocalDate.now();
+        ^
+symbol:   class LocalDate
+location: class ErrorImportFaltante</code></pre>
+
+<p><strong>Solución:</strong> Agregar import.</p>
+
+<pre class="language-java">
+  <code>import java.time.LocalDate;
+
+public class ErrorImportFaltante {
+    public static void main(String[] args) {
+        LocalDate fecha = LocalDate.now(); // Correcto
+    }
+}</code>
+</pre>
+
+<p><strong>Import en lugar incorrecto (después de clase):</strong></p>
+
+<pre class="language-java">
+  <code>public class ErrorImportUbicacion {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+
+import java.time.LocalDate; // Error: import después de clase</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>error: class, interface, or enum expected
+import java.time.LocalDate;
+^</code></pre>
+
+<p><strong>Solución:</strong> Mover imports antes de la declaración de clase.</p>
+
+<pre class="language-java">
+  <code>import java.time.LocalDate; // Correcto: antes de clase
+
+public class ErrorImportUbicacion {
+    // ...
+}</code>
+</pre>
+
+<h3>Error estructural 9: Caracteres especiales inválidos</h3>
+
+<p>Usar caracteres que Java no reconoce en el código. Este error es sutil porque visualmente puede parecer correcto, pero
+si se copió código de un documento de Word o página web, las comillas pueden ser caracteres Unicode especiales en lugar
+de las comillas ASCII que Java espera.</p>
+
+<pre class="language-java">
+  <code>public class ErrorCaracteres {
+    public static void main(String[] args) {
+        double precio = 100.00;
+        System.out.println("Precio: " + precio); // Comillas especiales " " en vez de " "
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorCaracteres.java:4: error: illegal character: '\u201c'
+        System.out.println("Precio: " + precio);
+                           ^</code></pre>
+
+<p><strong>Solución:</strong> Reescribir las comillas usando el teclado directamente en el editor de código, no copiar de
+documentos formateados.</p>
+
+<h3>Error estructural 10: Código inalcanzable</h3>
+
+<p>Código que nunca puede ejecutarse porque está después de una sentencia que siempre termina la ejecución.</p>
+
+<pre class="language-java">
+  <code>public class ErrorCodigoInalcanzable {
+    public static void main(String[] args) {
+        System.out.println("Inicio");
+        return; // Termina main inmediatamente
+        System.out.println("Este código nunca se ejecuta"); // Inalcanzable
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorCodigoInalcanzable.java:5: error: unreachable statement
+        System.out.println("Este código nunca se ejecuta");
+        ^</code></pre>
+
+<p>El compilador detecta que esta línea nunca podrá ejecutarse porque el <code>return</code> anterior siempre termina el
+método.</p>
+
+<p><strong>Solución:</strong> Eliminar el código inalcanzable o reestructurar la lógica.</p>
+
+<h3>Error estructural 11: Mayúsculas y minúsculas incorrectas</h3>
+
+<p>Java distingue entre mayúsculas y minúsculas. <code>Precio</code> y <code>precio</code> son variables completamente
+diferentes.</p>
+
+<pre class="language-java">
+  <code>public class ErrorMayusculas {
+    public static void main(String[] args) {
+        double Precio = 100.0; // Con mayúscula
+        System.out.println(precio); // Con minúscula
+    }
+}</code>
+</pre>
+
+<p><strong>Mensaje de error:</strong></p>
+
+<pre><code>ErrorMayusculas.java:4: error: cannot find symbol
+        System.out.println(precio);
+                           ^
+symbol:   variable precio
+location: class ErrorMayusculas</code></pre>
+
+<p>El compilador busca <code>precio</code> (minúscula) pero solo existe <code>Precio</code> (mayúscula).</p>
+
+<p><strong>Solución:</strong> Usar nombre consistente.</p>
+
+<pre class="language-java">
+  <code>double precio = 100.0; // Minúscula (convención correcta)
+System.out.println(precio); // Minúscula</code>
+</pre>
+
+<h3>Estrategias para prevenir errores estructurales</h3>
+
+<p><strong>Usar un IDE.</strong> Los IDEs modernos como IntelliJ IDEA, Eclipse, o VS Code detectan muchos errores
+estructurales mientras se escribe el código, antes de compilar. Subrayados rojos indican errores, amarillos indican
+advertencias.</p>
+
+<p><strong>Compilar frecuentemente.</strong> No esperar a terminar todo el programa para compilar. Compilar después de
+agregar cada pocas líneas permite detectar errores cuando son más fáciles de localizar.</p>
+
+<p><strong>Leer mensajes de error completos.</strong> No solo mirar el número de línea. Leer la descripción completa del
+error para entender qué está mal.</p>
+
+<p><strong>Mantener indentación correcta.</strong> La indentación apropiada hace que llaves desbalanceadas sean
+visualmente obvias.</p>
+
+<p><strong>Usar nombres de variables descriptivos.</strong> Nombres largos y descriptivos reducen errores de tipeo y
+confusión con mayúsculas/minúsculas.</p>
+
+<p><strong>Verificar tipos de datos.</strong> Antes de asignar un valor a una variable, verificar mentalmente que los
+tipos coinciden.</p>
+
+<p>Los errores estructurales son frustrantes cuando se está aprendiendo Java porque impiden que el código compile o
+ejecute. Sin embargo, estos errores son en realidad aliados porque el compilador los detecta automáticamente antes de
+que el código defectuoso cause problemas más serios durante la ejecución. Con práctica, los mensajes de error del
+compilador se vuelven cada vez más fáciles de interpretar, y muchos de estos errores se evitan completamente al
+desarrollar buenos hábitos de escritura de código desde el principio.</p>

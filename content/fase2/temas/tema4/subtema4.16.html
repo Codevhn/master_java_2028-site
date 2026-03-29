@@ -1,0 +1,575 @@
+<h2>4.16: Buenas prácticas en la estructura inicial de un programa Java</h2>
+
+<p>Las buenas prácticas en la estructura de programas Java no son reglas arbitrarias impuestas por autoridades distantes
+sino patrones descubiertos y refinados durante décadas por millones de programadores enfrentando problemas reales. Estas
+prácticas han demostrado su valor al hacer el código más fácil de leer, mantener, modificar y depurar. Cuando un
+programador principiante adopta buenas prácticas desde el inicio, no solo escribe mejor código sino que también
+desarrolla hábitos profesionales que facilitarán la transición a proyectos más complejos y la colaboración con otros
+desarrolladores.</p>
+
+<p>La tentación común de principiantes es ignorar estas prácticas con el razonamiento de que "mi código funciona sin
+seguirlas". Este razonamiento es técnicamente correcto pero estratégicamente equivocado. El código que funciona pero
+está mal estructurado es como un edificio que se mantiene en pie pero tiene cimientos débiles, cableado caótico y
+plomería improvisada. Funciona hoy, pero crear una extensión, diagnosticar un problema, o que otra persona comprenda la
+estructura se vuelve innecesariamente difícil.</p>
+
+<p>Adoptar buenas prácticas desde programas simples de diez líneas puede parecer excesivo, pero es precisamente en
+programas simples donde se forman hábitos sin la presión de problemas complejos. Cuando se enfrenta un proyecto grande y
+complejo no es el momento de intentar aprender buenas prácticas simultáneamente con lógica de negocio compleja. Los
+hábitos formados en programas simples se transfieren automáticamente a programas complejos, donde su valor se multiplica
+exponencialmente.</p>
+
+<h3>Práctica 1: Nombres significativos y descriptivos</h3>
+
+<p>Los nombres de clases, variables y métodos deben comunicar claramente su propósito sin necesidad de comentarios
+explicativos.</p>
+
+<p><strong>Mal ejemplo:</strong></p>
+
+<pre class="language-java">
+  <code>public class Prog {
+    public static void main(String[] args) {
+        double p = 1000.00;
+        double d = p * 0.1;
+        double t = p - d;
+        System.out.println(t);
+    }
+}</code>
+</pre>
+
+<p>Este código funciona perfectamente y calcula correctamente un descuento del diez por ciento. Pero requiere análisis
+mental para deducir qué representa cada variable. <code>p</code> podría ser precio, peso, o porcentaje. <code>d</code>
+podría ser descuento, día, o distancia. <code>t</code> podría ser total, tiempo, o temperatura.</p>
+
+<p><strong>Buen ejemplo:</strong></p>
+
+<pre class="language-java">
+  <code>public class CalculadoraDescuento {
+    public static void main(String[] args) {
+        double precioOriginal = 1000.00;
+        double montoDescuento = precioOriginal * 0.10;
+        double precioFinal = precioOriginal - montoDescuento;
+        System.out.println("Precio final: Lps " + precioFinal);
+    }
+}</code>
+</pre>
+
+<p>Este código es inmediatamente comprensible. Cada nombre comunica exactamente qué contiene la variable. Alguien leyendo
+este código por primera vez entiende instantáneamente la lógica sin necesidad de deducir significados.</p>
+
+<p>La inversión de tiempo adicional escribiendo <code>precioOriginal</code> en lugar de <code>p</code> es de
+aproximadamente dos segundos. El ahorro de tiempo al leer y comprender el código posteriormente es de minutos u horas
+acumuladas durante la vida del programa.</p>
+
+<h3>Práctica 2: Una responsabilidad clara por programa</h3>
+
+<p>Cada programa debe tener un propósito claro y enfocado expresado en su nombre y estructura.</p>
+
+<p><strong>Mal enfoque: Programa que hace "de todo"</strong></p>
+
+<pre class="language-java">
+  <code>public class Programa {
+    public static void main(String[] args) {
+        // Calcular descuento
+        double precio = 500.00;
+        double descuento = precio * 0.15;
+        System.out.println("Descuento: " + descuento);
+
+        // Convertir temperatura
+        double celsius = 25.0;
+        double fahrenheit = celsius * 1.8 + 32;
+        System.out.println("Temperatura: " + fahrenheit);
+
+        // Calcular área
+        double radio = 5.0;
+        double area = 3.14159 * radio * radio;
+        System.out.println("Área: " + area);
+    }
+}</code>
+</pre>
+
+<p>Este programa hace tres cosas completamente no relacionadas. El nombre <code>Programa</code> no comunica ninguna
+información útil. Si alguien necesita el código de conversión de temperatura, debe buscar dentro de un archivo que
+aparentemente hace de todo.</p>
+
+<p><strong>Buen enfoque: Programas enfocados</strong></p>
+
+<pre class="language-java">
+  <code>// Archivo: CalculadoraDescuento.java
+public class CalculadoraDescuento {
+    public static void main(String[] args) {
+        double precioOriginal = 500.00;
+        double porcentajeDescuento = 15.0;
+        double montoDescuento = precioOriginal * porcentajeDescuento / 100.0;
+        double precioFinal = precioOriginal - montoDescuento;
+
+        System.out.println("===== CALCULADORA DE DESCUENTO =====");
+        System.out.println("Precio original: Lps " + precioOriginal);
+        System.out.println("Descuento (15%): Lps " + montoDescuento);
+        System.out.println("Precio final: Lps " + precioFinal);
+    }
+}</code>
+</pre>
+
+<pre class="language-java">
+  <code>// Archivo: ConversionTemperatura.java
+public class ConversionTemperatura {
+    public static void main(String[] args) {
+        double temperaturaCelsius = 25.0;
+        double factorConversion = 1.8;
+        double offsetFahrenheit = 32.0;
+        double temperaturaFahrenheit = (temperaturaCelsius * factorConversion) + offsetFahrenheit;
+
+        System.out.println("===== CONVERSIÓN DE TEMPERATURA =====");
+        System.out.println("Celsius: " + temperaturaCelsius + "°C");
+        System.out.println("Fahrenheit: " + temperaturaFahrenheit + "°F");
+    }
+}</code>
+</pre>
+
+<p>Cada programa tiene un propósito claro, un nombre descriptivo que comunica ese propósito, y código enfocado en
+realizar esa tarea específica.</p>
+
+<h3>Práctica 3: Organización lógica del código</h3>
+
+<p>El código dentro del método <code>main</code> debe organizarse en secciones lógicas separadas visualmente.</p>
+
+<pre class="language-java">
+  <code>public class SistemaNomina {
+
+    public static void main(String[] args) {
+
+        // ===== ENCABEZADO =====
+        System.out.println("===== SISTEMA DE NÓMINA =====");
+        System.out.println();
+
+        // ===== DATOS DEL EMPLEADO =====
+        String nombreEmpleado = "Carlos Fernández";
+        String codigoEmpleado = "EMP-2048";
+        double horasTrabajadas = 48.0;
+        double tarifaPorHora = 175.00;
+
+        // ===== CÁLCULO DE SALARIO BASE =====
+        double salarioBase = horasTrabajadas * tarifaPorHora;
+
+        // ===== CÁLCULO DE BONIFICACIÓN =====
+        double porcentajeBonificacion = 12.0;
+        double montoBonificacion = salarioBase * porcentajeBonificacion / 100.0;
+
+        // ===== CÁLCULO DE DEDUCCIONES =====
+        double porcentajeSeguroSocial = 3.5;
+        double deduccionSeguroSocial = salarioBase * porcentajeSeguroSocial / 100.0;
+
+        double porcentajeImpuesto = 10.0;
+        double deduccionImpuesto = salarioBase * porcentajeImpuesto / 100.0;
+
+        double totalDeducciones = deduccionSeguroSocial + deduccionImpuesto;
+
+        // ===== CÁLCULO DE SALARIO NETO =====
+        double salarioBruto = salarioBase + montoBonificacion;
+        double salarioNeto = salarioBruto - totalDeducciones;
+
+        // ===== REPORTE =====
+        System.out.println("Empleado: " + nombreEmpleado);
+        System.out.println("Código: " + codigoEmpleado);
+        System.out.println("Horas trabajadas: " + horasTrabajadas);
+        System.out.println("--------------------------------------");
+        System.out.println("Salario base: Lps " + salarioBase);
+        System.out.println("Bonificación: Lps " + montoBonificacion);
+        System.out.println("Salario bruto: Lps " + salarioBruto);
+        System.out.println("--------------------------------------");
+        System.out.println("Deducciones:");
+        System.out.println("  Seguro Social: Lps " + deduccionSeguroSocial);
+        System.out.println("  Impuesto:      Lps " + deduccionImpuesto);
+        System.out.println("  Total:         Lps " + totalDeducciones);
+        System.out.println("======================================");
+        System.out.println("SALARIO NETO: Lps " + salarioNeto);
+
+    }
+
+}</code>
+</pre>
+
+<p>Los comentarios de sección y las líneas en blanco crean una estructura visual clara. Cualquier persona puede encontrar
+rápidamente la sección de cálculo de deducciones, la sección de datos de entrada, o la sección de salida sin necesidad
+de leer todo el código.</p>
+
+<h3>Práctica 4: Comentarios que agregan valor</h3>
+
+<p>Los comentarios deben explicar el "por qué" y el "para qué", no el "qué" que ya es obvio del código.</p>
+
+<p><strong>Comentarios innecesarios:</strong></p>
+
+<pre class="language-java">
+  <code>// Declarar variable precio
+double precio = 100.0;
+
+// Declarar variable descuento
+double descuento = 15.0;
+
+// Calcular precio final
+double precioFinal = precio - descuento;
+
+// Mostrar precio final
+System.out.println(precioFinal);</code>
+</pre>
+
+<p>Estos comentarios no agregan información. El código ya comunica claramente qué hace cada línea.</p>
+
+<p><strong>Comentarios útiles:</strong></p>
+
+<pre class="language-java">
+  <code>// Datos del producto
+double precioBase = 100.0;
+
+// Aplicar descuento del 15% por promoción de temporada
+double porcentajeDescuento = 15.0;
+double montoDescuento = precioBase * porcentajeDescuento / 100.0;
+
+// Precio final que el cliente paga
+double precioFinal = precioBase - montoDescuento;
+
+System.out.println("Total a pagar: Lps " + precioFinal);</code>
+</pre>
+
+<p>Estos comentarios proporcionan contexto: por qué se aplica el descuento (promoción de temporada), qué representa el
+precio final (lo que el cliente paga). Esta información no es obvia solo leyendo el código.</p>
+
+<p><strong>Comentarios que documentan decisiones:</strong></p>
+
+<pre class="language-java">
+  <code>// Usamos tasa de cambio fija de 24.50 según acuerdo comercial del 15/03/2026
+double tasaCambioDolarLempira = 24.50;</code>
+</pre>
+
+<p>Este comentario documenta una decisión de negocio. Explica por qué se usa este valor específico en lugar de uno
+dinámico.</p>
+
+<h3>Práctica 5: Constantes para valores mágicos</h3>
+
+<p>Los valores numéricos que aparecen directamente en el código sin explicación se llaman "números mágicos" y deben
+evitarse.</p>
+
+<p><strong>Mal ejemplo con números mágicos:</strong></p>
+
+<pre class="language-java">
+  <code>public class CalculadoraImpuesto {
+    public static void main(String[] args) {
+        double precio = 1000.00;
+        double impuesto = precio * 0.15; // ¿De dónde sale 0.15?
+        double total = precio + impuesto;
+        System.out.println(total);
+    }
+}</code>
+</pre>
+
+<p>El lector se pregunta: ¿qué es 0.15? ¿Es 15%? ¿Por qué 15%? ¿Este valor podría cambiar?</p>
+
+<p><strong>Buen ejemplo con constantes nombradas:</strong></p>
+
+<pre class="language-java">
+  <code>public class CalculadoraImpuesto {
+    public static void main(String[] args) {
+
+        // Tasa de ISV (Impuesto sobre Ventas) en Honduras
+        double TASA_IMPUESTO_VENTAS = 15.0;
+
+        double precioProducto = 1000.00;
+        double montoImpuesto = precioProducto * TASA_IMPUESTO_VENTAS / 100.0;
+        double precioTotal = precioProducto + montoImpuesto;
+
+        System.out.println("Precio: Lps " + precioProducto);
+        System.out.println("Impuesto (15%): Lps " + montoImpuesto);
+        System.out.println("Total: Lps " + precioTotal);
+
+    }
+}</code>
+</pre>
+
+<p>Ahora es claro que 15.0 representa la tasa de impuesto sobre ventas. El nombre de la constante documenta su propósito.
+Si la tasa cambia, solo hay que modificar un lugar en el código.</p>
+
+<h3>Práctica 6: Salida clara y formateada</h3>
+
+<p>La salida del programa debe ser fácil de leer y comprender para usuarios no técnicos.</p>
+
+<p><strong>Salida pobre:</strong></p>
+
+<pre class="language-java">
+  <code>public class ReporteMalo {
+    public static void main(String[] args) {
+        System.out.println(1500);
+        System.out.println(225);
+        System.out.println(1725);
+    }
+}</code>
+</pre>
+
+<p><strong>Salida:</strong></p>
+
+<pre><code>1500
+225
+1725</code></pre>
+
+<p>¿Qué significan estos números? Imposible saber sin leer el código fuente.</p>
+
+<p><strong>Salida clara:</strong></p>
+
+<pre class="language-java">
+  <code>public class ReporteBueno {
+    public static void main(String[] args) {
+
+        double salarioBase = 1500.00;
+        double bono = 225.00;
+        double salarioTotal = salarioBase + bono;
+
+        System.out.println("===== REPORTE DE SALARIO =====");
+        System.out.println("Salario base: Lps " + salarioBase);
+        System.out.println("Bono:         Lps " + bono);
+        System.out.println("------------------------------");
+        System.out.println("TOTAL:        Lps " + salarioTotal);
+
+    }
+}</code>
+</pre>
+
+<p><strong>Salida:</strong></p>
+
+<pre><code>===== REPORTE DE SALARIO =====
+Salario base: Lps 1500.0
+Bono:         Lps 225.0
+------------------------------
+TOTAL:        Lps 1725.0</code></pre>
+
+<p>Esta salida es inmediatamente comprensible. Los encabezados, etiquetas y líneas separadoras crean una estructura visual
+clara.</p>
+
+<h3>Práctica 7: Indentación y espaciado consistentes</h3>
+
+<pre class="language-java">
+  <code>public class EjemploIndentacion {
+
+    public static void main(String[] args) {
+
+        double precioBase = 800.00;
+        double tasaDescuento = 10.0;
+
+        double montoDescuento = precioBase * tasaDescuento / 100.0;
+        double precioFinal = precioBase - montoDescuento;
+
+        System.out.println("Precio original: Lps " + precioBase);
+        System.out.println("Descuento:       Lps " + montoDescuento);
+        System.out.println("Precio final:    Lps " + precioFinal);
+
+    }
+
+}</code>
+</pre>
+
+<p>Observaciones:</p>
+
+<ul>
+  <li>Indentación consistente de 4 espacios por nivel</li>
+  <li>Líneas en blanco separan secciones lógicas</li>
+  <li>Llaves de cierre alineadas con inicio de sus bloques</li>
+  <li>Espacios alrededor de operadores</li>
+</ul>
+
+<h3>Práctica 8: Un concepto por variable</h3>
+
+<p>No reutilizar variables para propósitos diferentes.</p>
+
+<p><strong>Mal ejemplo:</strong></p>
+
+<pre class="language-java">
+  <code>public class ReutilizacionVariable {
+    public static void main(String[] args) {
+        double valor = 100.0; // Primero representa precio
+        System.out.println("Precio: " + valor);
+
+        valor = 15.0; // Ahora representa descuento
+        System.out.println("Descuento: " + valor);
+
+        valor = 85.0; // Ahora representa total
+        System.out.println("Total: " + valor);
+    }
+}</code>
+</pre>
+
+<p>La variable <code>valor</code> representa tres conceptos diferentes en diferentes momentos. Confuso y propenso a
+errores.</p>
+
+<p><strong>Buen ejemplo:</strong></p>
+
+<pre class="language-java">
+  <code>public class VariablesEspecificas {
+    public static void main(String[] args) {
+        double precio = 100.0;
+        double descuento = 15.0;
+        double total = precio - descuento;
+
+        System.out.println("Precio: " + precio);
+        System.out.println("Descuento: " + descuento);
+        System.out.println("Total: " + total);
+    }
+}</code>
+</pre>
+
+<p>Cada variable tiene un propósito específico y mantiene ese propósito durante toda su vida.</p>
+
+<h3>Práctica 9: Encabezado informativo del archivo</h3>
+
+<pre class="language-java">
+  <code>/*
+ * Sistema de Control de Inventario
+ *
+ * Gestiona entrada, salida y consulta de productos en bodega.
+ * Calcula stock disponible y genera alertas de stock bajo.
+ *
+ * Autor: Equipo de Desarrollo
+ * Fecha: Marzo 2026
+ * Versión: 1.0
+ */
+
+public class ControlInventario {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== CONTROL DE INVENTARIO =====");
+
+        // Código del sistema...
+
+    }
+
+}</code>
+</pre>
+
+<p>El encabezado proporciona contexto inmediato sobre el propósito del programa, quién lo escribió, cuándo, y qué versión
+es.</p>
+
+<h3>Práctica 10: Verificación y validación de resultados</h3>
+
+<p>Incluir verificaciones que aseguran que los cálculos producen resultados razonables.</p>
+
+<pre class="language-java">
+  <code>public class CalculadoraConValidacion {
+
+    public static void main(String[] args) {
+
+        double salarioMensual = 15000.00;
+        double porcentajeAhorro = 25.0;
+
+        // Verificar que porcentaje está en rango válido
+        if (porcentajeAhorro < 0 || porcentajeAhorro > 100) {
+            System.out.println("ERROR: Porcentaje debe estar entre 0 y 100");
+            return;
+        }
+
+        double montoAhorro = salarioMensual * porcentajeAhorro / 100.0;
+        double gastoMensual = salarioMensual - montoAhorro;
+
+        System.out.println("===== PRESUPUESTO MENSUAL =====");
+        System.out.println("Salario:          Lps " + salarioMensual);
+        System.out.println("Ahorro (25%):     Lps " + montoAhorro);
+        System.out.println("Gasto disponible: Lps " + gastoMensual);
+
+    }
+
+}</code>
+</pre>
+
+<p>La validación previene que el programa procese datos inválidos y produzca resultados sin sentido.</p>
+
+<h3>Ejemplo completo aplicando todas las prácticas</h3>
+
+<pre class="language-java">
+  <code>/*
+ * Sistema de Cálculo de Préstamos
+ *
+ * Calcula cuota mensual de préstamos usando fórmula de interés simple.
+ * Genera reporte detallado con desglose de capital e intereses.
+ *
+ * Autor: Equipo Financiero
+ * Fecha: Marzo 2026
+ * Versión: 1.0
+ */
+
+public class CalculadoraPrestamos {
+
+    public static void main(String[] args) {
+
+        // ===== ENCABEZADO =====
+        System.out.println("========== CALCULADORA DE PRÉSTAMOS ==========");
+        System.out.println();
+
+        // ===== CONFIGURACIÓN =====
+        // Tasa de interés anual fija según política del banco
+        double TASA_INTERES_ANUAL = 12.0;
+        int MESES_POR_ANIO = 12;
+
+        // ===== DATOS DEL PRÉSTAMO =====
+        String numeroPrestamo = "PREST-2026-450";
+        String nombreCliente = "María Rodríguez";
+        double montoCapital = 50000.00;
+        int plazoMeses = 24;
+
+        // ===== VALIDACIONES =====
+        if (montoCapital <= 0) {
+            System.out.println("ERROR: Monto del capital debe ser positivo");
+            return;
+        }
+        if (plazoMeses <= 0) {
+            System.out.println("ERROR: Plazo debe ser positivo");
+            return;
+        }
+
+        // ===== CÁLCULOS DE INTERÉS =====
+        // Fórmula: Interés Total = Capital * (Tasa/100) * (Plazo/12)
+        double aniosPlazo = plazoMeses / (double) MESES_POR_ANIO;
+        double interesTotal = montoCapital * (TASA_INTERES_ANUAL / 100.0) * aniosPlazo;
+
+        // ===== CÁLCULO DE CUOTA MENSUAL =====
+        double montoTotal = montoCapital + interesTotal;
+        double cuotaMensual = montoTotal / plazoMeses;
+
+        // ===== REPORTE DETALLADO =====
+        System.out.println("INFORMACIÓN DEL PRÉSTAMO");
+        System.out.println("Número:  " + numeroPrestamo);
+        System.out.println("Cliente: " + nombreCliente);
+        System.out.println("----------------------------------------------");
+        System.out.println("Capital prestado: Lps " + String.format("%.2f", montoCapital));
+        System.out.println("Tasa de interés:  " + TASA_INTERES_ANUAL + "% anual");
+        System.out.println("Plazo:            " + plazoMeses + " meses (" + String.format("%.1f", aniosPlazo) + " años)");
+        System.out.println("----------------------------------------------");
+        System.out.println("Interés total:        Lps " + String.format("%.2f", interesTotal));
+        System.out.println("Monto total a pagar:  Lps " + String.format("%.2f", montoTotal));
+        System.out.println("==============================================");
+        System.out.println("  CUOTA MENSUAL: Lps " + String.format("%.2f", cuotaMensual));
+        System.out.println();
+        System.out.println("Cálculo completado exitosamente.");
+
+    }
+
+}</code>
+</pre>
+
+<p>Este programa demuestra todas las buenas prácticas:</p>
+
+<ul>
+  <li>Encabezado informativo con contexto</li>
+  <li>Nombres descriptivos y significativos</li>
+  <li>Organización clara en secciones lógicas</li>
+  <li>Constantes para valores configurables</li>
+  <li>Comentarios que agregan valor</li>
+  <li>Validación de datos de entrada</li>
+  <li>Salida clara y bien formateada</li>
+  <li>Indentación y espaciado consistentes</li>
+  <li>Una responsabilidad clara (calcular préstamos)</li>
+</ul>
+
+<p>Las buenas prácticas en la estructura de programas Java no son ornamentación opcional sino cimientos profesionales que
+facilitan todo el trabajo futuro con el código. Un programa que sigue buenas prácticas puede no ejecutarse más rápido o
+producir resultados diferentes que un programa descuidado, pero será infinitamente más fácil de leer, comprender,
+modificar, depurar y mantener. Estas prácticas distinguen código escrito por profesionales de código escrito por
+aficionados, y adoptarlas desde los primeros programas simples establece una base sólida para toda la carrera como
+desarrollador.</p>

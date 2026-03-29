@@ -1,0 +1,437 @@
+<h2>4.13: Flujo de ejecución de un programa Java</h2>
+
+<p>Cuando ejecutamos un programa Java escribiendo <code>java NombreClase</code> en la línea de comandos, se desencadena una
+secuencia precisa de eventos que transforma el bytecode estático en un archivo <code>.class</code> en un programa en
+ejecución. Comprender este flujo de ejecución, desde el momento en que la JVM inicia hasta que el programa termina, es
+fundamental para entender cómo Java ejecuta nuestro código y por qué se ejecuta en el orden que lo hace. Este
+conocimiento también es crucial para depurar programas cuando el comportamiento no es el esperado.</p>
+
+<p>El flujo de ejecución en Java es determinístico y secuencial en su forma más básica. Las instrucciones dentro del método
+<code>main</code> se ejecutan una tras otra, de arriba hacia abajo, en el orden exacto en que fueron escritas. Esta
+secuencialidad simple es la base sobre la cual se construyen comportamientos más complejos. Aunque más adelante
+aprenderemos estructuras de control que permiten saltar, repetir o condicionar la ejecución de código, por ahora el
+flujo es lineal y predecible.</p>
+
+<p>Visualizar mentalmente cómo la JVM "lee" y ejecuta el código línea por línea ayuda a predecir qué hará un programa antes
+de ejecutarlo. Esta habilidad de "ejecutar el código mentalmente" es una de las diferencias clave entre programadores
+principiantes y experimentados. Los principiantes ejecutan el programa y observan qué sucede. Los programadores con
+experiencia pueden predecir con precisión qué hará el código antes de ejecutarlo porque comprenden el flujo de
+ejecución.</p>
+
+<h3>Inicio de la ejecución: comando java</h3>
+
+<p>La ejecución comienza cuando escribimos el comando <code>java</code> seguido del nombre de la clase en la terminal:</p>
+
+<pre class="language-bash">
+  <code>java CalculadoraDescuento</code>
+</pre>
+
+<p>Este comando simple desencadena una serie de acciones complejas dentro de la JVM. Primero, la JVM inicia y carga su
+entorno de ejecución en memoria. Luego, el launcher de Java busca el archivo <code>CalculadoraDescuento.class</code> en
+el classpath. Si el archivo no existe, la JVM reporta un error y termina. Si el archivo existe, la JVM lo carga en
+memoria.</p>
+
+<p>Una vez cargado el archivo <code>.class</code>, la JVM examina el bytecode para verificar que es válido y no ha sido
+corrompido. Este proceso de verificación asegura que el bytecode sigue las reglas de la especificación de la JVM y no
+contiene instrucciones que podrían comprometer la seguridad o estabilidad del sistema. Si la verificación falla, la JVM
+rechaza el bytecode y termina con error.</p>
+
+<p>Después de verificar el bytecode, la JVM busca el método <code>main</code> con la firma exacta
+<code>public static void main(String[] args)</code>. Este método es especial porque la especificación de la JVM define
+que la ejecución del programa comienza ahí. Si la clase no tiene método <code>main</code> o si la firma no coincide
+exactamente, la JVM reporta error y termina.</p>
+
+<pre class="language-java">
+  <code>public class EjemploFlujo {
+    public static void main(String[] args) {
+        // La ejecución comienza aquí
+        System.out.println("Inicio del programa");
+    }
+}</code>
+</pre>
+
+<p>Cuando ejecutamos <code>java EjemploFlujo</code>, la JVM encuentra el método <code>main</code> y transfiere el control a
+la primera instrucción dentro de ese método. Esa primera instrucción es
+<code>System.out.println("Inicio del programa");</code>. La JVM ejecuta esta instrucción, que resulta en texto siendo
+escrito a la salida estándar, y luego avanza a la siguiente instrucción.</p>
+
+<h3>Ejecución secuencial de instrucciones</h3>
+
+<p>Una vez que la JVM comienza a ejecutar el método <code>main</code>, procesa las instrucciones una por una, en el orden
+exacto en que aparecen en el código fuente, de arriba hacia abajo.</p>
+
+<pre class="language-java">
+  <code>public class FlujoSecuencial {
+    public static void main(String[] args) {
+
+        System.out.println("Instrucción 1");
+        System.out.println("Instrucción 2");
+        System.out.println("Instrucción 3");
+        System.out.println("Instrucción 4");
+
+    }
+}</code>
+</pre>
+
+<p><strong>Orden de ejecución:</strong></p>
+
+<ol>
+  <li>JVM ejecuta <code>System.out.println("Instrucción 1");</code> → Muestra "Instrucción 1"</li>
+  <li>JVM ejecuta <code>System.out.println("Instrucción 2");</code> → Muestra "Instrucción 2"</li>
+  <li>JVM ejecuta <code>System.out.println("Instrucción 3");</code> → Muestra "Instrucción 3"</li>
+  <li>JVM ejecuta <code>System.out.println("Instrucción 4");</code> → Muestra "Instrucción 4"</li>
+  <li>No hay más instrucciones, el método <code>main</code> termina</li>
+  <li>El programa termina</li>
+</ol>
+
+<p><strong>Salida:</strong></p>
+
+<pre><code>Instrucción 1
+Instrucción 2
+Instrucción 3
+Instrucción 4</code></pre>
+
+<p>La salida siempre será en este orden, nunca variará. No es posible que "Instrucción 3" se ejecute antes que
+"Instrucción 2" porque la JVM procesa las instrucciones secuencialmente. Esta predictibilidad es fundamental para
+razonar sobre programas.</p>
+
+<h3>Declaraciones y asignaciones en el flujo</h3>
+
+<p>Las declaraciones de variables y asignaciones también se ejecutan secuencialmente. Una variable solo existe y contiene
+un valor después de que su declaración ha sido ejecutada.</p>
+
+<pre class="language-java">
+  <code>public class FlujoVariables {
+    public static void main(String[] args) {
+
+        double precio = 100.0;
+        System.out.println("Precio declarado: " + precio);
+
+        double descuento = 15.0;
+        System.out.println("Descuento declarado: " + descuento);
+
+        double precioFinal = precio - descuento;
+        System.out.println("Precio final calculado: " + precioFinal);
+
+    }
+}</code>
+</pre>
+
+<p><strong>Flujo paso a paso:</strong></p>
+
+<ol>
+  <li>JVM ejecuta <code>double precio = 100.0;</code>
+    <ul>
+      <li>Crea variable <code>precio</code> en memoria</li>
+      <li>Almacena valor <code>100.0</code> en esa variable</li>
+    </ul>
+  </li>
+  <li>JVM ejecuta <code>System.out.println("Precio declarado: " + precio);</code>
+    <ul>
+      <li>Lee valor de <code>precio</code> (100.0)</li>
+      <li>Construye string "Precio declarado: 100.0"</li>
+      <li>Muestra en pantalla</li>
+    </ul>
+  </li>
+  <li>JVM ejecuta <code>double descuento = 15.0;</code>
+    <ul>
+      <li>Crea variable <code>descuento</code> en memoria</li>
+      <li>Almacena valor <code>15.0</code> en esa variable</li>
+    </ul>
+  </li>
+  <li>JVM ejecuta <code>System.out.println("Descuento declarado: " + descuento);</code>
+    <ul>
+      <li>Lee valor de <code>descuento</code> (15.0)</li>
+      <li>Muestra "Descuento declarado: 15.0"</li>
+    </ul>
+  </li>
+  <li>JVM ejecuta <code>double precioFinal = precio - descuento;</code>
+    <ul>
+      <li>Lee valor de <code>precio</code> (100.0)</li>
+      <li>Lee valor de <code>descuento</code> (15.0)</li>
+      <li>Calcula 100.0 - 15.0 = 85.0</li>
+      <li>Crea variable <code>precioFinal</code> y almacena 85.0</li>
+    </ul>
+  </li>
+  <li>JVM ejecuta el último <code>System.out.println</code> → Muestra "Precio final calculado: 85.0"</li>
+  <li>No hay más instrucciones, método termina, programa termina</li>
+</ol>
+
+<p><strong>Salida:</strong></p>
+
+<pre><code>Precio declarado: 100.0
+Descuento declarado: 15.0
+Precio final calculado: 85.0</code></pre>
+
+<p>Cada paso depende de que los pasos anteriores se hayan ejecutado. No podríamos calcular <code>precioFinal</code> antes
+de que <code>precio</code> y <code>descuento</code> hayan sido declarados y asignados. El orden importa.</p>
+
+<h3>Dependencias entre instrucciones</h3>
+
+<p>El orden de las instrucciones es crítico cuando hay dependencias entre ellas. Una instrucción que usa el resultado de
+otra debe venir después de la instrucción que produce ese resultado.</p>
+
+<pre class="language-java">
+  <code>public class OrdenCorrecto {
+    public static void main(String[] args) {
+
+        // Correcto: declaramos antes de usar
+        double salarioBase = 10000.00;
+        double bono = salarioBase * 0.10;
+        double salarioTotal = salarioBase + bono;
+
+        System.out.println("Salario total: " + salarioTotal);
+
+    }
+}</code>
+</pre>
+
+<p>Este código funciona porque cada variable se declara antes de ser usada. <code>salarioBase</code> se declara primero,
+luego <code>bono</code> la usa para calcular su valor, y finalmente <code>salarioTotal</code> usa ambas variables
+anteriores.</p>
+
+<p>Si invertimos el orden, el código no compila:</p>
+
+<pre class="language-java">
+  <code>public class OrdenIncorrecto {
+    public static void main(String[] args) {
+
+        // Error: intentamos usar salarioBase antes de declararla
+        double bono = salarioBase * 0.10; // Error de compilación
+        double salarioBase = 10000.00;
+
+    }
+}</code>
+</pre>
+
+<p><strong>Error de compilación:</strong></p>
+
+<pre><code>error: cannot find symbol
+double bono = salarioBase * 0.10;
+              ^
+symbol:   variable salarioBase
+location: class OrdenIncorrecto</code></pre>
+
+<p>El compilador detecta que <code>salarioBase</code> se usa antes de ser declarada y rechaza el código. La JVM nunca
+permitirá ejecutar código donde las dependencias están en orden incorrecto.</p>
+
+<h3>Ejemplo de flujo completo: Calculadora de nómina</h3>
+
+<pre class="language-java">
+  <code>public class CalculadoraNomina {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== CALCULADORA DE NÓMINA =====");
+
+        // Paso 1: Declarar datos de entrada
+        String nombreEmpleado = "Ana Martínez";
+        double horasTrabajadas = 45.0;
+        double tarifaPorHora = 150.00;
+
+        // Paso 2: Calcular salario bruto
+        double salarioBruto = horasTrabajadas * tarifaPorHora;
+        System.out.println("Salario bruto calculado: Lps " + salarioBruto);
+
+        // Paso 3: Calcular deducciones
+        double porcentajeSeguroSocial = 3.5;
+        double deduccionSeguroSocial = salarioBruto * porcentajeSeguroSocial / 100.0;
+
+        double porcentajeImpuesto = 10.0;
+        double deduccionImpuesto = salarioBruto * porcentajeImpuesto / 100.0;
+
+        System.out.println("Deducciones calculadas");
+
+        // Paso 4: Calcular total de deducciones
+        double totalDeducciones = deduccionSeguroSocial + deduccionImpuesto;
+
+        // Paso 5: Calcular salario neto
+        double salarioNeto = salarioBruto - totalDeducciones;
+
+        // Paso 6: Mostrar resultado final
+        System.out.println("-----------------------------");
+        System.out.println("Empleado: " + nombreEmpleado);
+        System.out.println("Salario bruto: Lps " + salarioBruto);
+        System.out.println("Deducciones: Lps " + totalDeducciones);
+        System.out.println("SALARIO NETO: Lps " + salarioNeto);
+
+    }
+
+}</code>
+</pre>
+
+<p><strong>Flujo de ejecución paso a paso:</strong></p>
+
+<ol>
+  <li>JVM inicia, carga <code>CalculadoraNomina.class</code></li>
+  <li>JVM busca y encuentra método <code>main</code></li>
+  <li>JVM comienza ejecución en primera línea de <code>main</code></li>
+  <li>Ejecuta el <code>System.out.println</code> del título → Muestra encabezado</li>
+  <li>Ejecuta <code>String nombreEmpleado = "Ana Martínez";</code> → Crea variable, almacena nombre</li>
+  <li>Ejecuta <code>double horasTrabajadas = 45.0;</code> → Crea variable, almacena 45.0</li>
+  <li>Ejecuta <code>double tarifaPorHora = 150.00;</code> → Crea variable, almacena 150.00</li>
+  <li>Ejecuta <code>double salarioBruto = horasTrabajadas * tarifaPorHora;</code>
+    <ul>
+      <li>Lee <code>horasTrabajadas</code> (45.0) y <code>tarifaPorHora</code> (150.00)</li>
+      <li>Calcula 45.0 * 150.00 = 6750.0 y almacena en <code>salarioBruto</code></li>
+    </ul>
+  </li>
+  <li>Continúa ejecutando cada instrucción en orden...</li>
+  <li>Llega al final del método <code>main</code>, el programa termina y la JVM finaliza</li>
+</ol>
+
+<p><strong>Salida:</strong></p>
+
+<pre><code>===== CALCULADORA DE NÓMINA =====
+Salario bruto calculado: Lps 6750.0
+Deducciones calculadas
+-----------------------------
+Empleado: Ana Martínez
+Salario bruto: Lps 6750.0
+Deducciones: Lps 911.25
+SALARIO NETO: Lps 5838.75</code></pre>
+
+<p>Cada línea de salida aparece exactamente cuando su instrucción <code>System.out.println</code> correspondiente se
+ejecuta. No hay magia, no hay desorden. El flujo es completamente predecible.</p>
+
+<h3>Visualizar el flujo mentalmente</h3>
+
+<p>Una habilidad crítica es poder "ejecutar" el código mentalmente antes de ejecutarlo realmente. Esto permite predecir qué
+hará el programa y detectar errores lógicos antes de compilar.</p>
+
+<pre class="language-java">
+  <code>public class PracticaFlujo {
+    public static void main(String[] args) {
+
+        double valorA = 20.0;
+        double valorB = 30.0;
+        double suma = valorA + valorB;
+
+        valorA = 40.0;
+
+        System.out.println("Suma: " + suma);
+        System.out.println("ValorA: " + valorA);
+
+    }
+}</code>
+</pre>
+
+<p><strong>Ejecutando mentalmente:</strong></p>
+
+<ol>
+  <li><code>valorA</code> se crea y se le asigna 20.0</li>
+  <li><code>valorB</code> se crea y se le asigna 30.0</li>
+  <li><code>suma</code> se calcula como 20.0 + 30.0 = 50.0</li>
+  <li><code>valorA</code> cambia a 40.0 (IMPORTANTE: <code>suma</code> ya fue calculada, NO cambia)</li>
+  <li>Muestra "Suma: 50.0" (no 70.0, porque suma se calculó antes del cambio)</li>
+  <li>Muestra "ValorA: 40.0"</li>
+</ol>
+
+<p><strong>Salida predicha:</strong></p>
+
+<pre><code>Suma: 50.0
+ValorA: 40.0</code></pre>
+
+<p>Este es un caso común donde principiantes esperan que <code>suma</code> sea 70.0 porque ven que <code>valorA</code> es
+40.0 al final. Pero <code>suma</code> se calculó cuando <code>valorA</code> era 20.0, y cambiar <code>valorA</code>
+después no afecta a <code>suma</code>. El flujo secuencial lo aclara: <code>suma = valorA + valorB</code> se ejecutó
+ANTES de <code>valorA = 40.0</code>.</p>
+
+<h3>Terminación del programa</h3>
+
+<p>Un programa Java termina cuando el método <code>main</code> completa su última instrucción y retorna el control a la
+JVM. En este momento, la JVM libera todos los recursos, cierra archivos abiertos, y finaliza el proceso.</p>
+
+<pre class="language-java">
+  <code>public class EjemploTerminacion {
+    public static void main(String[] args) {
+
+        System.out.println("Primera línea");
+        System.out.println("Segunda línea");
+        System.out.println("Tercera línea");
+
+        // Aquí termina main, por lo tanto termina el programa
+    }
+}</code>
+</pre>
+
+<p>Después de ejecutar la tercera línea, no hay más instrucciones. El método <code>main</code> termina, y el programa
+completo termina. La JVM cierra y el control retorna al sistema operativo.</p>
+
+<p>Si colocamos instrucciones después del punto donde el programa debería terminar, el compilador detecta el código
+inalcanzable:</p>
+
+<pre class="language-java">
+  <code>public class CodigoInalcanzable {
+    public static void main(String[] args) {
+
+        System.out.println("Esta línea se ejecuta");
+
+        return; // Salida explícita de main
+
+        System.out.println("Esta línea nunca se ejecuta"); // Inalcanzable
+
+    }
+}</code>
+</pre>
+
+<p>La instrucción <code>return;</code> termina inmediatamente la ejecución de <code>main</code>, por lo tanto el
+<code>System.out.println</code> que viene después nunca se ejecuta. El compilador incluso detecta esto y reporta
+advertencia sobre código inalcanzable.</p>
+
+<h3>Ejemplo completo: Sistema de conversión de moneda</h3>
+
+<pre class="language-java">
+  <code>public class ConversionMoneda {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== CONVERSIÓN DE DÓLARES A LEMPIRAS =====");
+        System.out.println();
+
+        // Entrada: cantidad en dólares
+        double cantidadDolares = 250.00;
+        System.out.println("Cantidad a convertir: $" + cantidadDolares);
+
+        // Configuración: tasa de cambio
+        double tasaCambio = 24.50;
+        System.out.println("Tasa de cambio: Lps " + tasaCambio + " por USD");
+        System.out.println();
+
+        // Procesamiento: conversión
+        double cantidadLempiras = cantidadDolares * tasaCambio;
+        System.out.println("Conversión realizada...");
+
+        // Procesamiento: comisión bancaria
+        double porcentajeComision = 2.0;
+        double montoComision = cantidadLempiras * porcentajeComision / 100.0;
+        System.out.println("Comisión calculada...");
+
+        // Resultado final
+        double montoFinalRecibir = cantidadLempiras - montoComision;
+
+        // Salida: mostrar resultados
+        System.out.println();
+        System.out.println("DESGLOSE:");
+        System.out.println("  Equivalente en Lps: Lps " + cantidadLempiras);
+        System.out.println("  Comisión bancaria:  Lps " + montoComision);
+        System.out.println("============================================");
+        System.out.println("  MONTO A RECIBIR:   Lps " + montoFinalRecibir);
+
+        System.out.println();
+        System.out.println("Transacción completada.");
+
+    }
+
+}</code>
+</pre>
+
+<p>Este programa demuestra claramente el flujo de ejecución: entrada de datos, configuración, procesamiento paso a paso con
+mensajes de progreso, cálculo de resultado final, y salida de resultados. Cada etapa se ejecuta en orden, y la salida
+muestra el progreso del programa a medida que avanza por el flujo de ejecución.</p>
+
+<p>Comprender el flujo de ejecución secuencial es fundamental porque establece el modelo mental básico de cómo Java ejecuta
+programas. Aunque más adelante aprenderemos estructuras de control que permiten alterar este flujo secuencial simple, la
+ejecución paso a paso, instrucción por instrucción, permanece como el comportamiento fundamental subyacente. Un programa
+complejo que usa bucles, condicionales, y llamadas a métodos todavía ejecuta instrucciones individuales secuencialmente,
+solo que el orden puede ser más complejo que simplemente de arriba hacia abajo.</p>

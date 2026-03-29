@@ -1,0 +1,389 @@
+<h2>4.12: Convenciones básicas de escritura en un programa Java</h2>
+
+<p>Las convenciones de escritura en Java son acuerdos tácitos entre programadores sobre cómo nombrar elementos del código y
+cómo formatearlo visualmente. Aunque el compilador de Java aceptará casi cualquier estilo de nomenclatura que siga las
+reglas sintácticas básicas, la comunidad global de desarrolladores Java ha convergido en un conjunto de convenciones
+estándar que se han mantenido consistentes durante décadas. Estas convenciones no son caprichosas sino que surgieron de
+la experiencia práctica de millones de programadores trabajando en proyectos de todos los tamaños.</p>
+
+<p>Cuando un programador experimentado abre un archivo Java y ve <code>CalculadoraDescuento</code>, inmediatamente reconoce
+que es un nombre de clase. Si ve <code>precioTotal</code>, sabe que es una variable. Si ve <code>TASA_IMPUESTO</code>,
+identifica una constante. Esta capacidad de reconocer instantáneamente qué tipo de elemento es cada identificador
+acelera dramáticamente la lectura y comprensión del código. Las convenciones actúan como señales visuales que comunican
+información semántica sin necesidad de documentación adicional.</p>
+
+<p>Seguir las convenciones desde el primer programa que escribimos desarrolla hábitos profesionales que se vuelven
+automáticos con la práctica. Un estudiante que aprende Java escribiendo <code>calculadora_descuento</code> en estilo
+snake_case tendrá que desaprender ese hábito cuando ingrese al mundo profesional donde todo código Java sigue PascalCase
+para clases y camelCase para variables. Es más eficiente aprender correctamente desde el inicio que tener que cambiar
+hábitos arraigados posteriormente.</p>
+
+<p>Las convenciones también facilitan el uso de herramientas. Los IDEs modernos como IntelliJ IDEA y Eclipse están
+programados esperando que el código siga convenciones estándar. Cuando se escribe código siguiendo las convenciones, las
+funciones de autocompletado, refactorización automática, y detección de errores funcionan óptimamente. El código que no
+sigue convenciones puede confundir a estas herramientas o hacer que sus sugerencias sean menos útiles.</p>
+
+<p>Finalmente, las convenciones son un marcador de profesionalismo. Cuando un empleador o colaborador revisa código, la
+adherencia a convenciones estándar comunica inmediatamente que el programador conoce las mejores prácticas del lenguaje
+y se preocupa por la calidad del código. Es similar a presentarse a una entrevista con vestimenta apropiada: no cambia
+las capacidades técnicas, pero comunica profesionalismo y atención al detalle.</p>
+
+<h3>Nombres de clases: PascalCase</h3>
+
+<p>Los nombres de clases en Java siguen la convención PascalCase, también conocida como UpperCamelCase. Cada palabra en el
+nombre comienza con letra mayúscula, sin espacios, guiones, o guiones bajos separando las palabras. Esta convención se
+aplica universalmente a todas las clases en Java, sin excepciones.</p>
+
+<pre class="language-java">
+  <code>public class CalculadoraDescuento {
+    public static void main(String[] args) {
+        System.out.println("Calculadora de descuentos");
+    }
+}</code>
+</pre>
+
+<pre class="language-java">
+  <code>public class SistemaGestionInventario {
+    public static void main(String[] args) {
+        System.out.println("Sistema de gestión de inventario");
+    }
+}</code>
+</pre>
+
+<pre class="language-java">
+  <code>public class ReporteVentasMensuales {
+    public static void main(String[] args) {
+        System.out.println("Reporte de ventas mensuales");
+    }
+}</code>
+</pre>
+
+<p>La razón histórica para usar mayúscula inicial en nombres de clases es distinguirlas visualmente de variables y métodos.
+Cuando se lee código Java, la mayúscula inicial señala inmediatamente "esto es un tipo/clase", mientras que minúscula
+inicial señala "esto es una variable o método". Esta distinción visual es particularmente útil en código complejo donde
+tipos y variables aparecen mezclados en expresiones.</p>
+
+<p>Nombres de clase deben ser sustantivos o frases nominales que describen claramente qué representa la clase.
+<code>CalculadoraDescuento</code> describe una calculadora de descuentos. <code>SistemaInventario</code> describe un
+sistema de inventario. Los nombres deben ser lo suficientemente específicos para ser informativos pero no tan largos
+que se vuelvan difíciles de escribir o leer.</p>
+
+<p>Aunque técnicamente es válido escribir nombres de clase completamente en minúsculas, en mayúsculas, o con guiones bajos,
+ningún código Java profesional lo hace:</p>
+
+<pre class="language-java">
+  <code>// Técnicamente válido pero NO convención Java
+public class calculadoradescuento {
+    // ...
+}
+
+// Técnicamente válido pero NO convención Java
+public class CALCULADORADESCUENTO {
+    // ...
+}
+
+// Técnicamente válido pero NO convención Java
+public class calculadora_descuento {
+    // ...
+}</code>
+</pre>
+
+<p>Estos estilos son inmediatamente reconocibles como código escrito por alguien que no conoce las convenciones Java o que
+proviene de otro lenguaje y no ha ajustado su estilo. Python usa snake_case, C# usa PascalCase similar a Java, pero cada
+lenguaje tiene sus propias convenciones y es profesional seguir las convenciones del lenguaje que se está usando.</p>
+
+<h3>Nombres de variables: camelCase</h3>
+
+<p>Las variables en Java siguen la convención camelCase, también conocida como lowerCamelCase. La primera letra es
+minúscula, y cada palabra subsecuente comienza con mayúscula, sin espacios ni separadores.</p>
+
+<pre class="language-java">
+  <code>public class EjemploVariables {
+    public static void main(String[] args) {
+
+        double precioProducto = 500.00;
+        int cantidadInventario = 150;
+        String nombreCliente = "Juan Pérez";
+        double salarioBrutoMensual = 15000.00;
+        double tasaImpuestoVentas = 15.0;
+
+    }
+}</code>
+</pre>
+
+<p>La letra minúscula inicial distingue inmediatamente las variables de las clases. Cuando se lee
+<code>CalculadoraDescuento precioTotal</code>, es obvio que <code>CalculadoraDescuento</code> es un tipo y
+<code>precioTotal</code> es una variable. Esta distinción visual es particularmente importante en lenguajes fuertemente
+tipados como Java donde tipos y variables aparecen frecuentemente juntos en declaraciones.</p>
+
+<p>Los nombres de variables deben ser descriptivos y comunicar claramente qué información contienen. Un nombre como
+<code>precioProducto</code> comunica inmediatamente que la variable contiene el precio de un producto. Un nombre como
+<code>p</code> o <code>x</code> no comunica nada útil y obliga al lector a buscar en el código circundante para
+entender qué representa.</p>
+
+<p>La tentación de usar nombres cortos para "ahorrar tiempo escribiendo" es un error común de principiantes. En realidad,
+el código se lee muchas más veces de las que se escribe. Un programa se escribe una vez pero se lee docenas o cientos de
+veces durante mantenimiento, depuración, y extensión. Invertir unos segundos extra escribiendo
+<code>salarioBrutoMensual</code> en lugar de <code>s</code> ahorra minutos u horas de confusión cada vez que alguien
+lee el código.</p>
+
+<p>Comparemos dos versiones del mismo código:</p>
+
+<pre class="language-java">
+  <code>// Nombres genéricos
+double p = 1000.00;
+double t = 0.15;
+double i = p * t;
+double f = p + i;
+System.out.println("Total: " + f);</code>
+</pre>
+
+<pre class="language-java">
+  <code>// Nombres descriptivos
+double precioBase = 1000.00;
+double tasaImpuesto = 0.15;
+double montoImpuesto = precioBase * tasaImpuesto;
+double precioFinal = precioBase + montoImpuesto;
+System.out.println("Total: " + precioFinal);</code>
+</pre>
+
+<p>El segundo código es inmediatamente comprensible. El primero requiere analizar las operaciones para deducir qué
+representan las variables. La diferencia en tiempo de escritura entre ambos es trivial, pero la diferencia en
+legibilidad es sustancial.</p>
+
+<p>Algunos programadores argumentan que nombres cortos son aceptables para variables de vida muy corta en ámbitos pequeños,
+como contadores de bucles. Este argumento tiene mérito en contextos específicos, pero para estudiantes aprendiendo Java,
+la mejor práctica es usar nombres descriptivos consistentemente hasta que el uso de variables temporales en contextos
+específicos se comprenda bien.</p>
+
+<h3>Constantes: UPPER_CASE con guiones bajos</h3>
+
+<p>Los valores que no cambian durante la ejecución del programa se llaman constantes y se escriben completamente en
+mayúsculas con guiones bajos separando palabras. Esta convención señala visualmente "este valor no debe modificarse".</p>
+
+<pre class="language-java">
+  <code>public class EjemploConstantes {
+    public static void main(String[] args) {
+
+        double TASA_IMPUESTO_VENTAS = 15.0;
+        double SALARIO_MINIMO_LEGAL = 9568.96;
+        int DIAS_LABORABLES_SEMANA = 5;
+        double FACTOR_CONVERSION_DOLAR = 24.50;
+
+        double precioProducto = 1000.00;
+        double impuesto = precioProducto * TASA_IMPUESTO_VENTAS / 100.0;
+
+        System.out.println("Impuesto: " + impuesto);
+
+    }
+}</code>
+</pre>
+
+<p>Cuando un lector ve <code>TASA_IMPUESTO_VENTAS</code>, sabe inmediatamente que este valor no debería cambiar en el
+código. Si ve código que intenta modificar una constante, reconoce que probablemente es un error. Las mayúsculas actúan
+como advertencia visual.</p>
+
+<p>Por ahora, simplemente declaramos estas variables con nombres en mayúsculas para indicar su naturaleza constante. Más
+adelante en el plan maestro aprenderemos la palabra clave <code>final</code> que hace que el compilador impida
+modificaciones a estas variables, convirtiendo la convención de nomenclatura en una garantía técnica.</p>
+
+<h3>Espaciado alrededor de operadores</h3>
+
+<p>El código es más legible cuando hay espacios alrededor de operadores matemáticos y de asignación. Esta práctica no
+afecta la ejecución pero mejora significativamente la legibilidad visual.</p>
+
+<pre class="language-java">
+  <code>// Con espacios (recomendado)
+double total = precio + impuesto;
+double resultado = (valor1 * valor2) / 100.0;
+int suma = a + b - c;
+double promedio = (numero1 + numero2 + numero3) / 3.0;</code>
+</pre>
+
+<pre class="language-java">
+  <code>// Sin espacios (funciona pero menos legible)
+double total=precio+impuesto;
+double resultado=(valor1*valor2)/100.0;
+int suma=a+b-c;
+double promedio=(numero1+numero2+numero3)/3.0;</code>
+</pre>
+
+<p>El espaciado crea "aire visual" que ayuda al cerebro a parsear la expresión más rápidamente. La versión sin espacios
+parece un bloque sólido de texto que requiere más esfuerzo cognitivo para descomponer. La versión con espacios permite
+identificar inmediatamente los operandos y operadores.</p>
+
+<p>Algunos operadores pueden escribirse sin espacios cuando la expresión es muy simple y el espaciado no mejora la
+legibilidad. Por ejemplo, <code>-1</code> es más claro que <code>- 1</code> en muchos contextos. Pero como regla
+general, especialmente para estudiantes, usar espacios consistentemente alrededor de todos los operadores es la práctica
+más segura.</p>
+
+<h3>Posición de llaves: estilo Java</h3>
+
+<p>En Java, la convención estándar es colocar la llave de apertura en la misma línea que la declaración que la requiere,
+no en una línea separada.</p>
+
+<pre class="language-java">
+  <code>// Estilo Java (correcto)
+public class MiClase {
+    public static void main(String[] args) {
+        double valor = 100.0;
+    }
+}</code>
+</pre>
+
+<pre class="language-java">
+  <code>// Estilo Allman (común en C#, NO en Java)
+public class MiClase
+{
+    public static void main(String[] args)
+    {
+        double valor = 100.0;
+    }
+}</code>
+</pre>
+
+<p>Ambos estilos compilan perfectamente. El compilador no tiene preferencias sobre la posición de llaves. Sin embargo, la
+convención Java es llaves en la misma línea, y todo código Java profesional sigue esta convención. El estilo Allman
+(llaves en línea separada) es común en C# y otros lenguajes, pero en Java se reconoce inmediatamente como código
+escrito por alguien que no conoce las convenciones del lenguaje.</p>
+
+<p>La razón para preferir llaves en la misma línea en Java es parcialmente histórica y parcialmente pragmática. Los
+creadores originales de Java establecieron este estilo y se ha mantenido consistente durante décadas. Cambiar ahora
+causaría fragmentación en la comunidad. Pragmáticamente, poner llaves en la misma línea ahorra líneas verticales,
+permitiendo ver más código en la pantalla sin scroll.</p>
+
+<h3>Indentación consistente</h3>
+
+<p>La indentación es el espaciado al inicio de líneas que muestra visualmente la jerarquía de bloques de código. La
+convención Java es usar cuatro espacios por nivel de indentación.</p>
+
+<pre class="language-java">
+  <code>public class Ejemplo {
+    public static void main(String[] args) {
+        double precio = 100.0;
+        double descuento = 10.0;
+        double total = precio - descuento;
+        System.out.println(total);
+    }
+}</code>
+</pre>
+
+<p>En este ejemplo, <code>public static void main</code> está indentado 4 espacios desde el borde izquierdo (un nivel
+dentro de la clase). Las instrucciones dentro de <code>main</code> están indentadas 8 espacios (dos niveles: dentro de
+clase y dentro de método).</p>
+
+<p>La indentación no afecta la ejecución del código. El compilador ignora completamente los espacios en blanco al inicio de
+líneas. Sin embargo, sin indentación apropiada, el código se vuelve extremadamente difícil de leer:</p>
+
+<pre class="language-java">
+  <code>public class Ejemplo {
+public static void main(String[] args) {
+double precio = 100.0;
+double descuento = 10.0;
+double total = precio - descuento;
+System.out.println(total);
+}
+}</code>
+</pre>
+
+<p>Este código compila y ejecuta idénticamente al anterior, pero es significativamente más difícil de leer porque la
+jerarquía de bloques no es visualmente aparente.</p>
+
+<p>Algunos editores usan tabuladores (tabs) en lugar de espacios para indentación. Esto crea problemas cuando el código se
+ve en diferentes editores que interpretan tabs con anchos diferentes. Usar espacios garantiza que el código se vea
+idéntico en cualquier editor o plataforma. La convención Java es espacios, no tabs.</p>
+
+<p>Los IDEs modernos configurados para Java automáticamente indentan correctamente al presionar Enter. Desarrollar el
+hábito de verificar que la indentación es correcta incluso cuando el IDE la genera automáticamente ayuda a detectar
+errores estructurales. Si el IDE indenta de manera inesperada, frecuentemente indica que hay una llave faltante o mal
+ubicada.</p>
+
+<h3>Una sentencia por línea</h3>
+
+<p>Aunque Java permite múltiples sentencias en una línea separadas por punto y coma, la convención es escribir una
+sentencia por línea para máxima claridad.</p>
+
+<pre class="language-java">
+  <code>// Una sentencia por línea (recomendado)
+double precio = 100.0;
+double descuento = 10.0;
+double total = precio - descuento;</code>
+</pre>
+
+<pre class="language-java">
+  <code>// Múltiples sentencias en una línea (válido pero no recomendado)
+double precio = 100.0; double descuento = 10.0; double total = precio - descuento;</code>
+</pre>
+
+<p>La versión con una sentencia por línea es más fácil de leer y también facilita la depuración. Si hay un error en la
+línea de múltiples sentencias, el compilador o debugger reportará el número de línea pero no especificará cuál de las
+tres sentencias causó el problema. Con una sentencia por línea, el número de línea identifica exactamente la sentencia
+problemática.</p>
+
+<h3>Ejemplo completo aplicando convenciones</h3>
+
+<pre class="language-java">
+  <code>import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class SistemaControlInventario {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== SISTEMA DE CONTROL DE INVENTARIO =====");
+        System.out.println();
+
+        // Constantes del sistema
+        int STOCK_MINIMO_ALERTA = 20;
+        int STOCK_MAXIMO_BODEGA = 500;
+
+        // Fecha de reporte
+        LocalDate fechaReporte = LocalDate.now();
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaFormateada = fechaReporte.format(formatoFecha);
+
+        // Datos del producto
+        String codigoProducto = "PROD-1025";
+        String nombreProducto = "Monitor LED 24 pulgadas";
+        String categoriaProducto = "Electrónica";
+
+        // Inventario actual
+        int stockInicial = 150;
+        int entradasDia = 45;
+        int salidasDia = 62;
+
+        // Cálculos de inventario
+        int stockActual = stockInicial + entradasDia - salidasDia;
+        int diferenciaStockMinimo = stockActual - STOCK_MINIMO_ALERTA;
+        int capacidadDisponible = STOCK_MAXIMO_BODEGA - stockActual;
+
+        // Mostrar reporte
+        System.out.println("Fecha: " + fechaFormateada);
+        System.out.println("Código: " + codigoProducto);
+        System.out.println("Producto: " + nombreProducto);
+        System.out.println("Categoría: " + categoriaProducto);
+        System.out.println("--------------------------------------------");
+        System.out.println("Stock inicial: " + stockInicial + " unidades");
+        System.out.println("Entradas del día: +" + entradasDia + " unidades");
+        System.out.println("Salidas del día: -" + salidasDia + " unidades");
+        System.out.println("--------------------------------------------");
+        System.out.println("Stock actual: " + stockActual + " unidades");
+        System.out.println("Diferencia con mínimo: " + diferenciaStockMinimo + " unidades");
+        System.out.println("Capacidad disponible: " + capacidadDisponible + " unidades");
+
+    }
+
+}</code>
+</pre>
+
+<p>Este programa aplica consistentemente todas las convenciones Java: clase en PascalCase
+(<code>SistemaControlInventario</code>), variables en camelCase descriptivo (<code>fechaFormateada</code>,
+<code>stockInicial</code>), constantes en mayúsculas (<code>STOCK_MINIMO_ALERTA</code>), espaciado apropiado alrededor
+de operadores, llaves en misma línea, indentación de 4 espacios por nivel, y una sentencia por línea. El código es
+inmediatamente reconocible como Java profesional.</p>
+
+<p>Las convenciones de escritura no son obstáculos arbitrarios sino herramientas que facilitan la comunicación entre
+programadores. Un código que sigue convenciones comunica no solo qué hace el programa sino también que quien lo escribió
+comprende las prácticas profesionales del lenguaje y se preocupa por la calidad y legibilidad del código. Desarrollar el
+hábito de seguir convenciones desde los primeros programas establece una base sólida para escribir código profesional
+durante toda la carrera como desarrollador.</p>
