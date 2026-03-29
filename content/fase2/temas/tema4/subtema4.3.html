@@ -1,0 +1,472 @@
+<h2><strong>4.3 Relación entre archivo .java y clase</strong></h2>
+
+<p>La relación entre un archivo <code>.java</code> y la clase que contiene es uno de los aspectos fundamentales de Java que debe
+comprenderse desde el principio. Esta relación no es arbitraria sino que sigue reglas estrictas diseñadas para mantener
+el código organizado, fácil de encontrar, y libre de ambigüedades. Comprender exactamente cómo se relacionan estos dos
+elementos, qué reglas rigen esta relación, y por qué estas reglas existen es esencial para escribir programas Java
+correctos y evitar errores de compilación comunes.</p>
+
+<hr>
+
+<h3><strong>La regla fundamental</strong></h3>
+
+<p><strong>En Java, el nombre del archivo <code>.java</code> DEBE coincidir exactamente con el nombre de la clase que contiene.</strong></p>
+
+<p>Esta es una regla absoluta y obligatoria. No es una sugerencia o recomendación, es un requisito técnico del lenguaje.</p>
+
+<p><strong>Ejemplo correcto:</strong></p>
+
+<pre class="language-java"><code>// Archivo: CalculadoraDescuento.java
+
+class CalculadoraDescuento {
+    public static void main(String[] args) {
+        double precioBase = 1000.00;
+        double descuento = 150.00;
+        double precioFinal = precioBase - descuento;
+
+        System.out.println("Precio original: Lps " + precioBase);
+        System.out.println("Descuento: Lps " + descuento);
+        System.out.println("Precio final: Lps " + precioFinal);
+    }
+}</code></pre>
+
+<p><strong>Correspondencia:</strong></p>
+<ul>
+  <li>Nombre del archivo: <code>CalculadoraDescuento.java</code></li>
+  <li>Nombre de la clase: <code>CalculadoraDescuento</code></li>
+  <li>✓ Coinciden exactamente (incluyendo mayúsculas/minúsculas)</li>
+</ul>
+
+<hr>
+
+<h3><strong>¿Por qué existe esta regla?</strong></h3>
+
+<p><strong>Razón 1: Facilita encontrar código</strong></p>
+<p>Si necesita encontrar el código de la clase <code>CalculadoraDescuento</code>, solo busca el archivo <code>CalculadoraDescuento.java</code>. No hay ambigüedad.</p>
+
+<p><strong>Razón 2: Evita conflictos</strong></p>
+<p>Garantiza que cada clase tiene un "hogar" único y claro en el sistema de archivos.</p>
+
+<p><strong>Razón 3: Simplifica la compilación</strong></p>
+<p>El compilador <code>javac</code> sabe exactamente dónde buscar el código de cada clase.</p>
+
+<hr>
+
+<h3><strong>Qué sucede si los nombres NO coinciden</strong></h3>
+
+<p><strong>Ejemplo incorrecto:</strong></p>
+
+<pre class="language-java"><code>// Archivo: MiPrograma.java (nombre del archivo)
+
+class CalculadoraVentas { // Nombre de la clase (diferente)
+    public static void main(String[] args) {
+        System.out.println("Intentando ejecutar");
+    }
+}</code></pre>
+
+<p><strong>Intento de compilar:</strong></p>
+<pre class="language-bash"><code>javac MiPrograma.java</code></pre>
+
+<p><strong>Error de compilación:</strong></p>
+<pre class="language-markup"><code>MiPrograma.java:3: error: class CalculadoraVentas is public, should be declared in a file named CalculadoraVentas.java
+class CalculadoraVentas {
+^
+1 error</code></pre>
+
+<p><strong>El compilador es claro:</strong> La clase <code>CalculadoraVentas</code> debe estar en un archivo llamado <code>CalculadoraVentas.java</code>.</p>
+
+<p><strong>No compilará hasta que se corrija.</strong></p>
+
+<hr>
+
+<h3><strong>Solución a nombres que no coinciden</strong></h3>
+
+<p><strong>Opción 1: Renombrar el archivo para que coincida con la clase</strong></p>
+
+<pre class="language-bash"><code># Renombrar archivo
+mv MiPrograma.java CalculadoraVentas.java
+
+# Ahora compilar
+javac CalculadoraVentas.java
+# ✓ Compila exitosamente</code></pre>
+
+<hr>
+
+<p><strong>Opción 2: Renombrar la clase para que coincida con el archivo</strong></p>
+
+<pre class="language-java"><code>// Archivo: MiPrograma.java
+
+class MiPrograma { // Cambiar nombre de clase
+    public static void main(String[] args) {
+        System.out.println("Ahora funciona");
+    }
+}</code></pre>
+
+<pre class="language-bash"><code>javac MiPrograma.java
+# ✓ Compila exitosamente</code></pre>
+
+<hr>
+
+<h3><strong>Sensibilidad a mayúsculas y minúsculas</strong></h3>
+
+<p>Java es <strong>extremadamente sensible</strong> a mayúsculas y minúsculas. <code>Calculadora</code> y <code>calculadora</code> son <strong>nombres completamente diferentes</strong>.</p>
+
+<p><strong>Ejemplo de problema:</strong></p>
+
+<pre class="language-java"><code>// Archivo: calculadora.java (todo minúsculas)
+
+class Calculadora { // Primera letra mayúscula
+    public static void main(String[] args) {
+        System.out.println("Hola");
+    }
+}</code></pre>
+
+<p><strong>En sistemas Linux/macOS:</strong></p>
+<pre class="language-bash"><code>javac calculadora.java
+# Error: nombres no coinciden</code></pre>
+
+<p><strong>En Windows:</strong></p>
+<ul>
+  <li>Puede funcionar (Windows ignora mayúsculas/minúsculas en nombres de archivo)</li>
+  <li>PERO esto es peligroso porque el código no funcionará en otros sistemas</li>
+</ul>
+
+<p><strong>Solución correcta:</strong></p>
+
+<pre class="language-bash"><code># Renombrar archivo para que coincida exactamente
+mv calculadora.java Calculadora.java
+
+# Ahora compilar
+javac Calculadora.java
+# ✓ Funciona en todos los sistemas</code></pre>
+
+<hr>
+
+<h3><strong>Correspondencia uno a uno</strong></h3>
+
+<p><strong>Cada archivo .java contiene exactamente UNA clase.</strong></p>
+
+<p>Esta es la práctica estándar y recomendada en Java profesional.</p>
+
+<p><strong>Estructura recomendada:</strong></p>
+
+<pre class="language-markup"><code>proyecto/
+├── CalculadoraDescuento.java → contiene class CalculadoraDescuento
+├── CalculadoraSalario.java   → contiene class CalculadoraSalario
+└── ReporteVentas.java        → contiene class ReporteVentas</code></pre>
+
+<p><strong>Cada archivo tiene su propia clase, nombres coincidentes.</strong></p>
+
+<hr>
+
+<h3><strong>Ejemplo completo: Sistema de facturación</strong></h3>
+
+<p><strong>Archivo: CalculadoraFactura.java</strong></p>
+
+<pre class="language-java"><code>// Sistema de cálculo de factura con impuestos
+
+class CalculadoraFactura {
+    public static void main(String[] args) {
+        // Datos de productos
+        double precioProducto1 = 250.00;
+        double precioProducto2 = 480.00;
+        double precioProducto3 = 125.00;
+
+        // Calcular subtotal
+        double subtotal = precioProducto1 + precioProducto2 + precioProducto3;
+
+        // Calcular impuesto (15%)
+        double porcentajeImpuesto = 15.00;
+        double montoImpuesto = subtotal * porcentajeImpuesto / 100;
+
+        // Calcular total
+        double totalFactura = subtotal + montoImpuesto;
+
+        // Mostrar factura
+        System.out.println("========== FACTURA ==========");
+        System.out.println("Producto 1: Lps " + precioProducto1);
+        System.out.println("Producto 2: Lps " + precioProducto2);
+        System.out.println("Producto 3: Lps " + precioProducto3);
+        System.out.println("-----------------------------");
+        System.out.println("Subtotal: Lps " + subtotal);
+        System.out.println("Impuesto (15%): Lps " + montoImpuesto);
+        System.out.println("=============================");
+        System.out.println("TOTAL: Lps " + totalFactura);
+    }
+}</code></pre>
+
+<p><strong>Relación archivo-clase:</strong></p>
+<ul>
+  <li>Archivo: <code>CalculadoraFactura.java</code></li>
+  <li>Clase: <code>CalculadoraFactura</code></li>
+  <li>✓ Coinciden perfectamente</li>
+</ul>
+
+<p><strong>Compilar y ejecutar:</strong></p>
+<pre class="language-bash"><code>javac CalculadoraFactura.java
+java CalculadoraFactura</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>========== FACTURA ==========
+Producto 1: Lps 250.0
+Producto 2: Lps 480.0
+Producto 3: Lps 125.0
+-----------------------------
+Subtotal: Lps 855.0
+Impuesto (15%): Lps 128.25
+=============================
+TOTAL: Lps 983.25</code></pre>
+
+<hr>
+
+<h3><strong>Del archivo .java a la ejecución</strong></h3>
+
+<p><strong>Proceso completo:</strong></p>
+
+<pre class="language-markup"><code>1. ARCHIVO FUENTE
+CalculadoraFactura.java
+(contiene class CalculadoraFactura)
+↓
+
+2. COMPILACIÓN
+javac CalculadoraFactura.java
+↓
+Compilador verifica:
+- Sintaxis correcta
+- Nombres coinciden
+- Reglas de Java seguidas
+↓
+Genera:
+CalculadoraFactura.class
+↓
+
+3. EJECUCIÓN
+java CalculadoraFactura
+↓
+JVM:
+- Carga CalculadoraFactura.class
+- Busca método main
+- Ejecuta el programa</code></pre>
+
+<hr>
+
+<h3><strong>Verificar la relación archivo-clase</strong></h3>
+
+<p>Después de escribir un programa, verifique que todo está correcto:</p>
+
+<p><strong>Paso 1: Verificar nombre del archivo</strong></p>
+
+<pre class="language-bash"><code># Ver archivos en el directorio
+ls -l # macOS/Linux
+dir   # Windows</code></pre>
+
+<p>Confirme que el archivo termina en <code>.java</code> y el nombre es correcto.</p>
+
+<p><strong>Paso 2: Abrir archivo y verificar nombre de clase</strong></p>
+
+<pre class="language-java"><code>class NombreClase { // ¿Este nombre coincide con el archivo?
+    // ...
+}</code></pre>
+
+<p><strong>Paso 3: Intentar compilar</strong></p>
+
+<pre class="language-bash"><code>javac NombreArchivo.java</code></pre>
+
+<p>Si compila sin errores → nombres coinciden ✓</p>
+<p>Si da error de nombres → corregir archivo o clase</p>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de nómina</strong></h3>
+
+<p><strong>Archivo: CalculadoraNomina.java</strong></p>
+
+<pre class="language-java"><code>// Calculadora de nómina semanal para empleados
+
+class CalculadoraNomina {
+    public static void main(String[] args) {
+        // Datos del empleado 1
+        String nombreEmpleado1 = "Carlos Mendez";
+        double horasEmpleado1 = 45.0;
+        double tarifaEmpleado1 = 150.00;
+        double salarioEmpleado1 = horasEmpleado1 * tarifaEmpleado1;
+
+        // Datos del empleado 2
+        String nombreEmpleado2 = "Ana Rodriguez";
+        double horasEmpleado2 = 40.0;
+        double tarifaEmpleado2 = 175.00;
+        double salarioEmpleado2 = horasEmpleado2 * tarifaEmpleado2;
+
+        // Datos del empleado 3
+        String nombreEmpleado3 = "Luis Flores";
+        double horasEmpleado3 = 38.0;
+        double tarifaEmpleado3 = 160.00;
+        double salarioEmpleado3 = horasEmpleado3 * tarifaEmpleado3;
+
+        // Calcular total de nómina
+        double totalNomina = salarioEmpleado1 + salarioEmpleado2 + salarioEmpleado3;
+
+        // Mostrar reporte
+        System.out.println("========== NÓMINA SEMANAL ==========");
+        System.out.println(nombreEmpleado1 + ": " + horasEmpleado1 + " hrs x Lps " + tarifaEmpleado1 + " = Lps " + salarioEmpleado1);
+        System.out.println(nombreEmpleado2 + ": " + horasEmpleado2 + " hrs x Lps " + tarifaEmpleado2 + " = Lps " + salarioEmpleado2);
+        System.out.println(nombreEmpleado3 + ": " + horasEmpleado3 + " hrs x Lps " + tarifaEmpleado3 + " = Lps " + salarioEmpleado3);
+        System.out.println("====================================");
+        System.out.println("Total nómina: Lps " + totalNomina);
+    }
+}</code></pre>
+
+<p><strong>Relación:</strong></p>
+<ul>
+  <li>Archivo: <code>CalculadoraNomina.java</code></li>
+  <li>Clase: <code>CalculadoraNomina</code></li>
+  <li>✓ Perfecta correspondencia</li>
+</ul>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>========== NÓMINA SEMANAL ==========
+Carlos Mendez: 45.0 hrs x Lps 150.0 = Lps 6750.0
+Ana Rodriguez: 40.0 hrs x Lps 175.0 = Lps 7000.0
+Luis Flores: 38.0 hrs x Lps 160.0 = Lps 6080.0
+====================================
+Total nómina: Lps 19830.0</code></pre>
+
+<hr>
+
+<h3><strong>Errores comunes y sus soluciones</strong></h3>
+
+<h4><strong>Error 1: Clase y archivo con nombres diferentes</strong></h4>
+
+<pre class="language-java"><code>// Archivo: Programa.java
+class ReporteVentas {
+    // ✗ Nombres no coinciden
+}</code></pre>
+
+<p><strong>Solución:</strong> Renombrar archivo a <code>ReporteVentas.java</code></p>
+
+<hr>
+
+<h4><strong>Error 2: Mayúsculas/minúsculas inconsistentes</strong></h4>
+
+<pre class="language-java"><code>// Archivo: calculadoraventas.java
+class CalculadoraVentas {
+    // ✗ Mayúsculas no coinciden
+}</code></pre>
+
+<p><strong>Solución:</strong> Renombrar archivo a <code>CalculadoraVentas.java</code></p>
+
+<hr>
+
+<h4><strong>Error 3: Espacios en nombres</strong></h4>
+
+<pre class="language-java"><code>// Archivo: Calculadora Ventas.java (con espacio)
+class CalculadoraVentas {
+    // ✗ Espacio en nombre de archivo
+}</code></pre>
+
+<p><strong>Solución:</strong> Renombrar a <code>CalculadoraVentas.java</code> (sin espacios)</p>
+
+<hr>
+
+<h4><strong>Error 4: Extensión incorrecta</strong></h4>
+
+<pre class="language-markup"><code>Archivo: CalculadoraVentas.txt</code></pre>
+
+<p><strong>Solución:</strong> Cambiar extensión a <code>.java</code></p>
+
+<hr>
+
+<h3><strong>Buenas prácticas</strong></h3>
+
+<p><strong>1. Siempre verificar coincidencia antes de compilar</strong></p>
+
+<p>Antes de ejecutar <code>javac</code>, verifique:</p>
+<ul>
+  <li>Nombre del archivo</li>
+  <li>Nombre de la clase dentro del archivo</li>
+  <li>¿Coinciden exactamente?</li>
+</ul>
+
+<hr>
+
+<p><strong>2. Usar nombres descriptivos</strong></p>
+
+<pre class="language-java"><code>// ✓ Nombre descriptivo y claro
+class CalculadoraImpuestoVentas {
+    // ...
+}</code></pre>
+
+<pre class="language-java"><code>// ✗ Nombre genérico y confuso
+class Calc {
+    // ...
+}</code></pre>
+
+<hr>
+
+<p><strong>3. Seguir convención PascalCase</strong></p>
+
+<pre class="language-java"><code>// ✓ Correcto: primera letra de cada palabra en mayúscula
+class SistemaGestionInventario {
+    // ...
+}</code></pre>
+
+<pre class="language-java"><code>// ✗ No recomendado
+class sistema_gestion_inventario {
+    // ...
+}</code></pre>
+
+<hr>
+
+<p><strong>4. Un archivo = una clase</strong></p>
+
+<p>No intente poner múltiples programas en un archivo. Mantenga simple:</p>
+
+<pre class="language-markup"><code>proyecto/
+├── CalculadoraDescuento.java → Una clase
+├── ReporteVentas.java        → Una clase
+└── SistemaNomina.java        → Una clase</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo final: Control de inventario</strong></h3>
+
+<p><strong>Archivo: ControlInventario.java</strong></p>
+
+<pre class="language-java"><code>// Sistema de control de inventario básico
+
+class ControlInventario {
+    public static void main(String[] args) {
+        // Inventario inicial
+        int stockInicial = 100;
+
+        // Movimientos del día
+        int entradasDia = 25;
+        int salidasDia = 40;
+
+        // Calcular stock final
+        int stockFinal = stockInicial + entradasDia - salidasDia;
+
+        // Mostrar reporte
+        System.out.println("===== CONTROL DE INVENTARIO =====");
+        System.out.println("Stock inicial: " + stockInicial + " unidades");
+        System.out.println("Entradas: +" + entradasDia + " unidades");
+        System.out.println("Salidas: -" + salidasDia + " unidades");
+        System.out.println("---------------------------------");
+        System.out.println("Stock final: " + stockFinal + " unidades");
+        System.out.println("=================================");
+    }
+}</code></pre>
+
+<p><strong>Verificación de correspondencia:</strong></p>
+<ul>
+  <li>✓ Archivo: <code>ControlInventario.java</code></li>
+  <li>✓ Clase: <code>ControlInventario</code></li>
+  <li>✓ Coincidencia perfecta</li>
+</ul>
+
+<hr>
+
+<p>La relación entre archivo <code>.java</code> y clase es simple pero estricta: deben tener el mismo nombre, exactamente. Esta regla,
+aunque puede parecer restrictiva al principio, en realidad simplifica enormemente la organización del código y hace que
+sea fácil encontrar y mantener programas. Seguir esta regla desde el inicio crea buenos hábitos que facilitarán el
+desarrollo a medida que los programas se vuelvan más complejos.</p>

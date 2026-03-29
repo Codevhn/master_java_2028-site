@@ -1,0 +1,280 @@
+<h2>3.3: Diferencias entre entornos de desarrollo y entornos de producción</h2>
+
+<p>Los entornos de desarrollo y los entornos de producción, aunque ambos ejecutan Java y comparten componentes
+  fundamentales, tienen propósitos radicalmente diferentes y por lo tanto están configurados, gestionados y optimizados de
+  maneras muy distintas. Comprender estas diferencias es esencial para cualquier desarrollador profesional porque las
+  decisiones apropiadas para desarrollo pueden ser completamente inapropiadas para producción, y viceversa. Confundir
+  estos entornos o no distinguir apropiadamente entre ellos lleva a problemas de seguridad, rendimiento degradado,
+  dificultades de debugging, y fallos en producción que pudieron ser prevenidos.</p>
+
+<h3>Propósito y audiencia</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Usado por desarrolladores escribiendo, modificando y testeando código</li>
+  <li>Optimizado para productividad del desarrollador y ciclos rápidos de edición-compilación-ejecución</li>
+  <li>Ejecuta código en desarrollo activo, frecuentemente incompleto o con bugs</li>
+  <li>Usuario típico: el desarrollador mismo</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Ejecuta aplicaciones completadas que sirven a usuarios reales</li>
+  <li>Optimizado para rendimiento, estabilidad, disponibilidad y seguridad</li>
+  <li>Ejecuta solo código que ha pasado testing exhaustivo</li>
+  <li>Usuarios: clientes finales, usuarios de negocio, público general</li>
+</ul>
+
+<h3>Configuración del JDK/JVM</h3>
+
+<p><strong>Entorno de desarrollo — Instalación:</strong></p>
+<ul>
+  <li>JDK completo instalado (compilador, debugger, herramientas de desarrollo)</li>
+  <li>Frecuentemente múltiples versiones instaladas side-by-side</li>
+  <li>Actualizaciones frecuentes a versiones nuevas para explorar características</li>
+</ul>
+
+<p><strong>Entorno de desarrollo — Configuración JVM:</strong></p>
+<ul>
+  <li>Heap size pequeño (suficiente para testing local con datos limitados)</li>
+  <li>Garbage collector por defecto (sin optimización específica)</li>
+  <li>Debugging habilitado por defecto</li>
+  <li>Aserciones habilitadas (<code>-ea</code>) para detectar violaciones de contratos</li>
+  <li>Logging verboso para diagnóstico</li>
+  <li>Configuraciones permisivas de seguridad</li>
+</ul>
+
+<p><strong>Ejemplo de opciones típicas en desarrollo:</strong></p>
+<pre class="language-bash">
+  <code>java -Xms256m -Xmx1g -ea -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 MiAplicacion</code>
+</pre>
+
+<p><strong>Entorno de producción — Instalación:</strong></p>
+<ul>
+  <li>Solo componentes runtime necesarios (históricamente JRE, modernamente JDK mínimo o imagen customizada con jlink)</li>
+  <li>Única versión específica, cuidadosamente seleccionada y testeada</li>
+  <li>Actualizaciones solo después de validación exhaustiva (típicamente solo CPUs de seguridad)</li>
+</ul>
+
+<p><strong>Entorno de producción — Configuración JVM:</strong></p>
+<ul>
+  <li>Heap size optimizado para carga de producción (varios GB típicamente)</li>
+  <li>Garbage collector específico elegido para características de carga (G1GC, ZGC, Shenandoah según requisitos)</li>
+  <li>Debugging deshabilitado (overhead de rendimiento)</li>
+  <li>Aserciones deshabilitadas (comportamiento por defecto)</li>
+  <li>Logging configurado para balance entre diagnóstico y rendimiento</li>
+  <li>Configuraciones estrictas de seguridad</li>
+</ul>
+
+<p><strong>Ejemplo de opciones típicas en producción:</strong></p>
+<pre class="language-bash">
+  <code>java -Xms4g -Xmx4g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log/java MiAplicacion</code>
+</pre>
+
+<h3>Datos y estado</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Datos de prueba sintéticos, frecuentemente pequeños conjuntos</li>
+  <li>Bases de datos locales (H2, SQLite) o instancias de desarrollo de bases de datos reales</li>
+  <li>Datos pueden ser reseteados/recreados fácilmente</li>
+  <li>Estado no crítico (pérdida de datos aceptable)</li>
+  <li>Frecuentemente usa datos mock o simulados</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Datos reales de clientes/negocio, frecuentemente grandes volúmenes</li>
+  <li>Bases de datos enterprise con alta disponibilidad, backups, replicación</li>
+  <li>Datos críticos que deben ser preservados</li>
+  <li>Pérdida de datos tiene consecuencias legales/financieras/reputacionales</li>
+  <li>Cumplimiento regulatorio (GDPR, HIPAA, etc.)</li>
+</ul>
+
+<h3>Herramientas y software adicional</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>IDEs (IntelliJ IDEA, Eclipse, VS Code)</li>
+  <li>Sistemas de construcción (Maven, Gradle)</li>
+  <li>Control de versiones (Git)</li>
+  <li>Debuggers, profilers</li>
+  <li>Herramientas de base de datos (clientes SQL, administradores)</li>
+  <li>Navegadores con DevTools</li>
+  <li>Herramientas de API testing (Postman, curl)</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Application servers o containers (Tomcat, Jetty, o contenedores Docker)</li>
+  <li>Agentes de monitoreo (APM, logging agents)</li>
+  <li>Herramientas de gestión de configuración</li>
+  <li>Herramientas de deployment automatizado</li>
+  <li>Mínimo software adicional (superficie de ataque reducida)</li>
+</ul>
+
+<h3>Seguridad</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Configuraciones de seguridad relajadas para facilitar testing</li>
+  <li>Credenciales frecuentemente hardcoded o en archivos de configuración locales</li>
+  <li>Acceso a APIs externas puede usar keys de desarrollo</li>
+  <li>Firewalls permisivos o deshabilitados localmente</li>
+  <li>HTTPS opcional (frecuentemente HTTP en localhost)</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Configuraciones de seguridad estrictas y auditadas</li>
+  <li>Credenciales gestionadas mediante vaults de secretos o variables de entorno</li>
+  <li>Acceso a APIs con keys de producción con permisos limitados</li>
+  <li>Firewalls estrictos, acceso de red restringido</li>
+  <li>HTTPS obligatorio con certificados válidos</li>
+  <li>Autenticación y autorización robustas</li>
+  <li>Logs de auditoría de acceso</li>
+  <li>Escaneo regular de vulnerabilidades</li>
+</ul>
+
+<h3>Disponibilidad y confiabilidad</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Downtimes frecuentes aceptables (reiniciar aplicación constantemente)</li>
+  <li>Sin requisitos de disponibilidad</li>
+  <li>Crashes durante debugging son normales y esperados</li>
+  <li>Un solo desarrollador afectado si hay problemas</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Alta disponibilidad requerida (99.9%, 99.99%, o mayor)</li>
+  <li>Downtimes planificados en ventanas de mantenimiento específicas</li>
+  <li>Crashes inaceptables, afectan usuarios reales</li>
+  <li>Redundancia mediante múltiples instancias, load balancing</li>
+  <li>Failover automático si instancia falla</li>
+  <li>Monitoreo continuo de salud del sistema</li>
+</ul>
+
+<h3>Monitoreo y logging</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Logging verboso a consola para debugging inmediato</li>
+  <li>Métricas opcionales o ausentes</li>
+  <li>Alertas no configuradas</li>
+  <li>Logs efímeros (no preservados)</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Logging estructurado a sistemas centralizados</li>
+  <li>Niveles de log configurados apropiadamente (ERROR, WARN, INFO)</li>
+  <li>Métricas comprehensivas (throughput, latencia, tasa de errores)</li>
+  <li>Alertas configuradas para condiciones anormales</li>
+  <li>Logs persistidos y rotados con retención definida</li>
+  <li>APM (Application Performance Monitoring) activo</li>
+  <li>Dashboards de métricas en tiempo real</li>
+</ul>
+
+<h3>Configuración y gestión</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Configuración frecuentemente en archivos locales</li>
+  <li>Cambios de configuración manuales y ad hoc</li>
+  <li>Configuraciones específicas por desarrollador</li>
+  <li>Deployment manual (ejecutar desde IDE)</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Configuración externalizada (variables de entorno, config servers)</li>
+  <li>Cambios de configuración controlados y auditados</li>
+  <li>Configuraciones consistentes, gestionadas mediante código (Infrastructure as Code)</li>
+  <li>Deployment automatizado mediante CI/CD</li>
+  <li>Rollback capabilities si deployment falla</li>
+</ul>
+
+<h3>Testing</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Testing continuo durante desarrollo</li>
+  <li>Unit tests, integration tests ejecutados frecuentemente</li>
+  <li>Test data sintético</li>
+  <li>Coverage tools activos</li>
+  <li>Mocking extensivo</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>No se ejecutan tests (tests ocurren pre-deployment en staging)</li>
+  <li>Código ya validado ejecutando</li>
+  <li>Datos reales</li>
+  <li>Monitoreo reemplaza testing activo</li>
+</ul>
+
+<h3>Gestión de versiones y actualizaciones</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Actualizaciones frecuentes (JDK, bibliotecas, herramientas)</li>
+  <li>Experimentación con versiones nuevas</li>
+  <li>Múltiples versiones coexistiendo</li>
+  <li>Riesgo bajo de actualizar</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Actualizaciones cuidadosamente planificadas y testeadas</li>
+  <li>Cronograma de actualización conservador</li>
+  <li>Versión única, estable</li>
+  <li>Riesgo significativo de actualizar (validación exhaustiva requerida)</li>
+</ul>
+
+<h3>Costos y recursos</h3>
+
+<p><strong>Entorno de desarrollo:</strong></p>
+<ul>
+  <li>Típicamente hardware local (laptops, workstations)</li>
+  <li>Costos distribuidos entre desarrolladores</li>
+  <li>Recursos modestos por instancia</li>
+</ul>
+
+<p><strong>Entorno de producción:</strong></p>
+<ul>
+  <li>Servidores dedicados o cloud instances</li>
+  <li>Costos significativos de infraestructura</li>
+  <li>Recursos substanciales (múltiples servers, balanceadores, bases de datos enterprise)</li>
+  <li>Optimización de costos crítica (escalar apropiadamente)</li>
+</ul>
+
+<h3>Buenas prácticas de separación</h3>
+
+<p><strong>Nunca ejecutar en producción:</strong></p>
+<ul>
+  <li>Código no testeado</li>
+  <li>Configuraciones de desarrollo</li>
+  <li>Datos de test mezclados con datos reales</li>
+  <li>Debugging habilitado</li>
+  <li>Credenciales de desarrollo</li>
+</ul>
+
+<p><strong>Nunca ejecutar en desarrollo:</strong></p>
+<ul>
+  <li>Datos de producción sin anonimización</li>
+  <li>Configuraciones de producción (pueden ocultar bugs)</li>
+</ul>
+
+<p><strong>Staging/QA como puente:</strong></p>
+<ul>
+  <li>Entorno intermedio que simula producción</li>
+  <li>Usado para validación final antes de deployment</li>
+  <li>Configurado similar a producción pero con datos de test</li>
+  <li>Permite detectar problemas que solo aparecen en configuraciones tipo-producción</li>
+</ul>
+
+<p>Comprender profundamente estas diferencias permite a los desarrolladores tomar decisiones apropiadas para cada entorno,
+  evitar problemas comunes de configuración, y mantener separación clara entre código en desarrollo y sistemas de
+  producción críticos.</p>

@@ -1,0 +1,420 @@
+<h2>3.14: Buenas prácticas en la gestión del entorno Java</h2>
+
+<p>La gestión efectiva del entorno de desarrollo Java va más allá de la instalación inicial correcta. Involucra mantener
+  el entorno actualizado, organizado, documentado, y optimizado para productividad a largo plazo. Las buenas prácticas
+  en esta área distinguen desarrolladores profesionales que trabajan eficientemente de aquellos que constantemente luchan
+  con problemas de configuración, inconsistencias entre entornos, y pérdida de tiempo resolviendo problemas evitables.
+  Este subtema consolida prácticas probadas por la industria que maximizan eficiencia, minimizan fricción, y facilitan
+  colaboración en equipos.</p>
+
+<h3>Práctica 1: Documentar la configuración del entorno</h3>
+
+<p>Mantener un documento (<code>README-ENTORNO.md</code> o similar) en cada proyecto que especifique versión de JDK
+  requerida, distribución recomendada, sistema operativo compatible, instrucciones de instalación por plataforma,
+  configuración de variables de entorno, y pasos de verificación:</p>
+
+<pre class="language-markup">
+  <code># Configuración del Entorno de Desarrollo
+
+## Requisitos
+- Java: 17 LTS o superior (recomendado: Eclipse Temurin 17.0.9)
+- Sistema Operativo: Windows 10+, macOS 12+, o Linux (Ubuntu 20.04+)
+- RAM: Mínimo 8 GB
+- Espacio en disco: 10 GB libres
+
+## Instalación de JDK
+
+### macOS
+brew install temurin@17
+
+### Linux (Ubuntu)
+sudo apt install temurin-17-jdk
+
+### Windows
+Descargar de: https://adoptium.net/temurin/releases/?version=17
+
+## Variables de Entorno
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH
+
+## Verificación
+java -version    # Debe mostrar 17.x.x
+javac -version
+
+## Herramientas Adicionales
+- Maven 3.8+ (sistema de construcción)
+- Git 2.30+ (control de versiones)</code>
+</pre>
+
+<p><strong>Beneficios:</strong> nuevos desarrolladores configuran el entorno consistentemente, reduce tiempo de
+  onboarding, previene "funciona en mi máquina" por diferencias de configuración, y sirve como referencia cuando hay
+  dudas.</p>
+
+<h3>Práctica 2: Estandarización dentro de equipos</h3>
+
+<p><strong>Para equipos pequeños (2-10 desarrolladores)</strong> — acordar y documentar distribución específica de JDK,
+  versión exacta para desarrollo, herramientas de construcción, e IDE recomendado. Incluir archivo
+  <code>.sdkmanrc</code> en el proyecto:</p>
+
+<pre class="language-markup">
+  <code>java=17.0.9-tem
+maven=3.9.5
+gradle=8.4</code>
+</pre>
+
+<p><strong>Para equipos grandes (10+ desarrolladores)</strong> — además de lo anterior, considerar imágenes de VM o
+  contenedores pre-configurados, scripts de setup automatizado, repositorio interno de JDKs aprobados, y políticas de
+  actualización documentadas:</p>
+
+<pre class="language-bash">
+  <code>#!/bin/bash
+# setup-env.sh - Configuración automatizada de entorno
+
+echo "Configurando entorno de desarrollo..."
+
+# Verificar SDKMAN instalado
+if ! command -v sdk &> /dev/null; then
+    echo "Instalando SDKMAN..."
+    curl -s "https://get.sdkman.io" | bash
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+fi
+
+# Instalar JDK desde .sdkmanrc
+sdk env install
+
+# Verificar instalación
+java -version
+
+echo "✓ Entorno configurado exitosamente"</code>
+</pre>
+
+<h3>Práctica 3: Gestionar actualizaciones de seguridad sistemáticamente</h3>
+
+<p><strong>Proceso recomendado:</strong></p>
+
+<p><strong>Monitoreo:</strong> subscribirse a alertas de seguridad del proveedor de JDK y monitorear lanzamientos de
+  CPUs (Critical Patch Updates) trimestrales.</p>
+
+<p><strong>Evaluación antes de actualizar:</strong></p>
+<ul>
+  <li>Identificar CVEs corregidos en la nueva versión</li>
+  <li>Determinar si afectan la aplicación</li>
+  <li>Revisar release notes para breaking changes</li>
+  <li>Verificar compatibilidad de dependencias (frameworks, bibliotecas)</li>
+</ul>
+
+<p><strong>Testing:</strong> actualizar entorno de desarrollo, ejecutar suite completa de tests, ejecutar benchmarks de
+  rendimiento, desplegar a staging para testing de integración, y observar durante 1-2 semanas.</p>
+
+<p><strong>Cadencia recomendada:</strong></p>
+<ul>
+  <li>CPUs de seguridad críticos: aplicar dentro de 1 semana</li>
+  <li>CPUs de seguridad normales: aplicar dentro de 2-4 semanas</li>
+  <li>Actualizaciones menores: cada 3-6 meses</li>
+  <li>Actualizaciones mayores (ej: Java 17 → 21): planificar con 3-6 meses de anticipación</li>
+</ul>
+
+<h3>Práctica 4: Usar herramientas de gestión de versiones</h3>
+
+<p><strong>macOS/Linux:</strong> SDKMAN (preferido para uso general), jEnv (si solo se necesita gestión de Java), o
+  asdf (si se gestiona múltiples lenguajes/herramientas).</p>
+
+<p><strong>Windows:</strong> scripts PowerShell (simple), Jabba (si se necesita gestión sofisticada), o SDKMAN en
+  WSL.</p>
+
+<p>Incluir archivo de configuración de versión en el repositorio del proyecto:</p>
+
+<pre class="language-markup">
+  <code># .sdkmanrc
+java=17.0.9-tem
+
+# .tool-versions (asdf)
+java temurin-17.0.9+9
+
+# .java-version (jEnv)
+17.0</code>
+</pre>
+
+<p>Esto permite cambio automático de versión al entrar al directorio del proyecto.</p>
+
+<h3>Práctica 5: Separar entornos de desarrollo, staging y producción</h3>
+
+<p><strong>Desarrollo:</strong> versiones más recientes permitidas, configuraciones relajadas de seguridad, logging
+  verboso, heap size modesto.</p>
+
+<p><strong>Staging:</strong> debe igualar producción lo más posible — misma versión de JDK, configuraciones idénticas,
+  datos de test (no producción).</p>
+
+<p><strong>Producción:</strong> versión LTS estable, configuraciones optimizadas de JVM, logging apropiado (no debug),
+  heap size dimensionado para carga real.</p>
+
+<pre class="language-markup">
+  <code># application-dev.properties
+logging.level.root=DEBUG
+server.port=8080
+
+# application-staging.properties
+logging.level.root=INFO
+server.port=8080
+
+# application-prod.properties
+logging.level.root=WARN
+server.port=80</code>
+</pre>
+
+<h3>Práctica 6: Configurar opciones de JVM apropiadamente</h3>
+
+<p>No depender de los defaults. Especificar explícitamente configuraciones importantes:</p>
+
+<p><strong>Desarrollo (laptop/workstation):</strong></p>
+
+<pre class="language-bash">
+  <code>java -Xms512m -Xmx2g \
+     -XX:+UseG1GC \
+     -Dfile.encoding=UTF-8 \
+     -jar mi-aplicacion.jar</code>
+</pre>
+
+<p><strong>Producción (servidor):</strong></p>
+
+<pre class="language-bash">
+  <code>java -Xms4g -Xmx4g \
+     -XX:+UseG1GC \
+     -XX:MaxGCPauseMillis=200 \
+     -XX:+HeapDumpOnOutOfMemoryError \
+     -XX:HeapDumpPath=/var/log/java/heapdump.hprof \
+     -XX:+UseStringDeduplication \
+     -Dfile.encoding=UTF-8 \
+     -jar mi-aplicacion.jar</code>
+</pre>
+
+<p>Documentar las opciones y su razonamiento en el README del proyecto:</p>
+
+<pre class="language-markup">
+  <code>## Configuración de JVM
+
+- -Xms4g -Xmx4g: Heap fijo de 4GB (previene resize dinámico)
+- -XX:+UseG1GC: Garbage collector G1 para pausas predecibles
+- -XX:MaxGCPauseMillis=200: Objetivo de pausas GC máximas de 200ms
+- -XX:+HeapDumpOnOutOfMemoryError: Capturar heap dump si OOM</code>
+</pre>
+
+<h3>Práctica 7: Usar contenedores para consistencia</h3>
+
+<p><strong>Dockerfile:</strong></p>
+
+<pre class="language-markup">
+  <code>FROM eclipse-temurin:17-jdk-alpine
+
+WORKDIR /app
+
+COPY target/mi-aplicacion.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]</code>
+</pre>
+
+<p><strong>docker-compose.yml:</strong></p>
+
+<pre class="language-yaml">
+  <code>version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - JAVA_OPTS=-Xmx1g</code>
+</pre>
+
+<p><strong>Beneficios:</strong> entorno idéntico entre desarrolladores, aislamiento de dependencias, y fácil
+  reproducción de la configuración de producción.</p>
+
+<h3>Práctica 8: Mantener workspace organizado</h3>
+
+<pre class="language-markup">
+  <code>~/projects/
+├── empresa/
+│   ├── backend-api/
+│   ├── frontend-web/
+│   └── microservicio-pagos/
+├── personal/
+│   ├── blog/
+│   └── app-finanzas/
+├── learning/
+│   └── tutoriales-java/
+└── contrib/
+    └── spring-framework/</code>
+</pre>
+
+<ul>
+  <li><strong>Un proyecto = un directorio = un repositorio Git.</strong> No mezclar proyectos ni anidarlos.</li>
+  <li><strong>Nombrar directorios descriptivamente:</strong> <code>sistema-inventario</code>, <code>api-usuarios</code>
+    en lugar de <code>proyecto-a</code>, <code>proyecto-b</code>.</li>
+  <li><strong>Limpiar proyectos antiguos</strong> periódicamente moviéndolos a un directorio de archivo.</li>
+  <li><strong>Usar <code>.gitignore</code> apropiado:</strong> nunca versionar <code>target/</code>,
+    <code>build/</code>, <code>*.class</code>, configuraciones locales, ni archivos de IDE.</li>
+</ul>
+
+<h3>Práctica 9: Verificar entorno regularmente</h3>
+
+<pre class="language-bash">
+  <code>#!/bin/bash
+# check-env.sh - Verificación de salud del entorno
+
+echo "=== Verificación de Entorno Java ==="
+echo
+
+echo -n "Java version: "
+java -version 2>&1 | head -n 1
+
+echo "JAVA_HOME: $JAVA_HOME"
+
+echo -n "Espacio libre: "
+df -h ~ | tail -n 1 | awk '{print $4}'
+
+echo -n "Maven: "
+mvn -v 2>&1 | head -n 1
+
+echo -n "Git: "
+git --version
+
+echo
+echo "=== Proyectos Recientes ==="
+ls -lt ~/projects/empresa | head -n 5</code>
+</pre>
+
+<p>Ejecutar mensualmente para detectar versiones desactualizadas, espacio en disco bajo, y herramientas faltantes.</p>
+
+<h3>Práctica 10: Backup y recuperación de configuración</h3>
+
+<p><strong>Qué respaldar:</strong> <code>~/.bashrc</code> o <code>~/.zshrc</code>, <code>~/.m2/settings.xml</code>
+  (Maven), <code>~/.gradle/gradle.properties</code> (Gradle), y configuración de IDE si está extensamente
+  personalizada.</p>
+
+<p><strong>Opción 1 — Repositorio dotfiles:</strong></p>
+
+<pre class="language-bash">
+  <code>mkdir ~/dotfiles && cd ~/dotfiles
+git init
+
+cp ~/.zshrc .
+cp ~/.m2/settings.xml maven-settings.xml
+
+git add .
+git commit -m "Backup de configuración"
+git remote add origin git@github.com:usuario/dotfiles.git
+git push -u origin main</code>
+</pre>
+
+<p><strong>Opción 2 — Script automatizado con crontab mensual:</strong></p>
+
+<pre class="language-bash">
+  <code>#!/bin/bash
+# backup-config.sh
+BACKUP_DIR=~/config-backup-$(date +%Y%m%d)
+mkdir -p $BACKUP_DIR
+
+cp ~/.zshrc $BACKUP_DIR/
+cp -r ~/.m2 $BACKUP_DIR/
+cp -r ~/.gradle $BACKUP_DIR/
+
+echo "Backup guardado en $BACKUP_DIR"
+
+# Agregar a crontab (ejecutar mensualmente):
+# 0 0 1 * * ~/scripts/backup-config.sh</code>
+</pre>
+
+<h3>Práctica 11: Documentar decisiones de configuración</h3>
+
+<p>Mantener un changelog de cambios de entorno:</p>
+
+<pre class="language-markup">
+  <code># Changelog de Configuración de Entorno
+
+## 2024-03-15
+- Actualizado de Java 17.0.8 a 17.0.9 (CPU de seguridad)
+- Razón: CVE-2024-XXXX afecta deserialización
+- Testing: Todos los tests pasaron, sin regresiones
+
+## 2024-02-01
+- Migrado de Maven 3.8.x a 3.9.x
+- Razón: Soporte mejorado para Java 21
+- Problemas encontrados: Ninguno
+
+## 2024-01-10
+- Configurado SDKMAN para gestión de versiones
+- Razón: Facilitar cambio entre proyectos con diferentes versiones</code>
+</pre>
+
+<p><strong>Beneficios:</strong> rastrear por qué se hicieron cambios, referencia para troubleshooting futuro, y
+  auditoría de seguridad.</p>
+
+<h3>Práctica 12: Automatizar tareas comunes</h3>
+
+<pre class="language-bash">
+  <code># ~/.zshrc o ~/.bashrc
+
+# Aliases de Java
+alias jversion='java -version'
+alias jps-all='jps -lvm'
+
+# Limpiar todos los proyectos Maven
+mvn-clean-all() {
+    find ~/projects -name "pom.xml" -execdir mvn clean \;
+}
+
+# Actualizar todos los repositorios Git
+git-pull-all() {
+    find ~/projects -name ".git" -type d -execdir git pull \;
+}
+
+# Ver espacio usado por builds
+build-size() {
+    du -sh ~/projects/*/target ~/projects/*/build 2>/dev/null
+}</code>
+</pre>
+
+<h3>Checklist de buenas prácticas</h3>
+
+<p><strong>Inicial (al configurar entorno nuevo):</strong></p>
+<ul>
+  <li>Instalar versión LTS de JDK</li>
+  <li>Configurar JAVA_HOME y PATH</li>
+  <li>Verificar instalación con programa de validación</li>
+  <li>Instalar herramienta de gestión de versiones</li>
+  <li>Configurar IDE</li>
+  <li>Instalar sistema de construcción (Maven/Gradle)</li>
+  <li>Documentar configuración</li>
+</ul>
+
+<p><strong>Mensual:</strong></p>
+<ul>
+  <li>Verificar actualizaciones de seguridad</li>
+  <li>Limpiar builds antiguos (<code>target/</code>, <code>build/</code>)</li>
+  <li>Actualizar herramientas (Maven, Gradle)</li>
+  <li>Backup de configuraciones importantes</li>
+  <li>Revisar espacio en disco</li>
+</ul>
+
+<p><strong>Trimestral:</strong></p>
+<ul>
+  <li>Evaluar actualización a nueva versión LTS si disponible</li>
+  <li>Revisar y actualizar documentación de entorno</li>
+  <li>Limpiar proyectos archivados</li>
+  <li>Revisar y actualizar scripts de automatización</li>
+</ul>
+
+<p><strong>Anual:</strong></p>
+<ul>
+  <li>Evaluar migración a nueva versión major de Java</li>
+  <li>Revisar toda la configuración del entorno</li>
+  <li>Considerar herramientas nuevas que mejoren productividad</li>
+</ul>
+
+<p>Las buenas prácticas en gestión del entorno Java no son overhead innecesario sino inversión que paga dividendos
+  continuos en forma de mayor productividad, menos tiempo perdido en troubleshooting, configuración consistente entre
+  desarrolladores, y capacidad de adaptarse eficientemente a cambios de requisitos. Equipos que adoptan estas prácticas
+  trabajan más eficientemente y experimentan menos fricción relacionada con configuración de entorno.</p>

@@ -1,0 +1,444 @@
+<h2><strong>4.1 Qué es un programa Java desde una perspectiva técnica</strong></h2>
+
+<p>Un programa Java es el conjunto de instrucciones que escribimos en archivos de texto con extensión <code>.java</code>, que luego
+son transformadas por el compilador en un formato especial que la máquina virtual de Java puede ejecutar. Comprender qué
+es técnicamente un programa Java, cómo está organizado, qué reglas fundamentales debe seguir, y qué sucede desde que
+escribimos el código hasta que se ejecuta, es esencial para comenzar a escribir programas correctos. Este subtema
+establece la base conceptual sobre la cual se construyen todos los programas Java que desarrollaremos en este plan
+maestro.</p>
+
+<hr>
+
+<h3><strong>Definición técnica básica</strong></h3>
+
+<p><strong>Un programa Java consiste en:</strong></p>
+
+<ol>
+  <li><strong>Uno o más archivos de texto</strong> con extensión <code>.java</code></li>
+  <li><strong>Código escrito</strong> siguiendo las reglas del lenguaje Java</li>
+  <li><strong>Que al ser compilados</strong> producen archivos <code>.class</code> con bytecode</li>
+  <li><strong>Que la JVM puede ejecutar</strong> para realizar las tareas que programamos</li>
+</ol>
+
+<p><strong>Analogía simple:</strong></p>
+
+<p>Piense en un programa Java como una receta de cocina:</p>
+<ul>
+  <li><strong>Archivo .java</strong> = La receta escrita en español (legible por humanos)</li>
+  <li><strong>Compilación</strong> = Traducir la receta a un idioma especial que entiende la cocina</li>
+  <li><strong>Archivo .class</strong> = La receta traducida (bytecode)</li>
+  <li><strong>JVM</strong> = La cocina que ejecuta la receta traducida</li>
+  <li><strong>Resultado</strong> = El plato preparado (programa ejecutándose)</li>
+</ul>
+
+<hr>
+
+<h3><strong>El programa Java más simple posible</strong></h3>
+
+<p>El programa Java más pequeño que puede compilar y ejecutar es:</p>
+
+<pre class="language-java"><code>class Minimo {
+    public static void main(String[] args) {
+    }
+}</code></pre>
+
+<p><strong>Análisis de cada parte:</strong></p>
+
+<p><strong><code>class Minimo</code></strong></p>
+<ul>
+  <li><code>class</code> es una palabra clave que indica "aquí comienza una clase"</li>
+  <li><code>Minimo</code> es el nombre que le damos a esta clase</li>
+  <li>En Java, TODO el código debe estar dentro de una clase</li>
+</ul>
+
+<p><strong><code>{</code> y <code>}</code></strong></p>
+<ul>
+  <li>Las llaves delimitan "el contenido" de la clase</li>
+  <li>Todo lo que esté entre <code>{</code> y <code>}</code> pertenece a la clase</li>
+</ul>
+
+<p><strong><code>public static void main(String[] args)</code></strong></p>
+<ul>
+  <li>Esta es la "firma" del método main</li>
+  <li>Es el punto de entrada del programa (donde comienza a ejecutarse)</li>
+  <li>Por ahora, solo necesita saber que TODO programa Java ejecutable debe tener esta línea exacta</li>
+</ul>
+
+<p><strong>El método main está vacío <code>{ }</code></strong></p>
+<ul>
+  <li>No hace nada, pero es técnicamente válido</li>
+  <li>Se puede compilar y ejecutar sin errores</li>
+</ul>
+
+<hr>
+
+<h3><strong>Un programa que realmente hace algo</strong></h3>
+
+<pre class="language-java"><code>class PrimerPrograma {
+    public static void main(String[] args) {
+        System.out.println("Mi primer programa Java");
+    }
+}</code></pre>
+
+<p><strong>Lo nuevo aquí:</strong></p>
+
+<p><strong><code>System.out.println("Mi primer programa Java");</code></strong></p>
+<ul>
+  <li><code>System.out.println</code> es un comando para mostrar texto en pantalla</li>
+  <li>El texto entre comillas <code>"..."</code> es lo que se mostrará</li>
+  <li>El <code>;</code> al final indica que la instrucción terminó</li>
+</ul>
+
+<p><strong>Guardar, compilar y ejecutar:</strong></p>
+
+<p><strong>Paso 1: Guardar el archivo</strong></p>
+<ul>
+  <li>Nombre del archivo: <code>PrimerPrograma.java</code> (debe coincidir con el nombre después de <code>class</code>)</li>
+  <li>Ubicación: Cualquier carpeta de trabajo</li>
+</ul>
+
+<p><strong>Paso 2: Compilar</strong></p>
+<pre class="language-bash"><code>javac PrimerPrograma.java</code></pre>
+
+<p><strong>Resultado:</strong> Se crea un archivo <code>PrimerPrograma.class</code></p>
+
+<p><strong>Paso 3: Ejecutar</strong></p>
+<pre class="language-bash"><code>java PrimerPrograma</code></pre>
+
+<p><strong>Salida en pantalla:</strong></p>
+<pre class="language-markup"><code>Mi primer programa Java</code></pre>
+
+<hr>
+
+<h3><strong>Componentes fundamentales de un programa Java</strong></h3>
+
+<p>Todo programa Java tiene estos elementos básicos:</p>
+
+<h4><strong>1. Declaración de clase</strong></h4>
+
+<pre class="language-java"><code>class CalculadoraBasica {
+    // Aquí va el código
+}</code></pre>
+
+<ul>
+  <li>Toda instrucción ejecutable debe estar dentro de una clase</li>
+  <li>El nombre de la clase debe coincidir con el nombre del archivo</li>
+  <li>Por convención, los nombres de clases empiezan con mayúscula</li>
+</ul>
+
+<hr>
+
+<h4><strong>2. Método main (punto de entrada)</strong></h4>
+
+<pre class="language-java"><code>public static void main(String[] args) {
+    // Aquí va el código que se ejecuta
+}</code></pre>
+
+<ul>
+  <li>Este método DEBE existir en el programa principal</li>
+  <li>La JVM busca este método para iniciar la ejecución</li>
+  <li>La firma debe ser <strong>exactamente</strong> como se muestra (por ahora, memorícela tal cual)</li>
+</ul>
+
+<hr>
+
+<h4><strong>3. Sentencias (instrucciones)</strong></h4>
+
+<pre class="language-java"><code>System.out.println("Texto a mostrar");
+double precioProducto = 150.00;
+double descuento = 20.00;
+double precioFinal = precioProducto - descuento;</code></pre>
+
+<ul>
+  <li>Cada instrucción termina con <code>;</code> (punto y coma)</li>
+  <li>Las instrucciones se ejecutan en orden de arriba hacia abajo</li>
+  <li>Pueden declarar variables, hacer cálculos, mostrar resultados, etc.</li>
+</ul>
+
+<hr>
+
+<h4><strong>4. Bloques de código <code>{ }</code></strong></h4>
+
+<pre class="language-java"><code>class MiClase { // Bloque de la clase
+    public static void main(String[] args) { // Bloque del método main
+        // Instrucciones aquí
+    }
+}</code></pre>
+
+<ul>
+  <li>Las llaves <code>{</code> y <code>}</code> agrupan código</li>
+  <li>Todo lo que está dentro de <code>{</code> y <code>}</code> pertenece al mismo bloque</li>
+</ul>
+
+<hr>
+
+<h3><strong>Ejemplo completo: Programa de cálculo simple</strong></h3>
+
+<pre class="language-java"><code>class CalculadoraDescuento {
+    public static void main(String[] args) {
+        // Declarar variables con valores iniciales
+        double precioOriginal = 500.00;
+        double porcentajeDescuento = 15.00;
+
+        // Calcular el monto del descuento
+        double montoDescuento = precioOriginal * porcentajeDescuento / 100;
+
+        // Calcular el precio final
+        double precioFinal = precioOriginal - montoDescuento;
+
+        // Mostrar resultados
+        System.out.println("=== Calculadora de Descuentos ===");
+        System.out.println("Precio original: Lps " + precioOriginal);
+        System.out.println("Descuento: " + porcentajeDescuento + "%");
+        System.out.println("Monto descontado: Lps " + montoDescuento);
+        System.out.println("Precio final: Lps " + precioFinal);
+    }
+}</code></pre>
+
+<p><strong>Guardar como:</strong> <code>CalculadoraDescuento.java</code></p>
+
+<p><strong>Compilar:</strong></p>
+<pre class="language-bash"><code>javac CalculadoraDescuento.java</code></pre>
+
+<p><strong>Ejecutar:</strong></p>
+<pre class="language-bash"><code>java CalculadoraDescuento</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>=== Calculadora de Descuentos ===
+Precio original: Lps 500.0
+Descuento: 15.0%
+Monto descontado: Lps 75.0
+Precio final: Lps 425.0</code></pre>
+
+<p><strong>Análisis del código:</strong></p>
+
+<p><strong>Línea por línea:</strong></p>
+
+<pre class="language-java"><code>class CalculadoraDescuento {</code></pre>
+<p>Declara una clase llamada <code>CalculadoraDescuento</code></p>
+
+<pre class="language-java"><code>public static void main(String[] args) {</code></pre>
+<p>Declara el método main (punto de entrada)</p>
+
+<pre class="language-java"><code>double precioOriginal = 500.00;</code></pre>
+<p>Crea una variable llamada <code>precioOriginal</code> de tipo <code>double</code> (número decimal) y le asigna el valor <code>500.00</code></p>
+
+<pre class="language-java"><code>double porcentajeDescuento = 15.00;</code></pre>
+<p>Crea variable <code>porcentajeDescuento</code> con valor <code>15.00</code></p>
+
+<pre class="language-java"><code>double montoDescuento = precioOriginal * porcentajeDescuento / 100;</code></pre>
+<p>Calcula el monto del descuento usando una fórmula matemática. Multiplica precio por porcentaje y divide entre 100.</p>
+
+<pre class="language-java"><code>double precioFinal = precioOriginal - montoDescuento;</code></pre>
+<p>Calcula el precio final restando el descuento del precio original</p>
+
+<pre class="language-java"><code>System.out.println("=== Calculadora de Descuentos ===");</code></pre>
+<p>Muestra texto en pantalla</p>
+
+<pre class="language-java"><code>System.out.println("Precio original: Lps " + precioOriginal);</code></pre>
+<p>Muestra texto combinado con el valor de la variable <code>precioOriginal</code>. El símbolo <code>+</code> une (concatena) texto con valores.</p>
+
+<hr>
+
+<h3><strong>Del código fuente al programa ejecutándose</strong></h3>
+
+<p><strong>Proceso completo:</strong></p>
+
+<p><strong>1. Escribir el código (archivo .java)</strong></p>
+<pre class="language-markup"><code>CalculadoraDescuento.java
+↓
+Archivo de texto plano
+Contiene código Java legible por humanos</code></pre>
+
+<p><strong>2. Compilar (javac)</strong></p>
+<pre class="language-markup"><code>javac CalculadoraDescuento.java
+↓
+El compilador lee el archivo .java
+Verifica que el código siga las reglas de Java
+Si hay errores, muestra mensajes y NO compila
+Si todo está bien, genera archivo .class
+↓
+CalculadoraDescuento.class</code></pre>
+
+<p><strong>3. Archivo .class generado</strong></p>
+<pre class="language-markup"><code>CalculadoraDescuento.class
+↓
+Contiene bytecode (código intermedio)
+NO es legible por humanos
+Es portable (funciona en cualquier sistema con JVM)</code></pre>
+
+<p><strong>4. Ejecutar (java)</strong></p>
+<pre class="language-markup"><code>java CalculadoraDescuento
+↓
+La JVM carga el archivo .class
+Busca el método main
+Ejecuta las instrucciones una por una
+Muestra resultados en pantalla</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo con cálculo de factura</strong></h3>
+
+<pre class="language-java"><code>class CalculadoraFactura {
+    public static void main(String[] args) {
+        // Datos de la factura
+        double subtotal = 1200.00;
+        double tasaImpuesto = 15.00;
+
+        // Calcular impuesto
+        double montoImpuesto = subtotal * tasaImpuesto / 100;
+
+        // Calcular total
+        double totalFactura = subtotal + montoImpuesto;
+
+        // Mostrar factura
+        System.out.println("========== FACTURA ==========");
+        System.out.println("Subtotal: Lps " + subtotal);
+        System.out.println("Impuesto (" + tasaImpuesto + "%): Lps " + montoImpuesto);
+        System.out.println("-----------------------------");
+        System.out.println("TOTAL: Lps " + totalFactura);
+        System.out.println("=============================");
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>========== FACTURA ==========
+Subtotal: Lps 1200.0
+Impuesto (15.0%): Lps 180.0
+-----------------------------
+TOTAL: Lps 1380.0
+=============================</code></pre>
+
+<hr>
+
+<h3><strong>Reglas básicas que debe seguir un programa Java</strong></h3>
+
+<p><strong>Regla 1: El nombre del archivo debe coincidir con el nombre de la clase</strong></p>
+
+<pre class="language-java"><code>// Archivo: Calculadora.java
+class Calculadora {
+    // ✓ Correcto: nombre coincide
+}</code></pre>
+
+<pre class="language-java"><code>// Archivo: Programa.java
+class Calculadora {
+    // ✗ Error: nombres no coinciden
+}</code></pre>
+
+<hr>
+
+<p><strong>Regla 2: Todo programa ejecutable debe tener método main</strong></p>
+
+<pre class="language-java"><code>class MiPrograma {
+    public static void main(String[] args) {
+        // ✓ Correcto: tiene método main
+    }
+}</code></pre>
+
+<pre class="language-java"><code>class MiPrograma {
+    // ✗ Error: sin método main, no se puede ejecutar
+}</code></pre>
+
+<hr>
+
+<p><strong>Regla 3: Las instrucciones deben terminar con punto y coma</strong></p>
+
+<pre class="language-java"><code>System.out.println("Hola"); // ✓ Correcto</code></pre>
+
+<pre class="language-java"><code>System.out.println("Hola") // ✗ Error: falta ;</code></pre>
+
+<hr>
+
+<p><strong>Regla 4: Mayúsculas y minúsculas importan</strong></p>
+
+<pre class="language-java"><code>class MiPrograma { // ✓ Correcto
+}
+
+class miprograma { // ✗ Diferente (no coincidiría con MiPrograma.java)
+}</code></pre>
+
+<hr>
+
+<p><strong>Regla 5: Las llaves deben estar balanceadas</strong></p>
+
+<pre class="language-java"><code>class Ejemplo {
+    public static void main(String[] args) {
+        System.out.println("Funciona");
+    }
+}
+// ✓ Correcto: 2 llaves abren {, 2 llaves cierran }</code></pre>
+
+<pre class="language-java"><code>class Ejemplo {
+    public static void main(String[] args) {
+        System.out.println("Error");
+
+// ✗ Error: falta cerrar llaves</code></pre>
+
+<hr>
+
+<h3><strong>Características fundamentales de programas Java</strong></h3>
+
+<p><strong>1. Todo está en clases</strong></p>
+<p>A diferencia de otros lenguajes, en Java no puede haber código "suelto". TODO debe estar dentro de una clase.</p>
+
+<p><strong>2. Compilación obligatoria</strong></p>
+<p>No puede ejecutar directamente el archivo <code>.java</code>. Primero debe compilarlo a <code>.class</code>.</p>
+
+<p><strong>3. Portable</strong></p>
+<p>El mismo archivo <code>.class</code> funciona en Windows, macOS y Linux sin cambios.</p>
+
+<p><strong>4. Seguro</strong></p>
+<p>El compilador verifica muchos errores antes de ejecutar (tipos de datos, sintaxis, etc.)</p>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de inventario</strong></h3>
+
+<pre class="language-java"><code>class CalculadoraInventario {
+    public static void main(String[] args) {
+        // Datos del inventario
+        int cantidadProductoA = 50;
+        int cantidadProductoB = 30;
+        int cantidadProductoC = 75;
+
+        // Calcular total de productos
+        int totalProductos = cantidadProductoA + cantidadProductoB + cantidadProductoC;
+
+        // Precios unitarios
+        double precioProductoA = 25.50;
+        double precioProductoB = 48.00;
+        double precioProductoC = 15.75;
+
+        // Calcular valor del inventario
+        double valorProductoA = cantidadProductoA * precioProductoA;
+        double valorProductoB = cantidadProductoB * precioProductoB;
+        double valorProductoC = cantidadProductoC * precioProductoC;
+
+        double valorTotalInventario = valorProductoA + valorProductoB + valorProductoC;
+
+        // Mostrar resultados
+        System.out.println("=== REPORTE DE INVENTARIO ===");
+        System.out.println("Producto A: " + cantidadProductoA + " unidades - Valor: Lps " + valorProductoA);
+        System.out.println("Producto B: " + cantidadProductoB + " unidades - Valor: Lps " + valorProductoB);
+        System.out.println("Producto C: " + cantidadProductoC + " unidades - Valor: Lps " + valorProductoC);
+        System.out.println("-----------------------------");
+        System.out.println("Total de productos: " + totalProductos + " unidades");
+        System.out.println("Valor total del inventario: Lps " + valorTotalInventario);
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>=== REPORTE DE INVENTARIO ===
+Producto A: 50 unidades - Valor: Lps 1275.0
+Producto B: 30 unidades - Valor: Lps 1440.0
+Producto C: 75 unidades - Valor: Lps 1181.25
+-----------------------------
+Total de productos: 155 unidades
+Valor total del inventario: Lps 3896.25</code></pre>
+
+<hr>
+
+<p>Un programa Java, desde una perspectiva técnica, es código organizado en clases que sigue reglas estrictas de sintaxis,
+que debe compilarse antes de ejecutarse, y que la JVM transforma en instrucciones que la computadora puede ejecutar.
+Aunque al principio puede parecer que hay muchas reglas que recordar, pronto se volverán naturales a medida que
+practique escribiendo programas simples como los mostrados en este subtema.</p>

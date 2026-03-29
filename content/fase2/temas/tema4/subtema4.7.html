@@ -1,0 +1,563 @@
+<h2><strong>4.7 Bloques de código y uso de llaves {}</strong></h2>
+
+<p>Las llaves <code>{ }</code> son elementos fundamentales en Java que delimitan y organizan el código en bloques lógicos. No son
+simples símbolos decorativos sino marcadores estructurales que definen el alcance y la jerarquía del código. Comprender
+qué son los bloques de código, cómo funcionan las llaves, por qué deben estar balanceadas, y cómo usar la indentación
+para hacer el código legible es esencial para escribir programas Java correctos y bien organizados. Este subtema explora
+el concepto de bloques de código y el uso correcto de llaves en la estructura de programas Java.</p>
+
+<hr>
+
+<h3><strong>¿Qué son las llaves <code>{ }</code>?</strong></h3>
+
+<p>Las llaves son símbolos que <strong>agrupan instrucciones</strong> formando un bloque de código.</p>
+
+<p><strong>Símbolo de apertura:</strong> <code>{</code> (abre un bloque)<br>
+<strong>Símbolo de cierre:</strong> <code>}</code> (cierra un bloque)</p>
+
+<p><strong>Regla fundamental:</strong> Por cada <code>{</code> debe haber exactamente un <code>}</code> correspondiente.</p>
+
+<p><strong>Analogía simple:</strong></p>
+
+<p>Las llaves son como paréntesis en matemáticas:</p>
+<ul>
+  <li><code>(2 + 3)</code> = Los paréntesis agrupan la operación</li>
+  <li><code>{ instrucciones }</code> = Las llaves agrupan el código</li>
+</ul>
+
+<p>O como las tapas de una caja:</p>
+<ul>
+  <li><code>{</code> = Tapa superior (abre la caja)</li>
+  <li>Contenido = Lo que está dentro</li>
+  <li><code>}</code> = Tapa inferior (cierra la caja)</li>
+</ul>
+
+<hr>
+
+<h3><strong>Bloques de código en Java</strong></h3>
+
+<p>Un <strong>bloque de código</strong> es todo lo que está entre una llave de apertura <code>{</code> y su correspondiente llave de cierre <code>}</code>.</p>
+
+<p><strong>Ejemplo básico:</strong></p>
+
+<pre class="language-java"><code>{
+    // Este es un bloque de código
+    double precio = 100.0;
+    double descuento = 10.0;
+    double total = precio - descuento;
+}</code></pre>
+
+<p><strong>Todo lo que está entre <code>{</code> y <code>}</code> pertenece al mismo bloque.</strong></p>
+
+<hr>
+
+<h3><strong>Bloques de código en la estructura de un programa</strong></h3>
+
+<p>En un programa Java típico hay múltiples niveles de bloques anidados:</p>
+
+<pre class="language-java"><code>public class MiPrograma { // ← Bloque de la clase comienza
+
+    public static void main(String[] args) { // ← Bloque del método comienza
+
+        double precioProducto = 250.00;
+        double descuento = 25.00;
+        double precioFinal = precioProducto - descuento;
+
+        System.out.println("Precio final: Lps " + precioFinal);
+
+    } // ← Bloque del método termina
+
+} // ← Bloque de la clase termina</code></pre>
+
+<p><strong>Visualización de bloques:</strong></p>
+
+<pre class="language-markup"><code>Bloque de clase: {
+    Bloque de método: {
+        Instrucciones del método
+    }
+}</code></pre>
+
+<hr>
+
+<h3><strong>Niveles de anidamiento (bloques dentro de bloques)</strong></h3>
+
+<p>Los bloques pueden contener otros bloques, formando una jerarquía:</p>
+
+<pre class="language-java"><code>public class Ejemplo { // Nivel 1: Bloque de clase
+
+    public static void main(String[] args) { // Nivel 2: Bloque de método
+
+        double saldo = 1000.0;
+        double retiro = 150.0;
+        double nuevoSaldo = saldo - retiro;
+
+        System.out.println("Saldo: Lps " + nuevoSaldo);
+
+    } // Cierra nivel 2
+
+} // Cierra nivel 1</code></pre>
+
+<p><strong>Estructura jerárquica:</strong></p>
+
+<pre class="language-markup"><code>{ Clase
+    { Método main
+        Instrucción 1
+        Instrucción 2
+        Instrucción 3
+    } Fin método
+} Fin clase</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de descuento con bloques claros</strong></h3>
+
+<pre class="language-java"><code>public class CalculadoraDescuento { // { Bloque de clase
+
+    public static void main(String[] args) { // { Bloque de main
+
+        // Datos del producto
+        double precioOriginal = 850.00;
+        double porcentajeDescuento = 15.0;
+
+        // Calcular descuento
+        double montoDescuento = precioOriginal * porcentajeDescuento / 100.0;
+
+        // Calcular precio final
+        double precioFinal = precioOriginal - montoDescuento;
+
+        // Mostrar resultados
+        System.out.println("===== DESCUENTO =====");
+        System.out.println("Precio original: Lps " + precioOriginal);
+        System.out.println("Descuento: Lps " + montoDescuento);
+        System.out.println("Precio final: Lps " + precioFinal);
+
+    } // } Fin bloque main
+
+} // } Fin bloque clase</code></pre>
+
+<p><strong>Conteo de llaves:</strong></p>
+<ul>
+  <li>2 llaves de apertura <code>{</code></li>
+  <li>2 llaves de cierre <code>}</code></li>
+  <li>✓ Balanceadas correctamente</li>
+</ul>
+
+<hr>
+
+<h3><strong>Regla de balanceo de llaves</strong></h3>
+
+<p><strong>Cada <code>{</code> DEBE tener su correspondiente <code>}</code></strong></p>
+
+<p><strong>Correcto (balanceado):</strong></p>
+
+<pre class="language-java"><code>{
+    double valor = 100.0;
+}</code></pre>
+
+<p><strong>Incorrecto (desbalanceado):</strong></p>
+
+<pre class="language-java"><code>{
+    double valor = 100.0;
+// ✗ Falta }</code></pre>
+
+<p><strong>Error de compilación:</strong></p>
+<pre class="language-markup"><code>error: reached end of file while parsing
+}
+^</code></pre>
+
+<hr>
+
+<p><strong>Incorrecto (llave de cierre sin apertura):</strong></p>
+
+<pre class="language-java"><code>double valor = 100.0;
+} // ✗ } sin {</code></pre>
+
+<p><strong>Error de compilación:</strong></p>
+<pre class="language-markup"><code>error: illegal start of expression</code></pre>
+
+<hr>
+
+<h3><strong>Indentación: Haciendo el código legible</strong></h3>
+
+<p>La <strong>indentación</strong> (sangría) es el espacio al inicio de cada línea que muestra visualmente la jerarquía de bloques.</p>
+
+<p><strong>Sin indentación (difícil de leer):</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+public static void main(String[] args) {
+double precio = 100.0;
+double descuento = 10.0;
+double total = precio - descuento;
+System.out.println("Total: " + total);
+}
+}</code></pre>
+
+<p><strong>Con indentación correcta (fácil de leer):</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        double precio = 100.0;
+        double descuento = 10.0;
+        double total = precio - descuento;
+        System.out.println("Total: " + total);
+    }
+}</code></pre>
+
+<p><strong>La indentación NO afecta la compilación</strong>, pero hace el código mucho más legible.</p>
+
+<hr>
+
+<h3><strong>Reglas de indentación</strong></h3>
+
+<p><strong>Regla 1: Cada nivel de bloque aumenta la indentación</strong></p>
+
+<pre class="language-java"><code>public class MiClase {                      // Nivel 0
+    public static void main(...) {          // Nivel 1 (4 espacios)
+        double x = 10.0;                   // Nivel 2 (8 espacios)
+        double y = 20.0;                   // Nivel 2 (8 espacios)
+    }                                       // Vuelve a nivel 1
+}                                           // Vuelve a nivel 0</code></pre>
+
+<p><strong>Regla 2: Usar consistentemente 4 espacios por nivel</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        // ← 4 espacios desde el borde
+        double valor = 100.0;
+        // ← 4 espacios desde el borde
+    }
+}</code></pre>
+
+<p><strong>Regla 3: Las llaves de cierre alinean con el inicio del bloque</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        double valor = 100.0;
+    } // ← Alineado con "public static void main"
+} // ← Alineado con "public class Ejemplo"</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo con indentación correcta</strong></h3>
+
+<pre class="language-java"><code>public class CalculadoraSalario {
+
+    public static void main(String[] args) {
+
+        // Datos del empleado
+        double horasTrabajadas = 45.0;
+        double tarifaPorHora = 125.00;
+
+        // Calcular salario base
+        double salarioBase = horasTrabajadas * tarifaPorHora;
+
+        // Calcular bono (10% del salario)
+        double porcentajeBono = 10.0;
+        double montoBono = salarioBase * porcentajeBono / 100.0;
+
+        // Calcular salario total
+        double salarioTotal = salarioBase + montoBono;
+
+        // Mostrar desglose
+        System.out.println("===== CÁLCULO DE SALARIO =====");
+        System.out.println("Horas trabajadas: " + horasTrabajadas);
+        System.out.println("Tarifa por hora: Lps " + tarifaPorHora);
+        System.out.println("------------------------------");
+        System.out.println("Salario base: Lps " + salarioBase);
+        System.out.println("Bono (10%): Lps " + montoBono);
+        System.out.println("==============================");
+        System.out.println("SALARIO TOTAL: Lps " + salarioTotal);
+
+    }
+
+}</code></pre>
+
+<p><strong>Observaciones:</strong></p>
+<ul>
+  <li>Las instrucciones dentro de <code>main</code> están indentadas 4 espacios</li>
+  <li>Las llaves <code>}</code> de cierre alinean con el inicio de sus bloques</li>
+  <li>El código es fácil de seguir visualmente</li>
+</ul>
+
+<hr>
+
+<h3><strong>Errores comunes con llaves</strong></h3>
+
+<h4><strong>Error 1: Olvidar llave de cierre</strong></h4>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        double valor = 100.0;
+        System.out.println(valor);
+    }
+// ✗ Falta cerrar la clase</code></pre>
+
+<p><strong>Error de compilación:</strong></p>
+<pre class="language-markup"><code>error: reached end of file while parsing</code></pre>
+
+<p><strong>Solución:</strong> Agregar <code>}</code> al final</p>
+
+<hr>
+
+<h4><strong>Error 2: Llaves extras</strong></h4>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        double valor = 100.0;
+    }
+}
+} // ✗ Llave extra</code></pre>
+
+<p><strong>Error de compilación:</strong></p>
+<pre class="language-markup"><code>error: class, interface, or enum expected</code></pre>
+
+<hr>
+
+<h4><strong>Error 3: Llaves mal ubicadas</strong></h4>
+
+<pre class="language-java"><code>public class Ejemplo
+{ // ✗ Estilo incorrecto (aunque compila)
+    public static void main(String[] args)
+    { // ✗ Estilo incorrecto
+        double valor = 100.0;
+    }
+}</code></pre>
+
+<p><strong>Aunque esto compila, NO es el estilo estándar de Java.</strong></p>
+
+<p><strong>Estilo correcto de Java:</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo { // ✓ Llave en misma línea
+    public static void main(String[] args) { // ✓ Llave en misma línea
+        double valor = 100.0;
+    }
+}</code></pre>
+
+<hr>
+
+<h3><strong>Convención de posición de llaves en Java</strong></h3>
+
+<p><strong>Estilo Java estándar (llaves en misma línea):</strong></p>
+
+<pre class="language-java"><code>public class MiClase {
+    public static void main(String[] args) {
+        // Código
+    }
+}</code></pre>
+
+<p><strong>NO usar (estilo Allman, común en C#):</strong></p>
+
+<pre class="language-java"><code>public class MiClase
+{
+    public static void main(String[] args)
+    {
+        // Código
+    }
+}</code></pre>
+
+<p><strong>Recomendación:</strong> Siempre poner la llave de apertura <code>{</code> en la misma línea que la declaración.</p>
+
+<hr>
+
+<h3><strong>Verificar balanceo de llaves</strong></h3>
+
+<p><strong>Técnica manual:</strong></p>
+
+<p>Cuente las llaves en su programa:</p>
+
+<pre class="language-java"><code>public class Ejemplo { // 1 {
+    public static void main(...) { // 2 {
+        double x = 10.0;
+    } // 1 }
+} // 2 }</code></pre>
+
+<p>Total: 2 llaves abren, 2 llaves cierran → ✓ Balanceadas</p>
+
+<hr>
+
+<p><strong>Los IDEs ayudan automáticamente:</strong></p>
+
+<p>Los editores modernos:</p>
+<ul>
+  <li>Resaltan la llave correspondiente cuando coloca el cursor</li>
+  <li>Indentan automáticamente</li>
+  <li>Muestran errores si las llaves están desbalanceadas</li>
+</ul>
+
+<hr>
+
+<h3><strong>Ejemplo: Sistema de cálculo de factura</strong></h3>
+
+<pre class="language-java"><code>public class SistemaFactura {
+
+    public static void main(String[] args) {
+
+        // Bloque principal del programa
+
+        System.out.println("========== FACTURA ==========");
+
+        // Datos de productos
+        double precioProducto1 = 450.00;
+        double precioProducto2 = 320.00;
+        double precioProducto3 = 175.50;
+
+        // Calcular subtotal
+        double subtotal = precioProducto1 + precioProducto2 + precioProducto3;
+
+        // Calcular impuesto (15%)
+        double tasaImpuesto = 15.0;
+        double montoImpuesto = subtotal * tasaImpuesto / 100.0;
+
+        // Calcular total
+        double totalFactura = subtotal + montoImpuesto;
+
+        // Mostrar desglose
+        System.out.println("Producto 1: Lps " + precioProducto1);
+        System.out.println("Producto 2: Lps " + precioProducto2);
+        System.out.println("Producto 3: Lps " + precioProducto3);
+        System.out.println("-----------------------------");
+        System.out.println("Subtotal: Lps " + subtotal);
+        System.out.println("Impuesto (15%): Lps " + montoImpuesto);
+        System.out.println("=============================");
+        System.out.println("TOTAL: Lps " + totalFactura);
+
+    } // Cierra bloque de main
+
+} // Cierra bloque de clase</code></pre>
+
+<p><strong>Verificación:</strong></p>
+<ul>
+  <li>✓ Llaves balanceadas (2 aperturas, 2 cierres)</li>
+  <li>✓ Indentación correcta (4 espacios por nivel)</li>
+  <li>✓ Llaves de cierre alineadas</li>
+  <li>✓ Código legible y organizado</li>
+</ul>
+
+<hr>
+
+<h3><strong>Espacios en blanco dentro de bloques</strong></h3>
+
+<p><strong>Puede usar líneas en blanco para organizar visualmente:</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+
+    public static void main(String[] args) {
+
+        // Sección 1: Entrada de datos
+        double precioBase = 500.0;
+        double descuento = 50.0;
+
+        // Sección 2: Cálculos
+        double precioFinal = precioBase - descuento;
+
+        // Sección 3: Salida
+        System.out.println("Precio final: Lps " + precioFinal);
+
+    }
+
+}</code></pre>
+
+<p>Las líneas en blanco no afectan la ejecución, solo mejoran legibilidad.</p>
+
+<hr>
+
+<h3><strong>Buenas prácticas con bloques y llaves</strong></h3>
+
+<p><strong>1. Siempre indentar consistentemente</strong></p>
+
+<p>Use 4 espacios por nivel de indentación.</p>
+
+<hr>
+
+<p><strong>2. Alinear llaves de cierre con el inicio del bloque</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        // Código
+    } // ← Alineado con "public static void main"
+} // ← Alineado con "public class"</code></pre>
+
+<hr>
+
+<p><strong>3. No poner múltiples instrucciones en una línea</strong></p>
+
+<pre class="language-java"><code>// ✗ Difícil de leer
+double x = 10; double y = 20; double z = x + y;
+
+// ✓ Fácil de leer
+double x = 10;
+double y = 20;
+double z = x + y;</code></pre>
+
+<hr>
+
+<p><strong>4. Usar líneas en blanco para separar secciones lógicas</strong></p>
+
+<pre class="language-java"><code>// Datos
+double precio = 100.0;
+
+// Cálculos
+double descuento = precio * 0.1;
+
+// Resultado
+System.out.println(descuento);</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo final: Control de inventario</strong></h3>
+
+<pre class="language-java"><code>public class ControlInventario {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== CONTROL DE INVENTARIO =====");
+        System.out.println();
+
+        // Inventario inicial
+        int stockInicial = 150;
+
+        // Movimientos del día
+        int entradasMañana = 30;
+        int salidasMañana = 45;
+        int entradasTarde = 20;
+        int salidasTarde = 35;
+
+        // Calcular total de entradas y salidas
+        int totalEntradas = entradasMañana + entradasTarde;
+        int totalSalidas = salidasMañana + salidasTarde;
+
+        // Calcular stock final
+        int stockFinal = stockInicial + totalEntradas - totalSalidas;
+
+        // Mostrar reporte
+        System.out.println("Stock inicial: " + stockInicial + " unidades");
+        System.out.println("----------------------------------");
+        System.out.println("Entradas mañana: +" + entradasMañana);
+        System.out.println("Salidas mañana: -" + salidasMañana);
+        System.out.println("Entradas tarde: +" + entradasTarde);
+        System.out.println("Salidas tarde: -" + salidasTarde);
+        System.out.println("----------------------------------");
+        System.out.println("Total entradas: +" + totalEntradas);
+        System.out.println("Total salidas: -" + totalSalidas);
+        System.out.println("==================================");
+        System.out.println("Stock final: " + stockFinal + " unidades");
+
+    }
+
+}</code></pre>
+
+<p><strong>Características del código:</strong></p>
+<ul>
+  <li>✓ Llaves balanceadas perfectamente</li>
+  <li>✓ Indentación consistente de 4 espacios</li>
+  <li>✓ Líneas en blanco separan secciones lógicas</li>
+  <li>✓ Comentarios indican propósito de cada sección</li>
+  <li>✓ Código fácil de leer y mantener</li>
+</ul>
+
+<hr>
+
+<p>Las llaves <code>{ }</code> son elementos estructurales fundamentales que delimitan bloques de código y definen la organización
+jerárquica de un programa Java. Deben estar siempre balanceadas, y el código dentro de ellas debe estar correctamente
+indentado para facilitar la lectura y comprensión. Seguir las convenciones estándar de Java para el uso de llaves y la
+indentación desde el principio crea buenos hábitos que harán el código más profesional y mantenible.</p>

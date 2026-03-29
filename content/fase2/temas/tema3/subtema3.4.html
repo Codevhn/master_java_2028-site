@@ -1,0 +1,313 @@
+<h2>3.4: Elección de la distribución de Java (Oracle JDK vs OpenJDK)</h2>
+
+<p>La elección de qué distribución del JDK usar es una de las primeras decisiones técnicas que un desarrollador o equipo
+  debe tomar al configurar un entorno Java. A diferencia de hace años cuando Oracle JDK (anteriormente Sun JDK) era la
+  opción dominante y casi única, el ecosistema moderno de Java ofrece múltiples distribuciones del JDK, todas conformando
+  a las mismas especificaciones de Java pero con diferencias en licenciamiento, soporte, cronogramas de actualización, y
+  características adicionales. Comprender las opciones disponibles, sus diferencias prácticas, y cómo elegir
+  apropiadamente es esencial para tomar decisiones informadas.</p>
+
+<h3>El contexto histórico</h3>
+
+<p><strong>Era Sun Microsystems (1996-2010):</strong></p>
+<ul>
+  <li>Sun JDK era la implementación de referencia</li>
+  <li>Licencia propietaria pero distribución gratuita</li>
+  <li>Única opción práctica para mayoría de usuarios</li>
+</ul>
+
+<p><strong>Era Oracle inicial (2010-2017):</strong></p>
+<ul>
+  <li>Oracle adquiere Sun, hereda el JDK</li>
+  <li>Oracle JDK continúa siendo gratuito para uso general</li>
+  <li>OpenJDK existe como proyecto open source pero menos usado</li>
+</ul>
+
+<p><strong>Era moderna (2018-presente):</strong></p>
+<ul>
+  <li>Cambios de licenciamiento de Oracle con Java 11</li>
+  <li>OpenJDK se convierte en implementación de referencia oficial</li>
+  <li>Múltiples proveedores ofrecen builds de OpenJDK</li>
+  <li>Ecosistema diversificado con muchas opciones</li>
+</ul>
+
+<h3>OpenJDK: La implementación de referencia</h3>
+
+<p><strong>¿Qué es OpenJDK?</strong></p>
+<ul>
+  <li>Proyecto open source bajo licencia GPLv2 + Classpath Exception</li>
+  <li>Implementación de referencia oficial de Java SE</li>
+  <li>Base sobre la cual otras distribuciones son construidas</li>
+  <li>Desarrollo público, transparente, liderado por comunidad</li>
+</ul>
+
+<p><strong>Características:</strong></p>
+<ul>
+  <li>Código fuente completamente abierto</li>
+  <li>Sin costo de licencia</li>
+  <li>Actualizaciones frecuentes mientras versión está soportada</li>
+  <li>No incluye características propietarias de Oracle</li>
+</ul>
+
+<p><strong>Limitaciones:</strong></p>
+<ul>
+  <li>Builds oficiales de OpenJDK tienen soporte de tiempo limitado (6 meses para versiones no-LTS)</li>
+  <li>Sin soporte comercial directo desde openjdk.org</li>
+  <li>Algunas herramientas propietarias de Oracle no incluidas (Java Flight Recorder era propietario hasta Java 11)</li>
+</ul>
+
+<h3>Oracle JDK</h3>
+
+<p><strong>¿Qué es Oracle JDK?</strong></p>
+<ul>
+  <li>Distribución comercial de Java por Oracle</li>
+  <li>Basado en OpenJDK con adiciones propietarias (históricamente)</li>
+  <li>Desde Java 11, prácticamente idéntico a OpenJDK en funcionalidad</li>
+</ul>
+
+<p><strong>Builds gratuitas (desde Java 17):</strong></p>
+<ul>
+  <li>Oracle JDK disponible bajo licencia Oracle No-Fee Terms and Conditions (NFTC)</li>
+  <li>Uso gratuito incluso en producción</li>
+  <li>Actualizaciones solo hasta próximo lanzamiento de característica</li>
+  <li>No incluye soporte comercial</li>
+</ul>
+
+<p><strong>Oracle Java SE Subscription:</strong></p>
+<ul>
+  <li>Soporte comercial con SLAs</li>
+  <li>Actualizaciones extendidas más allá de períodos estándar</li>
+  <li>Acceso a herramientas y parches adicionales</li>
+  <li>Costo basado en processors o usuarios</li>
+</ul>
+
+<p><strong>Cuándo usar Oracle JDK:</strong></p>
+<ul>
+  <li>Requisito contractual o preferencia organizacional</li>
+  <li>Necesidad de soporte comercial directo de Oracle</li>
+  <li>Aplicaciones que específicamente requieren características exclusivas de Oracle (raras)</li>
+</ul>
+
+<h3>Distribuciones principales de OpenJDK</h3>
+
+<h4>1. Adoptium Eclipse Temurin (anteriormente AdoptOpenJDK)</h4>
+
+<p>Proyecto de Eclipse Foundation que ofrece builds de alta calidad de OpenJDK, uno de los más populares y ampliamente
+  usados.</p>
+
+<p><strong>Características:</strong></p>
+<ul>
+  <li>Gratuito, 100% open source</li>
+  <li>Soporte a largo plazo para versiones LTS (mínimo 4 años de actualizaciones)</li>
+  <li>Builds para todas las plataformas mayores (Windows, macOS, Linux)</li>
+  <li>Arquitecturas múltiples (x64, ARM, etc.)</li>
+  <li>Instaladores amigables disponibles</li>
+  <li>Actualizaciones regulares alineadas con CPUs de Oracle</li>
+</ul>
+
+<p><strong>Cuándo usar:</strong> Opción general excelente para mayoría de casos de uso, desarrollo y producción cuando se
+  requiere soporte LTS sin costo.</p>
+
+<h4>2. Amazon Corretto</h4>
+
+<p>Distribución de OpenJDK por Amazon Web Services, usado internamente por Amazon para sus propios servicios.</p>
+
+<p><strong>Características:</strong></p>
+<ul>
+  <li>Gratuito con soporte a largo plazo</li>
+  <li>Optimizaciones específicas para workloads de AWS (pero funciona en cualquier lugar)</li>
+  <li>Parches de rendimiento y seguridad backported</li>
+  <li>Java 8: soporte hasta al menos 2026</li>
+  <li>Java 11, 17, 21: soporte extendido sin costo adicional</li>
+</ul>
+
+<p><strong>Cuándo usar:</strong> Aplicaciones desplegadas en AWS, o cuando se necesita soporte LTS gratuito garantizado
+  por un proveedor de primer nivel.</p>
+
+<h4>3. Azul Zulu</h4>
+
+<p>Distribución de OpenJDK por Azul Systems, empresa especializada en tecnología Java.</p>
+
+<p><strong>Opciones:</strong></p>
+<ul>
+  <li><strong>Zulu Community:</strong> Gratuito, similar a otras distribuciones OpenJDK, certificación TCK completa</li>
+  <li><strong>Zulu Enterprise:</strong> Soporte comercial con SLAs, actualizaciones extendidas</li>
+</ul>
+
+<p><strong>Cuándo usar:</strong> Cuando se necesita soporte comercial de especialista Java, plataformas especializadas
+  (embedded, Alpine Linux), o cronogramas de soporte extendidos (Azul soporta Java 8 hasta 2030+).</p>
+
+<h4>4. Red Hat OpenJDK</h4>
+
+<p>Distribución de OpenJDK por Red Hat, integrado en Red Hat Enterprise Linux.</p>
+
+<p><strong>Características:</strong></p>
+<ul>
+  <li>Incluido en subscripciones de Red Hat</li>
+  <li>Soporte a largo plazo alineado con RHEL</li>
+  <li>Optimizado para ecosistema Red Hat</li>
+</ul>
+
+<p><strong>Cuándo usar:</strong> Infraestructura basada en Red Hat Enterprise Linux o cuando ya se tiene subscripción de
+  Red Hat.</p>
+
+<h4>5. Microsoft Build of OpenJDK</h4>
+
+<p>Distribución de OpenJDK por Microsoft, usado internamente para servicios de Azure.</p>
+
+<p><strong>Características:</strong></p>
+<ul>
+  <li>Gratuito con soporte a largo plazo</li>
+  <li>Optimizado para Azure pero funciona en cualquier lugar</li>
+  <li>Soporte para Windows, macOS, Linux</li>
+</ul>
+
+<p><strong>Cuándo usar:</strong> Aplicaciones desplegadas en Azure o ecosistema Microsoft.</p>
+
+<h4>6. Oracle OpenJDK Builds</h4>
+
+<p>Builds oficiales de OpenJDK por Oracle, disponibles en openjdk.org.</p>
+
+<p><strong>Características:</strong></p>
+<ul>
+  <li>Builds de referencia directos, gratuitos, sin restricciones de licencia</li>
+  <li>Soporte solo hasta próxima versión de característica (6 meses)</li>
+  <li>Sin soporte LTS en builds gratuitos</li>
+</ul>
+
+<p><strong>Cuándo usar:</strong> Desarrollo con versiones más recientes cuando no se requiere soporte a largo plazo.</p>
+
+<h3>Comparación de distribuciones</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Distribución</th>
+      <th>Licencia</th>
+      <th>Soporte LTS Gratuito</th>
+      <th>Soporte Comercial</th>
+      <th>Mejor Para</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Eclipse Temurin</td>
+      <td>GPLv2+CE</td>
+      <td>Sí (4+ años)</td>
+      <td>No</td>
+      <td>Uso general, desarrollo y producción</td>
+    </tr>
+    <tr>
+      <td>Amazon Corretto</td>
+      <td>GPLv2+CE</td>
+      <td>Sí (extendido)</td>
+      <td>No</td>
+      <td>AWS, soporte garantizado largo plazo</td>
+    </tr>
+    <tr>
+      <td>Azul Zulu Community</td>
+      <td>GPLv2+CE</td>
+      <td>Sí</td>
+      <td>Sí (Enterprise)</td>
+      <td>Flexibilidad, opción de upgrade a soporte</td>
+    </tr>
+    <tr>
+      <td>Red Hat OpenJDK</td>
+      <td>GPLv2+CE</td>
+      <td>Sí (con RHEL)</td>
+      <td>Sí</td>
+      <td>Ecosistema Red Hat</td>
+    </tr>
+    <tr>
+      <td>Microsoft OpenJDK</td>
+      <td>GPLv2+CE</td>
+      <td>Sí</td>
+      <td>No</td>
+      <td>Azure, ecosistema Microsoft</td>
+    </tr>
+    <tr>
+      <td>Oracle JDK</td>
+      <td>NFTC / OTN</td>
+      <td>No (solo 6 meses)</td>
+      <td>Sí (subscription)</td>
+      <td>Soporte Oracle requerido</td>
+    </tr>
+    <tr>
+      <td>Oracle OpenJDK Builds</td>
+      <td>GPLv2+CE</td>
+      <td>No (solo 6 meses)</td>
+      <td>No</td>
+      <td>Desarrollo, últimas versiones</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Criterios para elegir una distribución</h3>
+
+<p><strong>1. Requisitos de soporte:</strong></p>
+<ul>
+  <li>¿Necesita soporte a largo plazo? → LTS distribution (Temurin, Corretto, Zulu, etc.)</li>
+  <li>¿Necesita soporte comercial con SLAs? → Oracle subscription, Azul Enterprise, Red Hat</li>
+</ul>
+
+<p><strong>2. Entorno de deployment:</strong></p>
+<ul>
+  <li>AWS → Amazon Corretto</li>
+  <li>Azure → Microsoft OpenJDK</li>
+  <li>Red Hat Enterprise Linux → Red Hat OpenJDK</li>
+  <li>Multi-cloud o on-premise → Eclipse Temurin (neutral)</li>
+</ul>
+
+<p><strong>3. Cronograma de actualizaciones:</strong></p>
+<ul>
+  <li>Quiere última versión siempre → Oracle OpenJDK builds</li>
+  <li>Estabilidad LTS → Cualquier distribución con soporte LTS</li>
+</ul>
+
+<p><strong>4. Costo:</strong></p>
+<ul>
+  <li>Presupuesto cero → Cualquier distribución gratuita</li>
+  <li>Presupuesto para soporte → Oracle subscription, Azul Enterprise</li>
+</ul>
+
+<p><strong>5. Políticas organizacionales:</strong></p>
+<ul>
+  <li>Restricciones de vendor</li>
+  <li>Aprobaciones de legal/compliance</li>
+  <li>Estándares de infraestructura existentes</li>
+</ul>
+
+<h3>Recomendaciones prácticas</h3>
+
+<p><strong>Para desarrollo individual:</strong> Eclipse Temurin o Amazon Corretto (ambos excelentes, gratuitos, bien
+  mantenidos).</p>
+
+<p><strong>Para pequeñas empresas/startups:</strong> Eclipse Temurin (neutral, confiable, ampliamente usado); Amazon
+  Corretto si se despliega en AWS.</p>
+
+<p><strong>Para empresas medianas:</strong> Eclipse Temurin o Amazon Corretto para producción. Considerar Azul Zulu
+  Enterprise si se necesita soporte comercial sin subscription de Oracle.</p>
+
+<p><strong>Para grandes empresas:</strong> Evaluar necesidad de soporte comercial. Si se requiere soporte: Oracle Java SE
+  Subscription, Red Hat OpenJDK (con RHEL), o Azul Enterprise. Si no se requiere soporte: Eclipse Temurin, Amazon
+  Corretto, o Microsoft OpenJDK.</p>
+
+<p><strong>Para educación:</strong> Eclipse Temurin u Oracle OpenJDK (implementación de referencia).</p>
+
+<h3>Mitos y aclaraciones</h3>
+
+<p><strong>Mito: "Oracle JDK es mejor que OpenJDK en rendimiento."</strong> Desde Java 11, son prácticamente idénticos.
+  Las diferencias de rendimiento son inexistentes o insignificantes.</p>
+
+<p><strong>Mito: "Necesito pagar para usar Java en producción."</strong> Múltiples distribuciones gratuitas están
+  disponibles para producción sin costo alguno.</p>
+
+<p><strong>Mito: "Todas las distribuciones OpenJDK son iguales."</strong> Aunque implementan las mismas especificaciones,
+  difieren en cronogramas de soporte, parches backported, y optimizaciones específicas.</p>
+
+<p><strong>Mito: "Cambiar de distribución requiere recompilar código."</strong> El bytecode es compatible entre
+  distribuciones. Solo es necesario reinstalar el JDK.</p>
+
+<p>La elección de distribución JDK es importante pero no permanente. Es posible cambiar de distribución posteriormente si
+  los requisitos cambian. Lo crítico es elegir una distribución confiable, bien mantenida, con cronograma de soporte
+  apropiado para las necesidades del proyecto u organización.</p>

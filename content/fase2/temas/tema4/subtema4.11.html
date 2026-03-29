@@ -1,0 +1,487 @@
+<h2>4.11: Organización lógica del código dentro de una clase</h2>
+
+<p>La forma en que organizamos el código dentro de una clase no es arbitraria sino que sigue principios lógicos que
+  facilitan la lectura, el mantenimiento, y la comprensión del programa. Un código bien organizado permite encontrar
+  rápidamente qué hace cada sección, seguir el flujo lógico del programa, y modificar funcionalidad sin confusión.
+  Comprender cómo estructurar el código dentro de una clase, qué secciones debe tener, en qué orden colocarlas, y cómo
+  usar espacios en blanco y comentarios para mejorar la legibilidad es fundamental para escribir código profesional y
+  mantenible.</p>
+
+<h3>Estructura general de una clase Java</h3>
+
+<p>Una clase Java bien organizada sigue esta estructura lógica:</p>
+
+<pre class="language-java">
+  <code>// 1. Imports (si se necesitan)
+import java.time.LocalDate;
+
+// 2. Declaración de clase
+public class NombreClase {
+
+    // 3. Variables (si hay)
+
+    // 4. Método main (punto de entrada)
+    public static void main(String[] args) {
+
+        // 5. Código organizado en secciones lógicas
+
+    }
+
+}</code>
+</pre>
+
+<p>Por ahora, la estructura es simple: imports si se necesitan, declaración de clase, y método main con código
+  organizado.</p>
+
+<h3>Organización dentro del método main</h3>
+
+<p>El método <code>main</code> debe organizarse en <strong>secciones lógicas</strong> que reflejen las etapas del
+  programa:</p>
+
+<pre class="language-java">
+  <code>public static void main(String[] args) {
+
+    // SECCIÓN 1: Configuración inicial / Constantes
+
+    // SECCIÓN 2: Entrada de datos / Declaración de variables
+
+    // SECCIÓN 3: Procesamiento / Cálculos
+
+    // SECCIÓN 4: Salida / Resultados
+
+}</code>
+</pre>
+
+<h3>Ejemplo básico con organización lógica</h3>
+
+<pre class="language-java">
+  <code>public class CalculadoraDescuento {
+
+    public static void main(String[] args) {
+
+        // ===== CONFIGURACIÓN =====
+        double porcentajeDescuento = 15.0;
+
+        // ===== ENTRADA DE DATOS =====
+        double precioOriginal = 850.00;
+
+        // ===== PROCESAMIENTO =====
+        double montoDescuento = precioOriginal * porcentajeDescuento / 100.0;
+        double precioFinal = precioOriginal - montoDescuento;
+
+        // ===== SALIDA =====
+        System.out.println("===== CALCULADORA DE DESCUENTO =====");
+        System.out.println("Precio original: Lps " + precioOriginal);
+        System.out.println("Descuento (15%): Lps " + montoDescuento);
+        System.out.println("Precio final:    Lps " + precioFinal);
+
+    }
+
+}</code>
+</pre>
+
+<p><strong>Beneficios de esta organización:</strong> fácil localizar cada parte del programa, flujo lógico de ejecución
+  claro, y sencillo agregar o modificar secciones.</p>
+
+<h3>Uso de líneas en blanco para separar secciones</h3>
+
+<p>Las líneas en blanco mejoran la legibilidad visual sin afectar la ejecución:</p>
+
+<pre class="language-java">
+  <code>public static void main(String[] args) {
+
+    // Primera sección
+    double valor1 = 100.0;
+    double valor2 = 200.0;
+
+    // Segunda sección
+    double suma = valor1 + valor2;
+    double promedio = suma / 2.0;
+
+    // Tercera sección
+    System.out.println("Suma: " + suma);
+    System.out.println("Promedio: " + promedio);
+
+}</code>
+</pre>
+
+<p>Más legible que sin separación:</p>
+
+<pre class="language-java">
+  <code>// ✗ Sin separación — difícil de leer
+public static void main(String[] args) {
+    double valor1 = 100.0;
+    double valor2 = 200.0;
+    double suma = valor1 + valor2;
+    double promedio = suma / 2.0;
+    System.out.println("Suma: " + suma);
+    System.out.println("Promedio: " + promedio);
+}</code>
+</pre>
+
+<h3>Uso de comentarios para marcar secciones</h3>
+
+<pre class="language-java">
+  <code>public static void main(String[] args) {
+
+    // ===== DATOS DEL EMPLEADO =====
+    String nombreEmpleado = "Juan Pérez";
+    double horasTrabajadas = 45.0;
+    double tarifaPorHora = 125.00;
+
+    // ===== CÁLCULO DE SALARIO =====
+    double salarioBase = horasTrabajadas * tarifaPorHora;
+    double bono = salarioBase * 0.10;
+    double salarioTotal = salarioBase + bono;
+
+    // ===== REPORTE =====
+    System.out.println("Empleado: " + nombreEmpleado);
+    System.out.println("Salario base: Lps " + salarioBase);
+    System.out.println("Bono:         Lps " + bono);
+    System.out.println("Total:        Lps " + salarioTotal);
+
+}</code>
+</pre>
+
+<h3>Agrupar variables relacionadas</h3>
+
+<p>Declarar variables relacionadas juntas, no dispersas:</p>
+
+<pre class="language-java">
+  <code>// ✓ Bien organizado
+// Datos del producto
+double precioProducto = 500.00;
+int cantidadProducto = 3;
+String nombreProducto = "Laptop HP";
+
+// Datos del descuento
+double porcentajeDescuento = 10.0;
+double montoDescuento = precioProducto * cantidadProducto * 0.10;</code>
+</pre>
+
+<pre class="language-java">
+  <code>// ✗ Mal organizado — variables dispersas
+double precioProducto = 500.00;
+double porcentajeDescuento = 10.0;
+int cantidadProducto = 3;
+double montoDescuento = precioProducto * cantidadProducto * 0.10;
+String nombreProducto = "Laptop HP";</code>
+</pre>
+
+<h3>Orden lógico de operaciones</h3>
+
+<p>Organizar el código en el orden natural de ejecución:</p>
+<ol>
+  <li>Declarar datos de entrada</li>
+  <li>Realizar cálculos intermedios</li>
+  <li>Calcular resultado final</li>
+  <li>Mostrar resultados</li>
+</ol>
+
+<pre class="language-java">
+  <code>public class CalculadoraImpuesto {
+
+    public static void main(String[] args) {
+
+        // 1. ENTRADA: Datos iniciales
+        double precioProducto = 1000.00;
+        int cantidad = 5;
+        double tasaImpuesto = 15.0;
+
+        // 2. CÁLCULO INTERMEDIO: Subtotal
+        double subtotal = precioProducto * cantidad;
+
+        // 3. CÁLCULO INTERMEDIO: Impuesto
+        double montoImpuesto = subtotal * tasaImpuesto / 100.0;
+
+        // 4. RESULTADO FINAL: Total
+        double totalFactura = subtotal + montoImpuesto;
+
+        // 5. SALIDA: Mostrar resultados
+        System.out.println("Subtotal: Lps " + subtotal);
+        System.out.println("Impuesto: Lps " + montoImpuesto);
+        System.out.println("Total:    Lps " + totalFactura);
+
+    }
+
+}</code>
+</pre>
+
+<p><strong>Flujo claro:</strong> Entrada → Procesamiento → Salida.</p>
+
+<h3>Ejemplo completo: Sistema de nómina bien organizado</h3>
+
+<pre class="language-java">
+  <code>import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class SistemaNomina {
+
+    public static void main(String[] args) {
+
+        // ===== ENCABEZADO =====
+        System.out.println("========== SISTEMA DE NÓMINA ==========");
+        System.out.println();
+
+        // ===== FECHA DE PROCESO =====
+        LocalDate fechaProceso = LocalDate.now();
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaFormateada = fechaProceso.format(formatoFecha);
+
+        // ===== DATOS DEL EMPLEADO =====
+        String nombreEmpleado = "María González";
+        String codigoEmpleado = "EMP-1025";
+
+        // ===== DATOS DE HORAS TRABAJADAS =====
+        double horasNormales = 40.0;
+        double horasExtras = 8.0;
+
+        // ===== TARIFAS =====
+        double tarifaNormal = 150.00;
+        double tarifaExtra = tarifaNormal * 1.5;   // 1.5x para horas extras
+
+        // ===== CÁLCULO DE SALARIOS =====
+        double salarioNormal = horasNormales * tarifaNormal;
+        double salarioExtras = horasExtras * tarifaExtra;
+        double salarioBruto = salarioNormal + salarioExtras;
+
+        // ===== DEDUCCIONES =====
+        double deduccionSeguroSocial = salarioBruto * 3.5 / 100.0;
+        double deduccionImpuesto = salarioBruto * 10.0 / 100.0;
+        double totalDeducciones = deduccionSeguroSocial + deduccionImpuesto;
+
+        // ===== SALARIO NETO =====
+        double salarioNeto = salarioBruto - totalDeducciones;
+
+        // ===== MOSTRAR REPORTE =====
+        System.out.println("Fecha de proceso: " + fechaFormateada);
+        System.out.println("Empleado: " + nombreEmpleado);
+        System.out.println("Código:   " + codigoEmpleado);
+        System.out.println("---------------------------------------");
+        System.out.println("HORAS TRABAJADAS:");
+        System.out.println("  Normales: " + horasNormales + " hrs x Lps " + tarifaNormal + " = Lps " + salarioNormal);
+        System.out.println("  Extras:   " + horasExtras + " hrs x Lps " + tarifaExtra + " = Lps " + salarioExtras);
+        System.out.println("---------------------------------------");
+        System.out.println("Salario bruto: Lps " + salarioBruto);
+        System.out.println();
+        System.out.println("DEDUCCIONES:");
+        System.out.println("  Seguro Social (3.5%): Lps " + deduccionSeguroSocial);
+        System.out.println("  Impuesto (10%):       Lps " + deduccionImpuesto);
+        System.out.println("  Total deducciones:    Lps " + totalDeducciones);
+        System.out.println("=======================================");
+        System.out.println("SALARIO NETO: Lps " + salarioNeto);
+
+    }
+
+}</code>
+</pre>
+
+<h3>Evitar código desordenado</h3>
+
+<pre class="language-java">
+  <code>// ✗ Código mal organizado
+public static void main(String[] args) {
+    double precio = 500.00;
+    System.out.println("Calculando...");
+    double impuesto = precio * 0.15;
+    String producto = "Monitor";
+    double total = precio + impuesto;
+    int cantidad = 2;
+    System.out.println("Producto: " + producto);
+    double subtotal = precio * cantidad;
+    System.out.println("Total: " + total);
+}</code>
+</pre>
+
+<p><strong>Problemas:</strong> variables mezcladas con salidas, sin orden lógico, difícil seguir el flujo.</p>
+
+<pre class="language-java">
+  <code>// ✓ Mismo código bien organizado
+public static void main(String[] args) {
+
+    // ===== DATOS DEL PRODUCTO =====
+    String producto = "Monitor";
+    double precio = 500.00;
+    int cantidad = 2;
+
+    // ===== CÁLCULOS =====
+    double subtotal = precio * cantidad;
+    double impuesto = subtotal * 0.15;
+    double total = subtotal + impuesto;
+
+    // ===== RESULTADOS =====
+    System.out.println("Calculando...");
+    System.out.println("Producto:  " + producto);
+    System.out.println("Subtotal:  Lps " + subtotal);
+    System.out.println("Impuesto:  Lps " + impuesto);
+    System.out.println("Total:     Lps " + total);
+
+}</code>
+</pre>
+
+<h3>Indentación consistente</h3>
+
+<p>Mantener indentación uniforme en todo el código. Cada nivel dentro de llaves agrega 4 espacios:</p>
+
+<pre class="language-java">
+  <code>public class Ejemplo {
+
+    public static void main(String[] args) {
+
+        double valor1 = 100.0;   // 8 espacios (2 niveles)
+        double valor2 = 200.0;
+
+        double suma = valor1 + valor2;
+
+        System.out.println(suma);
+
+    }
+
+}</code>
+</pre>
+
+<pre class="language-java">
+  <code>// ✗ Indentación inconsistente — no mezclar niveles
+public static void main(String[] args) {
+double valor1 = 100.0;      // Sin indentación
+    double valor2 = 200.0;  // Con indentación
+        double suma = valor1 + valor2;  // Demasiada indentación
+}</code>
+</pre>
+
+<h3>Longitud de líneas</h3>
+
+<p>Evitar líneas excesivamente largas que requieran scroll horizontal:</p>
+
+<pre class="language-java">
+  <code>// ✗ Línea muy larga
+System.out.println("El total de la factura con todos los productos comprados más el impuesto sobre ventas es: Lps " + total);</code>
+</pre>
+
+<pre class="language-java">
+  <code>// ✓ Dividida en partes legibles
+System.out.println("El total de la factura con todos los productos");
+System.out.println("comprados más el impuesto sobre ventas es:");
+System.out.println("Lps " + total);
+
+// ✓ O usando variable intermedia
+String mensaje = "El total de la factura con todos los productos " +
+                 "comprados más el impuesto sobre ventas es: Lps " + total;
+System.out.println(mensaje);</code>
+</pre>
+
+<h3>Ejemplo: Sistema de control de gastos</h3>
+
+<pre class="language-java">
+  <code>public class ControlGastos {
+
+    public static void main(String[] args) {
+
+        // ===== TÍTULO DEL REPORTE =====
+        System.out.println("========== CONTROL DE GASTOS MENSUALES ==========");
+        System.out.println();
+
+        // ===== INGRESOS DEL MES =====
+        double ingresoSalario = 18000.00;
+        double ingresoExtra = 2500.00;
+        double totalIngresos = ingresoSalario + ingresoExtra;
+
+        // ===== GASTOS FIJOS =====
+        double gastoAlquiler = 5000.00;
+        double gastoServicios = 2500.00;
+        double gastoTransporte = 1200.00;
+
+        // ===== GASTOS VARIABLES =====
+        double gastoAlimentacion = 4000.00;
+        double gastoEntretenimiento = 1500.00;
+        double gastosVarios = 800.00;
+
+        // ===== TOTAL DE GASTOS =====
+        double totalGastosFijos = gastoAlquiler + gastoServicios + gastoTransporte;
+        double totalGastosVariables = gastoAlimentacion + gastoEntretenimiento + gastosVarios;
+        double totalGastos = totalGastosFijos + totalGastosVariables;
+
+        // ===== BALANCE =====
+        double balance = totalIngresos - totalGastos;
+        double porcentajeAhorro = (balance / totalIngresos) * 100.0;
+
+        // ===== MOSTRAR REPORTE =====
+        System.out.println("INGRESOS:");
+        System.out.println("  Salario:        Lps " + ingresoSalario);
+        System.out.println("  Ingresos extra: Lps " + ingresoExtra);
+        System.out.println("  Total ingresos: Lps " + totalIngresos);
+        System.out.println();
+
+        System.out.println("GASTOS FIJOS:");
+        System.out.println("  Alquiler:       Lps " + gastoAlquiler);
+        System.out.println("  Servicios:      Lps " + gastoServicios);
+        System.out.println("  Transporte:     Lps " + gastoTransporte);
+        System.out.println("  Subtotal fijos: Lps " + totalGastosFijos);
+        System.out.println();
+
+        System.out.println("GASTOS VARIABLES:");
+        System.out.println("  Alimentación:     Lps " + gastoAlimentacion);
+        System.out.println("  Entretenimiento:  Lps " + gastoEntretenimiento);
+        System.out.println("  Varios:           Lps " + gastosVarios);
+        System.out.println("  Subtotal variables: Lps " + totalGastosVariables);
+        System.out.println();
+
+        System.out.println("=================================================");
+        System.out.println("Total gastos:      Lps " + totalGastos);
+        System.out.println("BALANCE:           Lps " + balance);
+        System.out.println("Porcentaje ahorro: " + porcentajeAhorro + "%");
+
+    }
+
+}</code>
+</pre>
+
+<h3>Buenas prácticas de organización resumidas</h3>
+
+<p><strong>1. Comentarios de sección claros:</strong></p>
+
+<pre class="language-java">
+  <code>// ===== NOMBRE DE LA SECCIÓN =====</code>
+</pre>
+
+<p><strong>2. Una línea en blanco entre secciones:</strong></p>
+
+<pre class="language-java">
+  <code>// Sección 1
+double valor = 100.0;
+
+// Sección 2
+double resultado = valor * 2;</code>
+</pre>
+
+<p><strong>3. Agrupar declaraciones relacionadas:</strong></p>
+
+<pre class="language-java">
+  <code>// Datos del cliente juntos
+String nombreCliente = "Juan";
+String direccionCliente = "Col. Kennedy";
+String telefonoCliente = "9999-8888";</code>
+</pre>
+
+<p><strong>4. Cálculos antes de mostrar resultados:</strong></p>
+
+<pre class="language-java">
+  <code>// Primero calcular
+double total = precio * cantidad;
+
+// Luego mostrar
+System.out.println("Total: " + total);</code>
+</pre>
+
+<p><strong>5. Nombres de variables descriptivos:</strong></p>
+
+<pre class="language-java">
+  <code>double salarioMensualEmpleado = 15000.00;   // ✓ Descriptivo
+double s = 15000.00;                        // ✗ Genérico</code>
+</pre>
+
+<p>La organización lógica del código dentro de una clase no es opcional sino una práctica profesional fundamental. Un
+  código bien organizado con secciones claras, comentarios apropiados, líneas en blanco para separar bloques, y un flujo
+  lógico de ejecución es más fácil de leer, entender, mantener y modificar. Desarrollar el hábito de organizar el
+  código desde programas simples facilita escribir programas más complejos en el futuro de manera estructurada y
+  profesional.</p>

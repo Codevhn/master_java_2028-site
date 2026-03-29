@@ -1,0 +1,529 @@
+<h2><strong>4.6 Firma del método main y significado de cada parte</strong></h2>
+
+<p>La firma del método <code>main</code> no es arbitraria. Cada palabra, cada elemento tiene un propósito específico y técnico que
+determina cómo la JVM puede encontrar y ejecutar nuestro programa. Hasta ahora hemos memorizado la firma completa como
+un bloque obligatorio, pero comprender el significado de cada componente individual nos permite entender por qué debe
+escribirse exactamente de esa manera y qué función cumple cada parte en el proceso de ejecución. Este subtema desglosa
+la firma del método <code>main</code> palabra por palabra, explicando qué significa cada elemento y por qué es necesario.</p>
+
+<hr>
+
+<h3><strong>La firma completa del método main</strong></h3>
+
+<pre class="language-java"><code>public static void main(String[] args)</code></pre>
+
+<p><strong>Cada parte tiene un significado específico:</strong></p>
+
+<ol>
+  <li><strong><code>public</code></strong> - Modificador de acceso</li>
+  <li><strong><code>static</code></strong> - Modificador de método</li>
+  <li><strong><code>void</code></strong> - Tipo de retorno</li>
+  <li><strong><code>main</code></strong> - Nombre del método</li>
+  <li><strong><code>String[] args</code></strong> - Parámetro del método</li>
+</ol>
+
+<p><strong>Visualización con separación:</strong></p>
+
+<pre class="language-markup"><code>public  static  void  main  (String[] args)
+  ↓       ↓      ↓     ↓         ↓
+Acceso  Tipo   Tipo  Nombre  Parámetro
+público  de    de     del    de entrada
+        método retorno método</code></pre>
+
+<hr>
+
+<h3><strong>1. <code>public</code> - Modificador de acceso</strong></h3>
+
+<p><strong>Significado:</strong> El método es accesible desde cualquier parte, públicamente.</p>
+
+<p><strong>¿Por qué debe ser <code>public</code>?</strong></p>
+
+<p>La JVM necesita poder acceder al método <code>main</code> para ejecutar el programa. Si no fuera <code>public</code>, la JVM no podría invocarlo.</p>
+
+<p><strong>Ejemplo correcto:</strong></p>
+
+<pre class="language-java"><code>public class MiPrograma {
+    public static void main(String[] args) { // ✓ public
+        System.out.println("La JVM puede acceder a este main");
+    }
+}</code></pre>
+
+<p><strong>Ejemplo incorrecto:</strong></p>
+
+<pre class="language-java"><code>public class MiPrograma {
+    static void main(String[] args) { // ✗ Falta public
+        System.out.println("La JVM NO puede ejecutar esto");
+    }
+}</code></pre>
+
+<p><strong>Error en ejecución:</strong></p>
+<pre class="language-markup"><code>Error: Main method not found in class MiPrograma</code></pre>
+
+<p><strong>Regla simple:</strong> El método <code>main</code> SIEMPRE debe ser <code>public</code>.</p>
+
+<hr>
+
+<h3><strong>2. <code>static</code> - Modificador de método</strong></h3>
+
+<p><strong>Significado:</strong> El método pertenece a la clase, no a una instancia específica.</p>
+
+<p><strong>¿Por qué debe ser <code>static</code>?</strong></p>
+
+<p>Cuando ejecutamos un programa, la JVM invoca el método <code>main</code> sin crear ningún objeto de la clase. Para poder llamar a
+un método sin crear un objeto, el método debe ser <code>static</code>.</p>
+
+<p><strong>Analogía simple:</strong></p>
+
+<p>Imagine un edificio (la clase) con un timbre en la entrada (<code>main</code> estático). Puede tocar el timbre sin necesidad de
+entrar al edificio o estar adentro. El timbre está disponible sin importar si hay personas dentro o no.</p>
+
+<p>Si <code>main</code> no fuera <code>static</code>, la JVM necesitaría primero crear un objeto de la clase, lo cual no tiene sentido para el
+punto de entrada del programa.</p>
+
+<p><strong>Ejemplo correcto:</strong></p>
+
+<pre class="language-java"><code>public class Calculadora {
+    public static void main(String[] args) { // ✓ static
+        double resultado = 10.0 + 20.0;
+        System.out.println("Resultado: " + resultado);
+    }
+}</code></pre>
+
+<p><strong>Ejemplo incorrecto:</strong></p>
+
+<pre class="language-java"><code>public class Calculadora {
+    public void main(String[] args) { // ✗ Falta static
+        double resultado = 10.0 + 20.0;
+        System.out.println("Resultado: " + resultado);
+    }
+}</code></pre>
+
+<p><strong>Error en ejecución:</strong></p>
+<pre class="language-markup"><code>Error: Main method is not static in class Calculadora</code></pre>
+
+<p><strong>Regla simple:</strong> El método <code>main</code> SIEMPRE debe ser <code>static</code>.</p>
+
+<hr>
+
+<h3><strong>3. <code>void</code> - Tipo de retorno</strong></h3>
+
+<p><strong>Significado:</strong> El método no retorna (devuelve) ningún valor.</p>
+
+<p><strong>¿Por qué debe ser <code>void</code>?</strong></p>
+
+<p>El método <code>main</code> es invocado por la JVM y termina cuando el programa finaliza. No hay ningún código esperando un valor
+de retorno del <code>main</code>, por lo tanto no retorna nada.</p>
+
+<p><strong>Tipos de retorno en Java:</strong></p>
+
+<pre class="language-java"><code>// Método que retorna un número entero
+public static int sumar(int a, int b) {
+    return a + b; // Retorna un valor
+}
+
+// Método que retorna un decimal
+public static double calcular() {
+    return 100.5; // Retorna un valor
+}
+
+// Método main que NO retorna nada
+public static void main(String[] args) {
+    // No retorna nada (void)
+}</code></pre>
+
+<p><strong>Ejemplo correcto:</strong></p>
+
+<pre class="language-java"><code>public class MiPrograma {
+    public static void main(String[] args) { // ✓ void (no retorna)
+        System.out.println("Ejecutando programa");
+        // No hay "return"
+    }
+}</code></pre>
+
+<p><strong>Ejemplo incorrecto:</strong></p>
+
+<pre class="language-java"><code>public class MiPrograma {
+    public static int main(String[] args) { // ✗ Incorrecto: dice que retorna int
+        System.out.println("Ejecutando");
+        return 0; // Esto no es válido para main
+    }
+}</code></pre>
+
+<p><strong>Error:</strong> JVM no reconoce este método como <code>main</code> válido.</p>
+
+<p><strong>Regla simple:</strong> El método <code>main</code> SIEMPRE debe tener tipo de retorno <code>void</code>.</p>
+
+<hr>
+
+<h3><strong>4. <code>main</code> - Nombre del método</strong></h3>
+
+<p><strong>Significado:</strong> Es el identificador (nombre) del método.</p>
+
+<p><strong>¿Por qué debe llamarse exactamente <code>main</code>?</strong></p>
+
+<p>La JVM está programada para buscar específicamente un método llamado <code>main</code> (todo en minúsculas) cuando inicia un
+programa. Es como un nombre especial que la JVM reconoce.</p>
+
+<p><strong>Ejemplo correcto:</strong></p>
+
+<pre class="language-java"><code>public class Programa {
+    public static void main(String[] args) { // ✓ "main" en minúsculas
+        System.out.println("Funciona");
+    }
+}</code></pre>
+
+<p><strong>Ejemplos incorrectos:</strong></p>
+
+<pre class="language-java"><code>public class Programa {
+    public static void Main(String[] args) { // ✗ "Main" con mayúscula
+        System.out.println("No funciona");
+    }
+}</code></pre>
+
+<pre class="language-java"><code>public class Programa {
+    public static void inicio(String[] args) { // ✗ "inicio" no es "main"
+        System.out.println("No funciona");
+    }
+}</code></pre>
+
+<pre class="language-java"><code>public class Programa {
+    public static void MAIN(String[] args) { // ✗ Todo mayúsculas
+        System.out.println("No funciona");
+    }
+}</code></pre>
+
+<p><strong>Todos dan el mismo error:</strong></p>
+<pre class="language-markup"><code>Error: Main method not found in class Programa</code></pre>
+
+<p><strong>Regla simple:</strong> El nombre del método debe ser exactamente <code>main</code> (todo en minúsculas).</p>
+
+<hr>
+
+<h3><strong>5. <code>String[] args</code> - Parámetro del método</strong></h3>
+
+<p><strong>Significado:</strong> Es un parámetro que recibe un array (arreglo) de Strings.</p>
+
+<p><strong>Desglose de <code>String[] args</code>:</strong></p>
+
+<pre class="language-markup"><code>String[]   args
+  ↓          ↓
+ Tipo      Nombre
+ del
+parámetro</code></pre>
+
+<ul>
+  <li><strong><code>String[]</code></strong> = Array (colección) de Strings (texto)</li>
+  <li><strong><code>args</code></strong> = Nombre del parámetro (puede ser cualquier nombre, pero por convención es <code>args</code>)</li>
+</ul>
+
+<p><strong>¿Para qué sirve?</strong></p>
+
+<p>Permite que el programa reciba información desde la línea de comandos cuando se ejecuta.</p>
+
+<p><strong>Ejemplo simple (sin usar args):</strong></p>
+
+<pre class="language-java"><code>public class Saludo {
+    public static void main(String[] args) { // Parámetro presente pero no usado
+        System.out.println("Hola mundo");
+    }
+}</code></pre>
+
+<p>Ejecutar:</p>
+<pre class="language-bash"><code>java Saludo</code></pre>
+
+<p>Salida:</p>
+<pre class="language-markup"><code>Hola mundo</code></pre>
+
+<p>El parámetro <code>args</code> está ahí, pero no lo usamos. El programa funciona igual.</p>
+
+<hr>
+
+<p><strong>El nombre puede ser diferente (pero no es recomendado):</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] parametros) { // ✓ Funciona
+        System.out.println("Funciona con otro nombre");
+    }
+}</code></pre>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] valores) { // ✓ Funciona
+        System.out.println("También funciona");
+    }
+}</code></pre>
+
+<p><strong>Pero la convención universal es usar <code>args</code>:</strong></p>
+
+<pre class="language-java"><code>public static void main(String[] args) // ✓ Estándar recomendado</code></pre>
+
+<p><strong>¿Por qué <code>String[]</code> y no solo <code>String</code>?</strong></p>
+
+<p>Los corchetes <code>[]</code> indican que es un <strong>array</strong> (arreglo), lo que permite recibir múltiples valores, no solo uno.</p>
+
+<hr>
+
+<h3><strong>Resumen visual de la firma completa</strong></h3>
+
+<pre class="language-markup"><code>public static void main(String[] args)
+  │      │     │    │        │
+  │      │     │    │        └─ Parámetro: array de Strings
+  │      │     │    └─────────── Nombre: debe ser "main"
+  │      │     └───────────────── Tipo retorno: void (no retorna)
+  │      └──────────────────────── Modificador: static (pertenece a clase)
+  └─────────────────────────────── Acceso: public (accesible por JVM)</code></pre>
+
+<p><strong>Todos los elementos son obligatorios. Si falta uno, la JVM no reconoce el método como punto de entrada válido.</strong></p>
+
+<hr>
+
+<h3><strong>Ejemplo completo con anotaciones</strong></h3>
+
+<pre class="language-java"><code>public class CalculadoraArea {
+
+    // Método main: punto de entrada del programa
+    public static void main(String[] args) {
+    // ↑       ↑      ↑    ↑       ↑
+    // public: JVM puede accederlo
+    // static: No necesita crear objeto
+    // void: No retorna valor
+    // main: Nombre que JVM busca
+    // String[] args: Parámetro (no usado aquí)
+
+        // Calcular área de un rectángulo
+        double largo = 10.5;
+        double ancho = 6.0;
+        double area = largo * ancho;
+
+        System.out.println("=== CALCULADORA DE ÁREA ===");
+        System.out.println("Largo: " + largo + " metros");
+        System.out.println("Ancho: " + ancho + " metros");
+        System.out.println("Área: " + area + " metros cuadrados");
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>=== CALCULADORA DE ÁREA ===
+Largo: 10.5 metros
+Ancho: 6.0 metros
+Área: 63.0 metros cuadrados</code></pre>
+
+<hr>
+
+<h3><strong>¿Por qué esta firma específica?</strong></h3>
+
+<p><strong>Decisión histórica de diseño de Java:</strong></p>
+
+<p>Cuando Java fue diseñado, los creadores necesitaban una forma estándar y predecible de iniciar programas. Decidieron que:</p>
+
+<ol>
+  <li><strong>Debe ser público</strong> (<code>public</code>) para que JVM pueda accederlo</li>
+  <li><strong>Debe ser estático</strong> (<code>static</code>) para no requerir crear objetos</li>
+  <li><strong>No retorna valor</strong> (<code>void</code>) porque no hay quién reciba el valor</li>
+  <li><strong>Se llama <code>main</code></strong> para que JVM sepa qué buscar</li>
+  <li><strong>Recibe <code>String[] args</code></strong> para permitir argumentos de línea de comandos</li>
+</ol>
+
+<p>Esta firma se ha mantenido desde Java 1.0 (1996) hasta hoy, garantizando compatibilidad.</p>
+
+<hr>
+
+<h3><strong>Comparación: Firma correcta vs incorrectas</strong></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Firma</th>
+      <th>¿Válida?</th>
+      <th>Razón</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>public static void main(String[] args)</code></td>
+      <td>✓ SÍ</td>
+      <td>Completa y correcta</td>
+    </tr>
+    <tr>
+      <td><code>static void main(String[] args)</code></td>
+      <td>✗ NO</td>
+      <td>Falta <code>public</code></td>
+    </tr>
+    <tr>
+      <td><code>public void main(String[] args)</code></td>
+      <td>✗ NO</td>
+      <td>Falta <code>static</code></td>
+    </tr>
+    <tr>
+      <td><code>public static int main(String[] args)</code></td>
+      <td>✗ NO</td>
+      <td>Debe ser <code>void</code> no <code>int</code></td>
+    </tr>
+    <tr>
+      <td><code>public static void Main(String[] args)</code></td>
+      <td>✗ NO</td>
+      <td>Debe ser <code>main</code> minúscula</td>
+    </tr>
+    <tr>
+      <td><code>public static void main()</code></td>
+      <td>✗ NO</td>
+      <td>Falta <code>String[] args</code></td>
+    </tr>
+    <tr>
+      <td><code>public static void main(String args)</code></td>
+      <td>✗ NO</td>
+      <td>Debe ser <code>String[]</code> con corchetes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Solo la primera es válida. Cualquier variación causa error.</strong></p>
+
+<hr>
+
+<h3><strong>Ejemplo práctico: Calculadora de precio con IVA</strong></h3>
+
+<pre class="language-java"><code>public class CalculadoraPrecioIVA {
+
+    // Método main con firma completa correcta
+    public static void main(String[] args) {
+
+        // Datos del producto
+        double precioBase = 1500.00;
+        double porcentajeIVA = 15.0;
+
+        // Calcular IVA
+        double montoIVA = precioBase * porcentajeIVA / 100.0;
+
+        // Calcular precio final
+        double precioFinal = precioBase + montoIVA;
+
+        // Mostrar desglose
+        System.out.println("===== CALCULADORA DE PRECIO CON IVA =====");
+        System.out.println("Precio base: Lps " + precioBase);
+        System.out.println("IVA (" + porcentajeIVA + "%): Lps " + montoIVA);
+        System.out.println("------------------------------------------");
+        System.out.println("Precio final: Lps " + precioFinal);
+        System.out.println("==========================================");
+    }
+}</code></pre>
+
+<p><strong>Verificación de la firma:</strong></p>
+<ul>
+  <li>✓ <code>public</code> - Presente</li>
+  <li>✓ <code>static</code> - Presente</li>
+  <li>✓ <code>void</code> - Presente</li>
+  <li>✓ <code>main</code> - Presente (minúsculas)</li>
+  <li>✓ <code>String[] args</code> - Presente</li>
+</ul>
+
+<p><strong>Resultado:</strong> Programa ejecutable correctamente.</p>
+
+<hr>
+
+<h3><strong>Errores comunes y cómo identificarlos</strong></h3>
+
+<p><strong>Error 1: Invertir orden de <code>public</code> y <code>static</code></strong></p>
+
+<pre class="language-java"><code>static public void main(String[] args) { // ✓ Funciona
+    // Java permite este orden
+}</code></pre>
+
+<p>Este caso específico <strong>SÍ funciona</strong> porque Java permite invertir el orden de modificadores. Pero la convención es escribir <code>public static</code>, no al revés.</p>
+
+<p><strong>Recomendado:</strong></p>
+<pre class="language-java"><code>public static void main(String[] args) // Orden convencional</code></pre>
+
+<hr>
+
+<p><strong>Error 2: Olvidar completamente alguna palabra</strong></p>
+
+<pre class="language-java"><code>public void main(String[] args) { // ✗ Falta static
+    System.out.println("Error");
+}</code></pre>
+
+<p><strong>Solución:</strong> Verificar que estén las 5 partes obligatorias.</p>
+
+<hr>
+
+<p><strong>Error 3: Usar tipos incorrectos</strong></p>
+
+<pre class="language-java"><code>public static void main(int[] args) { // ✗ int[] en vez de String[]
+    System.out.println("Error");
+}</code></pre>
+
+<p><strong>Debe ser <code>String[]</code>, no otro tipo.</strong></p>
+
+<hr>
+
+<h3><strong>Plantilla memorizable</strong></h3>
+
+<p><strong>Memorice esta línea exacta:</strong></p>
+
+<pre class="language-java"><code>public static void main(String[] args)</code></pre>
+
+<p><strong>Técnica de memorización: "PSVMSA"</strong></p>
+
+<ul>
+  <li><strong>P</strong>ublic</li>
+  <li><strong>S</strong>tatic</li>
+  <li><strong>V</strong>oid</li>
+  <li><strong>M</strong>ain</li>
+  <li><strong>S</strong>tring[]</li>
+  <li><strong>A</strong>rgs</li>
+</ul>
+
+<hr>
+
+<h3><strong>Ejemplo final: Sistema de cálculo de interés simple</strong></h3>
+
+<pre class="language-java"><code>public class CalculadoraInteres {
+
+    // Firma completa del método main
+    // Cada parte es necesaria para que JVM ejecute el programa
+    public static void main(String[] args) {
+
+        // Datos del préstamo
+        double capitalInicial = 10000.00;
+        double tasaInteresAnual = 12.0;
+        int plazoAnios = 3;
+
+        // Calcular interés simple: I = C * r * t
+        double interesTotal = capitalInicial * (tasaInteresAnual / 100.0) * plazoAnios;
+
+        // Calcular monto total a pagar
+        double montoTotal = capitalInicial + interesTotal;
+
+        // Calcular cuota mensual
+        int totalMeses = plazoAnios * 12;
+        double cuotaMensual = montoTotal / totalMeses;
+
+        // Mostrar resultados
+        System.out.println("======== CÁLCULO DE INTERÉS SIMPLE ========");
+        System.out.println("Capital inicial: Lps " + capitalInicial);
+        System.out.println("Tasa de interés: " + tasaInteresAnual + "% anual");
+        System.out.println("Plazo: " + plazoAnios + " años (" + totalMeses + " meses)");
+        System.out.println("-------------------------------------------");
+        System.out.println("Interés total: Lps " + interesTotal);
+        System.out.println("Monto total: Lps " + montoTotal);
+        System.out.println("Cuota mensual: Lps " + cuotaMensual);
+        System.out.println("===========================================");
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>======== CÁLCULO DE INTERÉS SIMPLE ========
+Capital inicial: Lps 10000.0
+Tasa de interés: 12.0% anual
+Plazo: 3 años (36 meses)
+-------------------------------------------
+Interés total: Lps 3600.0
+Monto total: Lps 13600.0
+Cuota mensual: Lps 377.77777777777777
+===========================================</code></pre>
+
+<hr>
+
+<p>La firma del método <code>main</code> no es una fórmula mágica arbitraria, sino un conjunto de elementos técnicos cuidadosamente
+diseñados, cada uno con un propósito específico que permite a la JVM localizar y ejecutar nuestro programa
+correctamente. Comprender el significado de cada parte nos ayuda a escribir el método <code>main</code> correctamente y a entender
+por qué debe ser exactamente de esa forma.</p>

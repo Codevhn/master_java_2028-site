@@ -1,0 +1,126 @@
+<h2>2.17: Buenas prácticas en la elección y uso del JDK</h2>
+
+<p>La elección y uso del JDK de manera profesional va más allá de simplemente descargar una versión e instalarla en una
+  máquina de desarrollo. Involucra decisiones estratégicas sobre qué distribución usar, qué versión adoptar, cómo
+  gestionar múltiples versiones, cómo configurar entornos consistentemente a través de equipos, cómo mantenerse
+  actualizado con parches de seguridad, y cómo planificar actualizaciones futuras de manera que minimice riesgo mientras
+  maximiza valor. Las organizaciones maduras tratan el JDK como infraestructura crítica que requiere gestión deliberada,
+  documentación clara, y procesos establecidos, no como un detalle técnico menor que cada desarrollador gestiona ad hoc.
+  Las buenas prácticas en esta área reflejan años de experiencia colectiva de la industria identificando qué enfoques
+  funcionan bien y cuáles crean problemas.</p>
+
+<p>La primera buena práctica es estandarizar en una distribución específica del JDK dentro de una organización o equipo.
+  Con múltiples proveedores ofreciendo builds de OpenJDK (Oracle OpenJDK, Adoptium Eclipse Temurin, Amazon Corretto, Azul
+  Zulu, Red Hat, Microsoft, y otros), la tentación puede ser permitir que cada desarrollador use lo que prefiera. Sin
+  embargo, aunque estas distribuciones implementan las mismas especificaciones de Java y son altamente compatibles, pueden
+  tener diferencias sutiles en configuraciones por defecto, garbage collectors disponibles, herramientas incluidas, y
+  comportamiento de runtime. Estandarizar en una distribución específica elimina variables cuando se diagnostican
+  problemas, asegura que todos los desarrolladores tengan el mismo toolset, y simplifica documentación y soporte.</p>
+
+<p>La elección de qué distribución estandarizar debe considerar varios factores. Los cronogramas de soporte son críticos:
+  algunas distribuciones proporcionan soporte a largo plazo gratuito, otras requieren subscripciones comerciales. La
+  reputación del proveedor y su compromiso a largo plazo con proporcionar builds es importante; adoptar una distribución
+  de un proveedor que puede discontinuar soporte crea riesgo. La disponibilidad de instaladores para todas las plataformas
+  usadas por la organización (Windows, macOS, Linux en varias distribuciones) es práctica. La calidad de documentación y
+  soporte de comunidad también importa. Para muchas organizaciones, Adoptium Eclipse Temurin o Amazon Corretto son
+  elecciones sólidas porque proporcionan builds bien mantenidas con soporte a largo plazo sin costos de subscripción.</p>
+
+<p>Una vez que una distribución es elegida, documentar esta elección y el razonamiento detrás de ella es buena práctica. La
+  documentación del equipo o organización debe especificar claramente qué distribución usar, qué versión, dónde
+  descargarla, y cómo instalarla. Esta documentación previene que nuevos miembros del equipo tomen decisiones ad hoc
+  diferentes y proporciona referencia cuando surgen preguntas sobre por qué se hizo una elección particular.</p>
+
+<p>La estandarización de versión es igualmente importante. Para proyectos individuales, la versión mínima de Java soportada
+  debe ser claramente especificada en la documentación del proyecto, en archivos de configuración de sistemas de
+  construcción (Maven pom.xml, Gradle build.gradle), y comunicada a todos los desarrolladores. El código debe ser
+  compilado con la opción --release establecida a esta versión mínima para asegurar que no se usen inadvertidamente APIs o
+  características de lenguaje de versiones más nuevas. Las pipelines de CI/CD deben construir y testear contra esta
+  versión mínima para detectar problemas de compatibilidad temprano.</p>
+
+<p>Para organizaciones con múltiples proyectos, establecer una política de versión es buena práctica. Esta política podría
+  especificar que todos los proyectos nuevos usan la versión LTS más reciente, que proyectos existentes deben actualizar a
+  nuevas versiones LTS dentro de un año de su lanzamiento, que versiones no-LTS no deben ser usadas en producción, y
+  procedimientos para solicitar excepciones cuando sea necesario. Esta política proporciona claridad y consistencia
+  mientras permitiendo flexibilidad cuando está justificada.</p>
+
+<p>La gestión de múltiples versiones de JDK en máquinas de desarrollo es una realidad práctica para muchos desarrolladores
+  que trabajan en múltiples proyectos con diferentes requisitos de versión. En lugar de tener una sola instalación de JDK
+  y reinstalar constantemente versiones diferentes según qué proyecto esté activo, la buena práctica es instalar múltiples
+  versiones side-by-side y usar herramientas de gestión de versión para cambiar entre ellas. En sistemas Unix-like, SDKMAN
+  proporciona gestión excelente de múltiples versiones de JDK, permitiendo instalar, listar, y cambiar entre versiones con
+  comandos simples. En Windows, herramientas como Scoop o Chocolatey proporcionan funcionalidad similar. Alternativamente,
+  scripts simples que establecen JAVA_HOME y PATH apropiadamente pueden ser usados.</p>
+
+<p>La configuración de variables de entorno merece atención cuidadosa. JAVA_HOME debe apuntar al directorio raíz de la
+  instalación del JDK, no al subdirectorio bin. PATH debe incluir $JAVA_HOME/bin (Unix) o %JAVA_HOME%\bin (Windows) para
+  que comandos como java y javac sean accesibles. Configurar estas variables a nivel de sistema versus nivel de usuario
+  depende de si múltiples usuarios comparten la máquina y si todos deben usar la misma versión de Java. La documentación
+  del proyecto debe especificar cómo configurar estas variables apropiadamente.</p>
+
+<p>La verificación de instalación después de configurar el JDK es buena práctica. Ejecutar java -version y javac -version
+  debe mostrar la versión esperada. Si las versiones mostradas no coinciden con lo esperado, indica configuración
+  incorrecta de PATH o JAVA_HOME que debe ser corregida antes de proceder. Esta verificación simple previene horas de
+  debugging posterior cuando el código falla de maneras misteriosas debido a estar ejecutando una versión diferente de
+  Java de la pretendida.</p>
+
+<p>Para equipos de desarrollo, proporcionar scripts o documentación de configuración automatizada que configura entornos de
+  desarrollo consistentemente es extremadamente valioso. Un nuevo desarrollador uniéndose al equipo debe ser capaz de
+  ejecutar un script o seguir documentación clara que instala la distribución y versión correctas del JDK, configura
+  variables de entorno apropiadamente, instala cualquier herramienta adicional necesaria, y verifica que todo está
+  configurado correctamente. Esto elimina el proceso propenso a errores de configuración manual y asegura que todos los
+  desarrolladores tengan entornos idénticos.</p>
+
+<p>La gestión de actualizaciones de seguridad requiere proceso deliberado. Cuando Oracle u otros proveedores lanzan
+  Critical Patch Updates trimestralmente, las organizaciones deben tener proceso para evaluar qué vulnerabilidades son
+  corregidas, determinar si sus sistemas son afectados, testear la actualización en entornos no-producción, y planificar
+  deployment a producción. Este proceso no debe ser ad hoc sino seguir procedimiento establecido con cronogramas,
+  responsabilidades, y criterios de aprobación claros. Para sistemas críticos, las actualizaciones de seguridad deben ser
+  tratadas con la misma seriedad que cualquier otra actualización de infraestructura crítica.</p>
+
+<p>El testing de compatibilidad antes de actualizar a nuevas versiones de JDK es práctica esencial. Aunque Java mantiene
+  fuerte compatibilidad hacia atrás, las actualizaciones ocasionalmente introducen cambios que afectan aplicaciones
+  específicas. Antes de actualizar producción, ejecutar test suites completos contra la nueva versión de JDK en entornos
+  de staging detecta problemas. Los benchmarks de rendimiento verifican que el throughput y latencia no degradan
+  inesperadamente. Los deployment canary donde un subconjunto pequeño de tráfico de producción ejecuta en la nueva versión
+  proporcionan validación de mundo real con riesgo limitado.</p>
+
+<p>La documentación de decisiones de versión y fundamentos es buena práctica frecuentemente descuidada. Cuando se elige una
+  versión de JDK para un proyecto, documentar por qué esa versión fue elegida, qué alternativas fueron consideradas, qué
+  tradeoffs fueron hechos, proporciona contexto valioso para decisiones futuras. Cuando se actualiza a nueva versión,
+  documentar qué motivó la actualización, qué testing fue realizado, qué problemas fueron encontrados y cómo fueron
+  resueltos, crea conocimiento institucional que facilita actualizaciones subsecuentes.</p>
+
+<p>El uso de containers proporciona oportunidades para buenas prácticas adicionales. Las imágenes base de Docker para
+  aplicaciones Java deben especificar explícitamente qué versión de JDK incluyen en lugar de usar tags "latest" que
+  cambian imprevisiblemente. Las imágenes deben ser construidas con versiones específicas, versionadas, y almacenadas en
+  registries para reproducibilidad. El uso de herramientas como jlink para crear imágenes de runtime minimales reduce
+  tamaño de imagen y superficie de ataque de seguridad. Las imágenes multi-stage builds separan el ambiente de
+  construcción que requiere JDK completo del ambiente de runtime que necesita solo componentes de ejecución.</p>
+
+<p>La configuración de JVM en producción merece atención cuidadosa. En lugar de confiar en defaults, especificar
+  explícitamente configuraciones importantes como tamaño de heap (-Xms, -Xmx), qué garbage collector usar, configuraciones
+  de logging, y opciones de diagnóstico. Documentar estas configuraciones y razonamiento detrás de ellas. Monitorear
+  métricas de JVM en producción (uso de memoria, frecuencia y duración de GC, compilación JIT) para identificar
+  oportunidades de optimización.</p>
+
+<p>El establecimiento de proceso de revisión para cambios relacionados con JDK es buena práctica en organizaciones grandes.
+  Propuestas para adoptar nueva versión de JDK, cambiar distribuciones, o modificar configuraciones estándar deben ser
+  revisadas por equipo de arquitectura o comité técnico para asegurar alineación con estrategia organizacional,
+  consideración de implicaciones, y comunicación apropiada a equipos afectados.</p>
+
+<p>La inversión en educación continua sobre evolución de JDK paga dividendos. Los desarrolladores deben ser alentados a
+  aprender sobre nuevas características en versiones más recientes de Java, comprender mejoras de rendimiento, y
+  mantenerse informados sobre cambios de ecosistema. Sesiones de tech talks internas, tiempo para explorar documentación
+  oficial, y soporte para asistir a conferencias contribuyen a mantener expertise técnico actual.</p>
+
+<p>Finalmente, la retrospectiva y mejora continua de prácticas de gestión de JDK es saludable. Después de actualizaciones
+  mayores, conducir retrospectivas de equipo sobre qué funcionó bien y qué podría mejorar. Actualizar documentación y
+  procesos basándose en lecciones aprendidas. Compartir experiencias con comunidad más amplia mediante blog posts o
+  presentaciones en meetups locales contribuye al conocimiento colectivo de la industria.</p>
+
+<p>Las buenas prácticas en elección y uso del JDK no son prescripciones rígidas sino principios adaptables que deben ser
+  aplicados juiciosamente basándose en contexto específico. Una startup de cinco personas tiene necesidades diferentes de
+  una empresa Fortune 500 con miles de desarrolladores. Un proyecto open source tiene restricciones diferentes de software
+  comercial propietario. Sin embargo, los principios fundamentales de estandarización deliberada, documentación clara,
+  testing riguroso, actualización disciplinada, y mejora continua aplican universalmente y distinguen organizaciones que
+  gestionan Java profesionalmente de aquellas donde es tratado como detail técnico menor gestionado ad hoc.</p>

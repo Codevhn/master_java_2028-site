@@ -1,0 +1,100 @@
+<h2>1.13: Evolución de Java a lo largo del tiempo</h2>
+
+<p>La historia de Java desde su lanzamiento público en 1995 hasta la actualidad representa más de tres décadas de
+evolución continua, adaptación a cambios tecnológicos, y refinamiento basado en experiencia práctica con el lenguaje
+en producción. A diferencia de muchos lenguajes de programación que permanecen esencialmente estáticos después de su
+creación inicial, Java ha seguido un proceso de evolución disciplinado y deliberado que ha permitido al lenguaje
+mantenerse relevante y competitivo mientras preserva compatibilidad hacia atrás y los principios de diseño
+fundamentales que lo hicieron exitoso inicialmente.</p>
+
+<p>El lanzamiento inicial de Java 1.0 en enero de 1996 marcó la transición del lenguaje Oak experimental a un producto
+comercial. Esta versión inicial incluía los componentes fundamentales que definirían Java: el lenguaje con su sintaxis
+similar a C pero más simple, la Java Virtual Machine con su modelo de ejecución basado en bytecode, el garbage
+collector automático, el sistema de excepciones, las bibliotecas estándar que proporcionaban funcionalidad para strings,
+colecciones básicas, entrada/salida, networking, y el Abstract Window Toolkit para interfaces gráficas. También incluía
+la capacidad de crear applets, pequeños programas que podían ejecutarse dentro de navegadores web.</p>
+
+<p>Java 1.1, lanzado en febrero de 1997, trajo mejoras significativas basadas en feedback de la comunidad de
+desarrolladores durante el primer año de uso generalizado. Esta versión introdujo el modelo de eventos de JavaBeans que
+mejoró significativamente cómo los componentes de interfaz gráfica manejaban interacciones del usuario. Java 1.1
+también agregó clases internas, permitiendo que las clases fueran definidas dentro de otras clases. La reflexión fue
+introducida, permitiendo que el código inspeccionara y manipulara clases, métodos y campos en tiempo de ejecución. JDBC,
+Java Database Connectivity, proporcionó un API estandarizado para acceso a bases de datos relacionales.</p>
+
+<p>Java 2, lanzado en diciembre de 1998 como JDK 1.2, representó una evolución importante del lenguaje y la plataforma.
+Esta versión introdujo el Java Collections Framework, un conjunto completo de interfaces y clases para estructuras de
+datos como listas, conjuntos, mapas, colas. Las colecciones reemplazaron las clases más antiguas y limitadas como
+<code>Vector</code> y <code>Hashtable</code> con alternativas más flexibles y eficientes como <code>ArrayList</code> y
+<code>HashMap</code>. Swing fue introducido como un toolkit GUI más sofisticado que reemplazaba AWT, proporcionando
+componentes completamente implementados en Java que se veían consistentes en todas las plataformas.</p>
+
+<p>Con Java 2, Sun también reorganizó la plataforma en tres ediciones dirigidas a diferentes segmentos del mercado: J2SE
+(Java 2 Standard Edition) para aplicaciones de escritorio y de propósito general, J2EE (Java 2 Enterprise Edition)
+para aplicaciones empresariales del lado del servidor con características adicionales como Enterprise JavaBeans,
+servlets, y JSP, y J2ME (Java 2 Micro Edition) para dispositivos con recursos limitados como teléfonos móviles y PDAs.</p>
+
+<p>Java 1.3, lanzado en mayo de 2000, se enfocó principalmente en mejoras de rendimiento y estabilidad. La JVM HotSpot
+se convirtió en la JVM por defecto, proporcionando mejoras significativas de rendimiento mediante compilación
+just-in-time más sofisticada y optimizaciones adaptativas. Java Naming and Directory Interface (JNDI) se integró en
+la plataforma estándar. Esta versión reflejaba la maduración de Java como plataforma, donde el enfoque se desplazaba
+de agregar características rápidamente a refinar y optimizar lo que ya existía.</p>
+
+<p>Java 1.4, lanzado en febrero de 2002, introdujo varias características importantes solicitadas por la comunidad. Las
+aserciones proporcionaban un mecanismo para verificar invariantes durante el desarrollo. La biblioteca NIO (New
+Input/Output) introducía capacidades de entrada/salida no bloqueante y orientadas a buffer. Las expresiones regulares
+se agregaron a la biblioteca estándar. El logging API proporcionaba capacidades de logging estandarizadas. La
+criptografía integrada proporcionaba capacidades de seguridad más robustas.</p>
+
+<p>Java 5, lanzado en septiembre de 2004 como J2SE 5.0, representó la actualización más significativa del lenguaje desde
+su creación inicial. Esta versión introdujo genéricos, permitiendo que las clases y métodos operaran sobre tipos
+parametrizados. El autoboxing y auto-unboxing automatizaba la conversión entre tipos primitivos y sus wrappers de
+objeto. Las enumeraciones se agregaron como una construcción de lenguaje de primera clase. El bucle for-each
+proporcionaba sintaxis más limpia para iterar sobre colecciones y arrays. Los argumentos variables (varargs) permitían
+que los métodos aceptaran un número variable de argumentos. Las anotaciones proporcionaban metadatos que podían ser
+procesados por herramientas y frameworks.</p>
+
+<p>Java 6, lanzado en diciembre de 2006, continuó el patrón de enfocarse en mejoras de rendimiento y facilidad de uso.
+La JVM recibió optimizaciones adicionales. El compilador de Java se hizo disponible como API, permitiendo compilación
+dinámica de código. El soporte para lenguajes de scripting se mejoró con la incorporación del framework JSR 223.
+Java 7, lanzado en julio de 2011, introdujo la sentencia try-with-resources que simplificaba la gestión de recursos,
+el switch con Strings, literales numéricos con guiones bajos para mejorar la legibilidad, la inferencia de tipos
+diamond (<code>&lt;&gt;</code>), y el fork/join framework para paralelismo de datos.</p>
+
+<p>Java 8, lanzado en marzo de 2014, fue otra actualización transformadora comparable en importancia a Java 5. Las
+expresiones lambda introdujeron programación funcional en Java, proporcionando sintaxis concisa para funciones
+anónimas. La Stream API proporcionaba una forma declarativa y eficiente de procesar colecciones de datos, soportando
+operaciones como map, filter, reduce en estilo funcional. Los métodos default y static en interfaces permitían que las
+interfaces evolucionaran sin romper implementaciones existentes. La nueva API de Date y Time reemplazaba las
+problemáticas clases <code>Date</code> y <code>Calendar</code> con un diseño inmutable más robusto.</p>
+
+<p>A partir de Java 9 en septiembre de 2017, Oracle adoptó un nuevo modelo de lanzamiento con versiones cada seis meses
+en lugar de ciclos de varios años. Java 9 introdujo el sistema de módulos (Project Jigsaw) que permitía mejor
+encapsulación y modularización de código. JShell proporcionaba un REPL (Read-Eval-Print Loop) para experimentación
+interactiva. Las factory methods para colecciones inmutables simplificaban la creación de colecciones no modificables.</p>
+
+<p>Java 10 en marzo de 2018 introdujo inferencia de tipos de variables locales con la palabra clave <code>var</code>,
+reduciendo verbosidad en declaraciones de variables. Java 11 en septiembre de 2018, una versión de soporte a largo
+plazo (LTS), introdujo un cliente HTTP estandarizado, mejoras en Strings, y la capacidad de ejecutar archivos fuente
+Java directamente sin compilación explícita. Las versiones posteriores continuaron el patrón de actualizaciones
+incrementales cada seis meses con LTS cada tres años.</p>
+
+<p>Java 14 estabilizó expresiones switch y agregó records como preview. Java 15 introdujo clases selladas (sealed
+classes) como preview. Java 16 estabilizó records y pattern matching para instanceof. Java 17, otra versión LTS
+lanzada en septiembre de 2021, estabilizó clases selladas y agregó mejoras significativas de seguridad. Java 21, la
+siguiente versión LTS, estabilizó pattern matching para switch, records patterns, y virtual threads (Project Loom) que
+revolucionaban la programación concurrente al permitir millones de threads ligeros.</p>
+
+<p>A lo largo de toda esta evolución de más de 25 años, varios temas son consistentes. Primero, Java ha mantenido
+rigurosamente compatibilidad hacia atrás. Código escrito para Java 1.0 generalmente aún compila y ejecuta en JVMs
+modernas. Esta estabilidad ha sido crítica para la adopción empresarial donde las inversiones en código base necesitan
+ser protegidas durante décadas. Segundo, Java ha evolucionado deliberadamente, adoptando nuevas características solo
+después de consideración cuidadosa de cómo encajan con los principios de diseño del lenguaje. Tercero, Java ha
+aprendido de otros lenguajes, incorporando ideas exitosas de lenguajes funcionales, lenguajes de scripting, y
+competidores modernos mientras las adapta al contexto de Java.</p>
+
+<p>La evolución continua de Java ha permitido al lenguaje mantener relevancia en un paisaje tecnológico que ha cambiado
+dramáticamente desde 1995. Del mundo de applets de navegador y aplicaciones de escritorio, Java se ha adaptado para
+dominar el desarrollo empresarial del lado del servidor, procesamiento de big data, sistemas Android, servicios de
+microservicios en cloud, y continúa evolucionando para abordar desafíos modernos. Esta capacidad de evolucionar
+mientras preserva los valores fundamentales de portabilidad, robustez, seguridad y simplicidad es testimonio de la
+solidez del diseño original y del proceso de gobernanza que ha guiado su desarrollo.</p>

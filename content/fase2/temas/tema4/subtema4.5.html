@@ -1,0 +1,588 @@
+<h2><strong>4.5 El método main como punto de entrada del sistema</strong></h2>
+
+<p>El método <code>main</code> es el lugar más importante de todo programa Java ejecutable. Es el punto de partida donde la JVM
+comienza a ejecutar nuestro código, el primer método que se invoca cuando ejecutamos un programa. Sin el método <code>main</code>,
+un programa Java no puede ejecutarse como aplicación independiente. Comprender qué es el método <code>main</code>, por qué es
+necesario, cómo debe declararse exactamente, y qué papel juega en la ejecución del programa es fundamental para escribir
+aplicaciones Java funcionales.</p>
+
+<hr>
+
+<h3><strong>¿Qué es el método main?</strong></h3>
+
+<p>El método <code>main</code> es:</p>
+
+<p><strong>El punto de entrada del programa</strong> - Donde la JVM comienza a ejecutar el código</p>
+
+<p><strong>Una firma específica obligatoria</strong> - Debe escribirse exactamente de una forma determinada</p>
+
+<p><strong>El contenedor de las instrucciones iniciales</strong> - Las primeras instrucciones que ejecuta el programa</p>
+
+<p><strong>Analogía:</strong></p>
+
+<p>Piense en el método <code>main</code> como la puerta principal de una casa:</p>
+<ul>
+  <li>Es el punto de entrada obligatorio</li>
+  <li>Todo lo demás se accede desde ahí</li>
+  <li>Sin puerta principal, no se puede entrar a la casa</li>
+  <li>Sin método <code>main</code>, no se puede ejecutar el programa</li>
+</ul>
+
+<hr>
+
+<h3><strong>La firma del método main</strong></h3>
+
+<p><strong>Esta es la firma exacta que DEBE tener el método main:</strong></p>
+
+<pre class="language-java"><code>public static void main(String[] args)</code></pre>
+
+<p><strong>Cada palabra es importante y obligatoria. No puede cambiar nada.</strong></p>
+
+<p><strong>Ejemplo completo:</strong></p>
+
+<pre class="language-java"><code>public class MiPrograma {
+    public static void main(String[] args) {
+        System.out.println("El programa comienza aquí");
+    }
+}</code></pre>
+
+<p>Cuando ejecuta:</p>
+<pre class="language-bash"><code>java MiPrograma</code></pre>
+
+<p>La JVM:</p>
+<ol>
+  <li>Carga la clase <code>MiPrograma</code></li>
+  <li>Busca el método <code>main</code> con la firma exacta</li>
+  <li>Ejecuta las instrucciones dentro de <code>main</code></li>
+  <li>Termina cuando <code>main</code> finaliza</li>
+</ol>
+
+<hr>
+
+<h3><strong>¿Qué sucede sin método main?</strong></h3>
+
+<p><strong>Programa sin método main:</strong></p>
+
+<pre class="language-java"><code>public class ProgramaSinMain {
+    // No hay método main
+}</code></pre>
+
+<p><strong>Intento de ejecutar:</strong></p>
+<pre class="language-bash"><code>javac ProgramaSinMain.java  # ✓ Compila bien
+java ProgramaSinMain        # ✗ Error en ejecución</code></pre>
+
+<p><strong>Error:</strong></p>
+<pre class="language-markup"><code>Error: Main method not found in class ProgramaSinMain, please define the main method as:
+public static void main(String[] args)</code></pre>
+
+<p>La JVM es clara: necesita el método <code>main</code> para poder ejecutar.</p>
+
+<hr>
+
+<h3><strong>¿Qué sucede si el método main está mal escrito?</strong></h3>
+
+<p><strong>Error 1: Falta <code>public</code></strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    static void main(String[] args) { // ✗ Falta "public"
+        System.out.println("Error");
+    }
+}</code></pre>
+
+<p><strong>Error:</strong> JVM no encuentra el <code>main</code></p>
+
+<hr>
+
+<p><strong>Error 2: Falta <code>static</code></strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public void main(String[] args) { // ✗ Falta "static"
+        System.out.println("Error");
+    }
+}</code></pre>
+
+<p><strong>Error:</strong> JVM no encuentra el <code>main</code></p>
+
+<hr>
+
+<p><strong>Error 3: Tipo de retorno incorrecto</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static int main(String[] args) { // ✗ Debe ser "void"
+        System.out.println("Error");
+        return 0;
+    }
+}</code></pre>
+
+<p><strong>Error:</strong> JVM no encuentra el <code>main</code></p>
+
+<hr>
+
+<p><strong>Error 4: Nombre incorrecto</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void Main(String[] args) { // ✗ "Main" con mayúscula
+        System.out.println("Error");
+    }
+}</code></pre>
+
+<p><strong>Error:</strong> JVM busca <code>main</code> (minúscula), no <code>Main</code></p>
+
+<hr>
+
+<p><strong>Regla absoluta: El método main debe ser EXACTAMENTE:</strong></p>
+
+<pre class="language-java"><code>public static void main(String[] args)</code></pre>
+
+<p><strong>No puede cambiar ninguna palabra.</strong></p>
+
+<hr>
+
+<h3><strong>El método main contiene las instrucciones del programa</strong></h3>
+
+<p>Todo lo que escribimos entre las llaves <code>{ }</code> del método <code>main</code> es lo que el programa ejecutará:</p>
+
+<pre class="language-java"><code>public class CalculadoraSimple {
+    public static void main(String[] args) {
+        // ← El programa comienza aquí
+
+        double numero1 = 100.0;
+        double numero2 = 50.0;
+        double resultado = numero1 + numero2;
+
+        System.out.println("Resultado: " + resultado);
+
+        // ← El programa termina aquí
+    }
+}</code></pre>
+
+<p><strong>Orden de ejecución:</strong></p>
+
+<p>Las instrucciones se ejecutan <strong>de arriba hacia abajo</strong>, una por una:</p>
+
+<pre class="language-java"><code>public static void main(String[] args) {
+    System.out.println("1. Esta línea se ejecuta primero");
+    System.out.println("2. Esta línea se ejecuta segunda");
+    System.out.println("3. Esta línea se ejecuta tercera");
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>1. Esta línea se ejecuta primero
+2. Esta línea se ejecuta segunda
+3. Esta línea se ejecuta tercera</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de costo total</strong></h3>
+
+<p><strong>Archivo: CalculadoraCostoTotal.java</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraCostoTotal {
+    public static void main(String[] args) {
+        // Inicio del programa (punto de entrada)
+
+        System.out.println("=== CALCULADORA DE COSTO TOTAL ===");
+        System.out.println();
+
+        // Datos de productos
+        double precioProducto1 = 125.00;
+        double precioProducto2 = 280.00;
+        double precioProducto3 = 95.50;
+
+        // Calcular subtotal
+        double subtotal = precioProducto1 + precioProducto2 + precioProducto3;
+
+        // Calcular envío (10% del subtotal)
+        double costoEnvio = subtotal * 10.0 / 100.0;
+
+        // Calcular total
+        double costoTotal = subtotal + costoEnvio;
+
+        // Mostrar resultados
+        System.out.println("Producto 1: Lps " + precioProducto1);
+        System.out.println("Producto 2: Lps " + precioProducto2);
+        System.out.println("Producto 3: Lps " + precioProducto3);
+        System.out.println("----------------------------------");
+        System.out.println("Subtotal: Lps " + subtotal);
+        System.out.println("Envío (10%): Lps " + costoEnvio);
+        System.out.println("==================================");
+        System.out.println("TOTAL: Lps " + costoTotal);
+
+        // Fin del programa
+    }
+}</code></pre>
+
+<p><strong>Ejecución:</strong></p>
+<pre class="language-bash"><code>javac CalculadoraCostoTotal.java
+java CalculadoraCostoTotal</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>=== CALCULADORA DE COSTO TOTAL ===
+
+Producto 1: Lps 125.0
+Producto 2: Lps 280.0
+Producto 3: Lps 95.5
+----------------------------------
+Subtotal: Lps 500.5
+Envío (10%): Lps 50.05
+==================================
+TOTAL: Lps 550.55</code></pre>
+
+<p><strong>Flujo de ejecución:</strong></p>
+
+<pre class="language-markup"><code>1. JVM ejecuta: java CalculadoraCostoTotal
+↓
+2. JVM carga la clase CalculadoraCostoTotal
+↓
+3. JVM busca método main
+↓
+4. JVM encuentra: public static void main(String[] args)
+↓
+5. JVM ejecuta instrucciones dentro de main, línea por línea
+↓
+6. Cuando main termina, programa termina</code></pre>
+
+<hr>
+
+<h3><strong>El parámetro <code>String[] args</code></strong></h3>
+
+<p>La firma completa del <code>main</code> incluye:</p>
+
+<pre class="language-java"><code>public static void main(String[] args)</code></pre>
+
+<p>El parámetro <code>String[] args</code> permite recibir <strong>argumentos de línea de comandos</strong>.</p>
+
+<p><strong>Por ahora, necesita saber:</strong></p>
+<ul>
+  <li>Es parte obligatoria de la firma</li>
+  <li>Debe escribirse exactamente así</li>
+  <li>Puede llamarse <code>args</code> o cualquier otro nombre, pero por convención se usa <code>args</code></li>
+</ul>
+
+<p><strong>Ejemplo con nombre diferente (válido pero no recomendado):</strong></p>
+
+<pre class="language-java"><code>public static void main(String[] parametros) { // ✓ Funciona
+    // ...
+}</code></pre>
+
+<pre class="language-java"><code>public static void main(String[] argumentos) { // ✓ Funciona
+    // ...
+}</code></pre>
+
+<p><strong>Pero la convención universal es:</strong></p>
+<pre class="language-java"><code>public static void main(String[] args) { // ✓ Recomendado
+    // ...
+}</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo: Sistema de registro de venta</strong></h3>
+
+<p><strong>Archivo: RegistroVenta.java</strong></p>
+
+<pre class="language-java"><code>public class RegistroVenta {
+    public static void main(String[] args) {
+        // Punto de entrada del sistema de registro
+
+        // Datos de la venta
+        String nombreCliente = "Maria Gonzalez";
+        String productoVendido = "Laptop HP";
+        int cantidadVendida = 2;
+        double precioUnitario = 15000.00;
+
+        // Calcular monto total
+        double montoTotal = cantidadVendida * precioUnitario;
+
+        // Calcular descuento por cantidad (5% si compra 2 o más)
+        double porcentajeDescuento = 5.0;
+        double montoDescuento = montoTotal * porcentajeDescuento / 100.0;
+
+        // Calcular monto final
+        double montoFinal = montoTotal - montoDescuento;
+
+        // Registrar y mostrar la venta
+        System.out.println("========== REGISTRO DE VENTA ==========");
+        System.out.println("Cliente: " + nombreCliente);
+        System.out.println("Producto: " + productoVendido);
+        System.out.println("Cantidad: " + cantidadVendida + " unidades");
+        System.out.println("Precio unitario: Lps " + precioUnitario);
+        System.out.println("---------------------------------------");
+        System.out.println("Subtotal: Lps " + montoTotal);
+        System.out.println("Descuento (5%): Lps " + montoDescuento);
+        System.out.println("=======================================");
+        System.out.println("TOTAL A PAGAR: Lps " + montoFinal);
+        System.out.println();
+        System.out.println("Venta registrada exitosamente.");
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>========== REGISTRO DE VENTA ==========
+Cliente: Maria Gonzalez
+Producto: Laptop HP
+Cantidad: 2 unidades
+Precio unitario: Lps 15000.0
+---------------------------------------
+Subtotal: Lps 30000.0
+Descuento (5%): Lps 1500.0
+=======================================
+TOTAL A PAGAR: Lps 28500.0
+
+Venta registrada exitosamente.</code></pre>
+
+<hr>
+
+<h3><strong>Múltiples instrucciones en el método main</strong></h3>
+
+<p>Puede escribir tantas instrucciones como necesite dentro del método <code>main</code>:</p>
+
+<pre class="language-java"><code>public class EjemploMultiplesInstrucciones {
+    public static void main(String[] args) {
+        // Instrucción 1
+        System.out.println("Primera instrucción");
+
+        // Instrucción 2
+        double valor1 = 100.0;
+
+        // Instrucción 3
+        double valor2 = 200.0;
+
+        // Instrucción 4
+        double suma = valor1 + valor2;
+
+        // Instrucción 5
+        System.out.println("Suma: " + suma);
+
+        // Instrucción 6
+        double promedio = suma / 2.0;
+
+        // Instrucción 7
+        System.out.println("Promedio: " + promedio);
+    }
+}</code></pre>
+
+<p>Todas las instrucciones se ejecutan en orden, de arriba hacia abajo.</p>
+
+<hr>
+
+<h3><strong>El método main es el contenedor principal</strong></h3>
+
+<p><strong>Por ahora, TODO el código ejecutable va dentro del método main:</strong></p>
+
+<pre class="language-java"><code>public class MiPrograma {
+
+    public static void main(String[] args) {
+        // ← TODO el código va aquí dentro
+
+        // Declaraciones de variables
+        double precio = 100.0;
+        double descuento = 10.0;
+
+        // Cálculos
+        double precioFinal = precio - descuento;
+
+        // Salida
+        System.out.println("Precio final: " + precioFinal);
+
+        // ← TODO el código está dentro de main
+    }
+
+}</code></pre>
+
+<p><strong>No podemos poner código fuera del método main:</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+
+    System.out.println("Esto está fuera de main"); // ✗ ERROR
+
+    public static void main(String[] args) {
+        System.out.println("Esto está dentro de main"); // ✓ OK
+    }
+}</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de consumo eléctrico</strong></h3>
+
+<p><strong>Archivo: CalculadoraConsumoElectrico.java</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraConsumoElectrico {
+    public static void main(String[] args) {
+        // Punto de entrada del calculador de consumo
+
+        System.out.println("=== CALCULADORA DE CONSUMO ELÉCTRICO ===");
+        System.out.println();
+
+        // Lectura anterior del medidor
+        double lecturaAnterior = 1520.0;
+
+        // Lectura actual del medidor
+        double lecturaActual = 1680.0;
+
+        // Calcular consumo en kWh
+        double consumoKwh = lecturaActual - lecturaAnterior;
+
+        // Tarifa por kWh en Lempiras
+        double tarifaPorKwh = 3.50;
+
+        // Calcular monto a pagar
+        double montoPagar = consumoKwh * tarifaPorKwh;
+
+        // Cargo fijo mensual
+        double cargoFijo = 85.00;
+
+        // Calcular total
+        double totalFactura = montoPagar + cargoFijo;
+
+        // Mostrar desglose
+        System.out.println("Lectura anterior: " + lecturaAnterior + " kWh");
+        System.out.println("Lectura actual: " + lecturaActual + " kWh");
+        System.out.println("Consumo del mes: " + consumoKwh + " kWh");
+        System.out.println();
+        System.out.println("Tarifa: Lps " + tarifaPorKwh + " por kWh");
+        System.out.println("Consumo: Lps " + montoPagar);
+        System.out.println("Cargo fijo: Lps " + cargoFijo);
+        System.out.println("========================================");
+        System.out.println("TOTAL A PAGAR: Lps " + totalFactura);
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>=== CALCULADORA DE CONSUMO ELÉCTRICO ===
+
+Lectura anterior: 1520.0 kWh
+Lectura actual: 1680.0 kWh
+Consumo del mes: 160.0 kWh
+
+Tarifa: Lps 3.5 por kWh
+Consumo: Lps 560.0
+Cargo fijo: Lps 85.0
+========================================
+TOTAL A PAGAR: Lps 645.0</code></pre>
+
+<hr>
+
+<h3><strong>Errores comunes con el método main</strong></h3>
+
+<h4><strong>Error 1: Olvidar la palabra <code>static</code></strong></h4>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public void main(String[] args) { // ✗ Falta static
+        System.out.println("No funcionará");
+    }
+}</code></pre>
+
+<p><strong>Error en ejecución:</strong> JVM no encuentra el <code>main</code></p>
+
+<hr>
+
+<h4><strong>Error 2: Escribir <code>Main</code> con mayúscula</strong></h4>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void Main(String[] args) { // ✗ "Main" en vez de "main"
+        System.out.println("No funcionará");
+    }
+}</code></pre>
+
+<p><strong>Error:</strong> JVM busca <code>main</code> (minúscula)</p>
+
+<hr>
+
+<h4><strong>Error 3: Olvidar el parámetro <code>String[] args</code></strong></h4>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main() { // ✗ Falta String[] args
+        System.out.println("No funcionará");
+    }
+}</code></pre>
+
+<p><strong>Error:</strong> JVM no encuentra el <code>main</code> con la firma correcta</p>
+
+<hr>
+
+<h4><strong>Error 4: Poner código fuera del método main</strong></h4>
+
+<pre class="language-java"><code>public class Ejemplo {
+
+    double precio = 100.0; // ✓ Esto es válido (variable de clase)
+
+    System.out.println("Hola"); // ✗ ERROR: instrucción fuera de método
+
+    public static void main(String[] args) {
+        System.out.println("Correcto");
+    }
+}</code></pre>
+
+<p>Las instrucciones ejecutables DEBEN estar dentro de un método.</p>
+
+<hr>
+
+<h3><strong>Plantilla del método main</strong></h3>
+
+<p><strong>Use esta plantilla para todos sus programas:</strong></p>
+
+<pre class="language-java"><code>public class NombrePrograma {
+    public static void main(String[] args) {
+        // Su código aquí
+
+    }
+}</code></pre>
+
+<p><strong>Copie esta estructura exacta cada vez que cree un nuevo programa.</strong></p>
+
+<hr>
+
+<h3><strong>Ejemplo final: Sistema de cálculo de comisión</strong></h3>
+
+<p><strong>Archivo: CalculadoraComision.java</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraComision {
+    public static void main(String[] args) {
+        // Sistema de cálculo de comisión para vendedores
+
+        // Datos del vendedor
+        String nombreVendedor = "Carlos Martinez";
+        double ventasTotales = 45000.00;
+
+        // Porcentaje de comisión
+        double porcentajeComision = 8.0;
+
+        // Calcular comisión
+        double montoComision = ventasTotales * porcentajeComision / 100.0;
+
+        // Salario base
+        double salarioBase = 8000.00;
+
+        // Calcular salario total
+        double salarioTotal = salarioBase + montoComision;
+
+        // Mostrar desglose
+        System.out.println("========== CÁLCULO DE COMISIÓN ==========");
+        System.out.println("Vendedor: " + nombreVendedor);
+        System.out.println("Ventas totales: Lps " + ventasTotales);
+        System.out.println("Comisión (" + porcentajeComision + "%): Lps " + montoComision);
+        System.out.println("-----------------------------------------");
+        System.out.println("Salario base: Lps " + salarioBase);
+        System.out.println("Comisión: Lps " + montoComision);
+        System.out.println("=========================================");
+        System.out.println("SALARIO TOTAL: Lps " + salarioTotal);
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>========== CÁLCULO DE COMISIÓN ==========
+Vendedor: Carlos Martinez
+Ventas totales: Lps 45000.0
+Comisión (8.0%): Lps 3600.0
+-----------------------------------------
+Salario base: Lps 8000.0
+Comisión: Lps 3600.0
+=========================================
+SALARIO TOTAL: Lps 11600.0</code></pre>
+
+<hr>
+
+<p>El método <code>main</code> es el corazón de todo programa Java ejecutable. Es donde la JVM comienza a ejecutar nuestro código y
+donde colocamos todas las instrucciones que queremos que el programa realice. Su firma debe ser exacta, sin ninguna
+variación, y todo el código ejecutable debe estar dentro de sus llaves. Comprender el método <code>main</code> es comprender cómo
+funcionan los programas Java a nivel fundamental.</p>

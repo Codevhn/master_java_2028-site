@@ -1,0 +1,24 @@
+# ==========================================
+# DESARROLLO WEB (HTML/CSS/JS)
+# ==========================================
+
+# Dependencias (¡NUNCA las subas!)
+node_modules/
+bower_components/
+
+# Archivos de compilación / Minificación
+# Si usas herramientas como Sass, Tailwind o Webpack
+.sass-cache/
+*.css.map
+*.js.map
+dist/
+build/
+.cache/
+
+# Pruebas (Si usas Jest, Mocha, etc.)
+coverage/
+.nyc_output/
+
+# Otros
+.eslintcache
+.stylelintcache

@@ -1,0 +1,445 @@
+<h2>3.13: Errores comunes durante la instalación y configuración</h2>
+
+<p>A pesar de que la instalación y configuración del entorno Java es relativamente directa cuando se siguen los pasos
+  correctamente, numerosos errores comunes surgen repetidamente, especialmente para desarrolladores que configuran Java
+  por primera vez o que trabajan en sistemas con configuraciones previas conflictivas. Estos errores frecuentemente causan
+  frustración porque los mensajes de error pueden ser crípticos, las causas no son inmediatamente obvias, y las
+  soluciones requieren comprender detalles de cómo el sistema operativo, variables de entorno, y herramientas Java
+  interactúan. Este subtema cataloga los errores más comunes, explica sus causas raíz, y proporciona soluciones paso a
+  paso.</p>
+
+<h3>Categoría 1: Errores de comando no encontrado</h3>
+
+<h4>Error 1.1: "'java' is not recognized as an internal or external command"</h4>
+
+<p><strong>Plataforma:</strong> Windows</p>
+
+<pre class="language-markup">
+  <code>C:\Users\usuario> java -version
+'java' is not recognized as an internal or external command,
+operable program or batch file.</code>
+</pre>
+
+<p><strong>Causas posibles:</strong></p>
+<ol>
+  <li>JDK no está instalado</li>
+  <li>PATH no está configurado correctamente</li>
+  <li>PATH está configurado pero terminal no ha sido reiniciada</li>
+  <li>Instalación de JDK está corrupta</li>
+</ol>
+
+<p><strong>Solución paso a paso:</strong></p>
+
+<p>Verificar si JDK está instalado:</p>
+
+<pre class="language-bash">
+  <code>dir "C:\Program Files\Eclipse Adoptium"
+dir "C:\Program Files\Java"</code>
+</pre>
+
+<p>Si no muestra ningún directorio → instalar JDK (ver subtema 3.5).</p>
+
+<p>Si JDK está instalado, verificar PATH:</p>
+
+<pre class="language-bash">
+  <code>echo %PATH%</code>
+</pre>
+
+<p>Buscar en la salida referencias a Java. Debe contener algo como:</p>
+
+<pre class="language-markup">
+  <code>...;C:\Program Files\Eclipse Adoptium\jdk-21.0.1.12-hotspot\bin;...</code>
+</pre>
+
+<p>Si PATH no contiene ruta a JDK, seguir instrucciones de configuración en subtema 3.6.
+  <strong>Importante:</strong> después de configurar, cerrar y abrir nueva ventana de CMD.</p>
+
+<p>Si PATH parece correcto pero el comando sigue fallando:</p>
+
+<pre class="language-bash">
+  <code># Verificar JAVA_HOME
+echo %JAVA_HOME%
+
+# Verificar manualmente que java.exe existe
+dir "%JAVA_HOME%\bin\java.exe"</code>
+</pre>
+
+<h4>Error 1.2: "bash: java: command not found"</h4>
+
+<p><strong>Plataforma:</strong> macOS / Linux</p>
+
+<pre class="language-bash">
+  <code>$ java -version
+bash: java: command not found</code>
+</pre>
+
+<p><strong>Causas posibles:</strong> JDK no está instalado, PATH no está configurado, archivo de configuración de shell
+  incorrecto, o cambios no aplicados a sesión actual.</p>
+
+<p>Verificar si JDK está instalado:</p>
+
+<pre class="language-bash">
+  <code># macOS
+ls /Library/Java/JavaVirtualMachines/
+
+# Linux
+ls /opt/ | grep jdk
+ls /usr/lib/jvm/</code>
+</pre>
+
+<p>Verificar JAVA_HOME y PATH:</p>
+
+<pre class="language-bash">
+  <code>echo $JAVA_HOME
+echo $PATH | tr ':' '\n' | grep java</code>
+</pre>
+
+<p>Si JAVA_HOME está vacío, verificar qué shell está activo:</p>
+
+<pre class="language-bash">
+  <code>echo $SHELL</code>
+</pre>
+
+<p><strong>Para bash:</strong></p>
+
+<pre class="language-bash">
+  <code>nano ~/.bashrc   # Linux
+nano ~/.bash_profile  # macOS
+
+# Agregar al final:
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH
+
+# Aplicar cambios
+source ~/.bashrc  # o source ~/.bash_profile</code>
+</pre>
+
+<p><strong>Para zsh:</strong></p>
+
+<pre class="language-bash">
+  <code>nano ~/.zshrc
+
+# Agregar mismo contenido que bash
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH
+
+# Guardar y aplicar
+source ~/.zshrc</code>
+</pre>
+
+<h3>Categoría 2: Errores de versión incorrecta</h3>
+
+<h4>Error 2.1: Versión de Java diferente a la esperada</h4>
+
+<pre class="language-bash">
+  <code>$ java -version
+openjdk version "1.8.0_392"
+# Pero se instaló Java 21</code>
+</pre>
+
+<p><strong>Causa:</strong> múltiples instalaciones de Java en el sistema, otra versión está primero en PATH.</p>
+
+<p>Identificar todas las instalaciones:</p>
+
+<pre class="language-bash">
+  <code># macOS
+/usr/libexec/java_home -V
+
+# Linux
+update-alternatives --list java   # Debian/Ubuntu
+alternatives --list java          # RHEL/Fedora
+
+# Windows
+where java</code>
+</pre>
+
+<p>Asegurar que <code>JAVA_HOME/bin</code> está <strong>al inicio</strong> del PATH:</p>
+
+<pre class="language-bash">
+  <code>export PATH=$JAVA_HOME/bin:$PATH   # ✓ Correcto
+
+export PATH=$PATH:$JAVA_HOME/bin   # ✗ Incorrecto: pone al final</code>
+</pre>
+
+<p>En Windows, usar el editor de variable PATH y mover la entrada del JDK deseado al tope de la lista.</p>
+
+<h4>Error 2.2: javac y java muestran versiones diferentes</h4>
+
+<pre class="language-bash">
+  <code>$ javac -version
+javac 21.0.1
+
+$ java -version
+openjdk version "11.0.21"</code>
+</pre>
+
+<p><strong>Causa:</strong> <code>javac</code> y <code>java</code> resolviendo a diferentes instalaciones.</p>
+
+<pre class="language-bash">
+  <code>which javac
+which java</code>
+</pre>
+
+<p>Si muestran rutas diferentes, PATH contiene referencias a múltiples instalaciones. Limpiar PATH para incluir solo una
+  versión:</p>
+
+<pre class="language-bash">
+  <code>export PATH=$JAVA_HOME/bin:$PATH
+
+java -version
+javac -version   # Ambos deben mostrar misma versión</code>
+</pre>
+
+<h3>Categoría 3: Errores de compilación</h3>
+
+<h4>Error 3.1: "javac: command not found" pero java funciona</h4>
+
+<pre class="language-bash">
+  <code>$ java -version
+openjdk version "21.0.1"   # ✓ Funciona
+
+$ javac -version
+bash: javac: command not found   # ✗ Falla</code>
+</pre>
+
+<p><strong>Causa:</strong> se instaló JRE en lugar de JDK.</p>
+
+<pre class="language-bash">
+  <code>ls $JAVA_HOME/bin/</code>
+</pre>
+
+<p>El JDK completo incluye: <code>java</code>, <code>javac</code>, <code>jar</code>, <code>javadoc</code>, etc. Si solo
+  tiene <code>java</code> pero no <code>javac</code>, hay que desinstalar el JRE e instalar el JDK completo (ver subtema
+  3.5).</p>
+
+<h4>Error 3.2: "error: release version X not supported"</h4>
+
+<pre class="language-bash">
+  <code>$ javac -release 21 MiClase.java
+error: release version 21 not supported</code>
+</pre>
+
+<p><strong>Causa:</strong> versión de <code>javac</code> es más antigua que la versión especificada con
+  <code>-release</code>. Solución: actualizar al JDK que soporte la versión deseada, o ajustar <code>-release</code> a
+  la versión soportada por el JDK instalado.</p>
+
+<h4>Error 3.3: "error: cannot find symbol"</h4>
+
+<pre class="language-bash">
+  <code>$ javac MiClase.java
+MiClase.java:5: error: cannot find symbol
+String nombre = "Java";
+^
+symbol:   class String
+location: class MiClase</code>
+</pre>
+
+<p>La causa más común es un error de sintaxis en el código (typo, importación faltante). Verificar el código
+  cuidadosamente. Para confirmar que la instalación no está corrupta:</p>
+
+<pre class="language-bash">
+  <code>ls $JAVA_HOME/jmods/   # Java 9+
+ls $JAVA_HOME/lib/     # Java 8</code>
+</pre>
+
+<p>Si los directorios están vacíos, reinstalar el JDK.</p>
+
+<h3>Categoría 4: Errores de ejecución</h3>
+
+<h4>Error 4.1: "Error: Could not find or load main class"</h4>
+
+<pre class="language-bash">
+  <code>$ java MiClase
+Error: Could not find or load main class MiClase
+Caused by: java.lang.ClassNotFoundException: MiClase</code>
+</pre>
+
+<p><strong>Causa A — Nombre incorrecto:</strong> no incluir la extensión <code>.class</code>:</p>
+
+<pre class="language-bash">
+  <code>java MiClase.class   # ✗ Incorrecto
+java MiClase         # ✓ Correcto</code>
+</pre>
+
+<p><strong>Causa B — Clase en paquete:</strong> si <code>MiClase.java</code> declara un paquete, usar el nombre
+  completo:</p>
+
+<pre class="language-java">
+  <code>package com.empresa.app;
+
+public class MiClase {
+    public static void main(String[] args) {
+        System.out.println("Hola");
+    }
+}</code>
+</pre>
+
+<pre class="language-bash">
+  <code>java MiClase                    # ✗ Ignora el paquete
+java com.empresa.app.MiClase    # ✓ Nombre completo con paquete</code>
+</pre>
+
+<p><strong>Causa C — Directorio incorrecto:</strong></p>
+
+<pre class="language-bash">
+  <code># Si el .class está en proyecto/src/MiClase.class
+# y ejecutas desde proyecto/:
+java MiClase          # ✗ No encuentra la clase
+
+# Solución: especificar classpath
+java -cp src MiClase  # ✓</code>
+</pre>
+
+<h4>Error 4.2: "UnsupportedClassVersionError"</h4>
+
+<pre class="language-bash">
+  <code>$ java MiClase
+Exception in thread "main" java.lang.UnsupportedClassVersionError:
+MiClase has been compiled by a more recent version of the Java Runtime
+(class file version 65.0), this version of the Java Runtime only
+recognizes class file versions up to 61.0</code>
+</pre>
+
+<p><strong>Versiones de class file:</strong> 65.0 = Java 21, 61.0 = Java 17, 55.0 = Java 11, 52.0 = Java 8.</p>
+
+<p><strong>Causa:</strong> clase compilada con versión más nueva de Java que la JVM que la ejecuta.</p>
+
+<p>Opción 1 — usar la misma versión para ejecutar:</p>
+
+<pre class="language-bash">
+  <code>java21         # Cambiar a Java 21
+java -version  # Verificar
+java MiClase</code>
+</pre>
+
+<p>Opción 2 — compilar para versión más antigua:</p>
+
+<pre class="language-bash">
+  <code>javac --release 17 MiClase.java   # Compilar compatible con Java 17
+java MiClase                      # Ejecutar con Java 17</code>
+</pre>
+
+<h3>Categoría 5: Errores de JAVA_HOME</h3>
+
+<h4>Error 5.1: JAVA_HOME apunta a ubicación incorrecta</h4>
+
+<pre class="language-bash">
+  <code>echo $JAVA_HOME
+ls $JAVA_HOME   # Debe mostrar: bin, lib, include, etc.</code>
+</pre>
+
+<p>Si muestra "No such file or directory", JAVA_HOME está mal configurado.</p>
+
+<p><strong>Error frecuente en macOS</strong> — falta <code>/Contents/Home</code>:</p>
+
+<pre class="language-bash">
+  <code># Incorrecto:
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk
+
+# Correcto:
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home</code>
+</pre>
+
+<p><strong>Error frecuente en Windows</strong> — apuntando al subdirectorio <code>bin</code>:</p>
+
+<pre class="language-bash">
+  <code># Incorrecto:
+JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21\bin
+
+# Correcto:
+JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21</code>
+</pre>
+
+<h4>Error 5.2: JAVA_HOME no persiste después de reiniciar</h4>
+
+<p><strong>Causa:</strong> variable configurada solo para sesión actual, no de forma permanente.</p>
+
+<p>En Windows, usar la configuración de variables de entorno del sistema (no <code>set</code> en CMD). En macOS/Linux,
+  agregar el <code>export</code> al archivo de shell correcto (<code>~/.bashrc</code>, <code>~/.bash_profile</code>, o
+  <code>~/.zshrc</code>).</p>
+
+<p>Verificar que el archivo se carga al inicio:</p>
+
+<pre class="language-bash">
+  <code># Agregar línea de test temporal
+echo "Cargando configuración de shell" >> ~/.zshrc
+
+# Abrir nueva terminal — debe mostrar el mensaje</code>
+</pre>
+
+<h3>Categoría 6: Errores de permisos</h3>
+
+<h4>Error 6.1: "Permission denied" al instalar JDK (macOS/Linux)</h4>
+
+<pre class="language-bash">
+  <code>sudo mv jdk-21 /opt/   # Usar sudo para directorios del sistema</code>
+</pre>
+
+<p>Alternativa sin <code>sudo</code> — instalar en directorio de usuario:</p>
+
+<pre class="language-bash">
+  <code>mkdir -p ~/java
+mv jdk-21 ~/java/
+export JAVA_HOME=~/java/jdk-21</code>
+</pre>
+
+<h4>Error 6.2: "Access is denied" al configurar variables de entorno (Windows)</h4>
+
+<p>Si la cuenta no tiene privilegios administrativos, usar la sección de variables de entorno de <strong>usuario</strong>
+  (no de sistema) en el diálogo — no requiere privilegios admin.</p>
+
+<h3>Categoría 7: Errores de IDEs</h3>
+
+<h4>Error 7.1: IDE no encuentra JDK</h4>
+
+<p><strong>IntelliJ IDEA:</strong> File → Project Structure → Project → Project SDK → Add SDK → JDK → navegar a la
+  ruta del JDK instalado.</p>
+
+<p><strong>Eclipse:</strong> Window → Preferences → Java → Installed JREs → Add → Standard VM → navegar a JDK →
+  Finish.</p>
+
+<p><strong>VS Code:</strong> instalar Extension Pack for Java → Command Palette (<code>Ctrl+Shift+P</code>) →
+  "Java: Configure Java Runtime" → agregar JDK manualmente.</p>
+
+<h4>Error 7.2: Proyecto no compila en IDE pero funciona en línea de comandos</h4>
+
+<p><strong>Causa:</strong> IDE usando configuración diferente de JDK que la línea de comandos.</p>
+
+<p>Verificar que la configuración del proyecto apunte al mismo JDK que <code>JAVA_HOME</code>, y que el nivel de
+  lenguaje del proyecto coincida con la versión usada (en IntelliJ: File → Project Structure → Project language level;
+  en Eclipse: Project properties → Java Compiler → Compiler compliance level).</p>
+
+<h3>Checklist de troubleshooting general</h3>
+
+<p>Cuando enfrentes un error no cubierto arriba, seguir este proceso:</p>
+
+<pre class="language-bash">
+  <code># 1. Verificar instalación
+ls $JAVA_HOME        # macOS/Linux
+dir %JAVA_HOME%      # Windows
+
+# 2. Verificar versión
+java -version
+javac -version
+
+# 3. Verificar ubicación de ejecutables
+which java           # macOS/Linux
+which javac
+where java           # Windows
+where javac
+
+# 4. Verificar variables de entorno
+echo $JAVA_HOME
+echo $PATH</code>
+</pre>
+
+<ul>
+  <li><strong>Abrir nueva terminal/CMD</strong> — muchos problemas se resuelven con una sesión fresca.</li>
+  <li><strong>Verificar que el archivo compiló:</strong> debe existir el <code>.class</code> correspondiente.</li>
+  <li><strong>Verificar sintaxis del comando:</strong> <code>java NombreClase</code> — sin <code>.class</code>, sin
+    <code>.java</code>.</li>
+</ul>
+
+<p>La mayoría de errores de instalación y configuración caen en estas categorías. Comprender las causas raíz, no solo
+  memorizar soluciones, permite diagnosticar y resolver problemas eficientemente cuando surgen variaciones de estos
+  errores en contextos específicos.</p>

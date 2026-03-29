@@ -1,0 +1,551 @@
+<h2><strong>4.10 Importación de clases y paquetes (import)</strong></h2>
+
+<p>Java incluye miles de clases predefinidas organizadas en bibliotecas llamadas paquetes que proporcionan funcionalidad
+lista para usar: trabajar con fechas, leer archivos, realizar cálculos matemáticos, y mucho más. Para usar estas clases
+en nuestros programas, necesitamos importarlas mediante la palabra clave <code>import</code>. Comprender qué son los paquetes, cómo
+funcionan las importaciones, cuándo son necesarias, y cómo escribirlas correctamente es fundamental para aprovechar todo
+el poder de las bibliotecas estándar de Java y escribir programas más completos sin tener que reinventar funcionalidad
+básica.</p>
+
+<hr>
+
+<h3><strong>¿Qué es un paquete?</strong></h3>
+
+<p>Un <strong>paquete</strong> es una agrupación de clases relacionadas. Es como una carpeta que organiza clases por funcionalidad.</p>
+
+<p><strong>Ejemplos de paquetes de Java:</strong></p>
+
+<ul>
+  <li><strong><code>java.lang</code></strong> - Clases fundamentales (String, Math, System)</li>
+  <li><strong><code>java.util</code></strong> - Utilidades (Scanner, ArrayList, Random)</li>
+  <li><strong><code>java.time</code></strong> - Manejo de fechas y tiempos (LocalDate, LocalTime)</li>
+  <li><strong><code>java.io</code></strong> - Entrada/salida de archivos (File, InputStream)</li>
+</ul>
+
+<p><strong>Analogía:</strong></p>
+
+<p>Los paquetes son como los departamentos de una biblioteca:</p>
+<ul>
+  <li><strong>Departamento "java.util"</strong> - Libros de utilidades</li>
+  <li><strong>Departamento "java.time"</strong> - Libros de fechas y tiempos</li>
+  <li>Cada libro es una clase que puede usar</li>
+</ul>
+
+<hr>
+
+<h3><strong>¿Qué es la importación?</strong></h3>
+
+<p><strong>Importar</strong> es decirle a Java qué clases de otros paquetes queremos usar en nuestro programa.</p>
+
+<p><strong>Sintaxis básica:</strong></p>
+
+<pre class="language-java"><code>import nombre.del.paquete.NombreClase;</code></pre>
+
+<p><strong>Ejemplo:</strong></p>
+
+<pre class="language-java"><code>import java.util.Scanner; // Importar la clase Scanner</code></pre>
+
+<p>Ahora podemos usar <code>Scanner</code> en nuestro programa.</p>
+
+<hr>
+
+<h3><strong>El paquete <code>java.lang</code> (automático)</strong></h3>
+
+<p>Hay UN paquete especial que Java importa automáticamente: <strong><code>java.lang</code></strong></p>
+
+<p>Este paquete contiene clases fundamentales que usamos constantemente:</p>
+<ul>
+  <li><code>String</code> - Para trabajar con texto</li>
+  <li><code>System</code> - Para entrada/salida (<code>System.out.println</code>)</li>
+  <li><code>Math</code> - Para operaciones matemáticas</li>
+</ul>
+
+<p><strong>Por eso NUNCA necesitamos escribir:</strong></p>
+
+<pre class="language-java"><code>import java.lang.String; // ✗ Innecesario
+import java.lang.System; // ✗ Innecesario
+import java.lang.Math;   // ✗ Innecesario</code></pre>
+
+<p><strong>Java los importa automáticamente.</strong></p>
+
+<hr>
+
+<h3><strong>Ejemplo: Usar Math sin importar</strong></h3>
+
+<pre class="language-java"><code>public class CalculadoraRaiz {
+
+    public static void main(String[] args) {
+
+        double numero = 16.0;
+
+        // Math está en java.lang (automático)
+        double raizCuadrada = Math.sqrt(numero);
+
+        System.out.println("Raíz cuadrada de " + numero + " = " + raizCuadrada);
+
+    }
+
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>Raíz cuadrada de 16.0 = 4.0</code></pre>
+
+<p><strong>No necesitamos <code>import java.lang.Math;</code> porque está en <code>java.lang</code></strong></p>
+
+<hr>
+
+<h3><strong>Ejemplo: Usar LocalDate (requiere import)</strong></h3>
+
+<p><strong>LocalDate</strong> está en el paquete <strong><code>java.time</code></strong>, NO en <code>java.lang</code>, entonces DEBEMOS importarla:</p>
+
+<pre class="language-java"><code>import java.time.LocalDate; // Importar LocalDate
+
+public class FechaActual {
+
+    public static void main(String[] args) {
+
+        // Obtener fecha actual
+        LocalDate hoy = LocalDate.now();
+
+        System.out.println("Fecha actual: " + hoy);
+
+    }
+
+}</code></pre>
+
+<p><strong>Salida (ejemplo):</strong></p>
+<pre class="language-markup"><code>Fecha actual: 2026-03-28</code></pre>
+
+<p><strong>Sin el <code>import</code>, obtendríamos error de compilación.</strong></p>
+
+<hr>
+
+<h3><strong>¿Qué sucede sin el import?</strong></h3>
+
+<p><strong>Intento sin importar:</strong></p>
+
+<pre class="language-java"><code>// Sin import
+public class Prueba {
+
+    public static void main(String[] args) {
+
+        LocalDate fecha = LocalDate.now(); // ✗ Error
+
+    }
+
+}</code></pre>
+
+<p><strong>Error de compilación:</strong></p>
+<pre class="language-markup"><code>error: cannot find symbol
+        LocalDate fecha = LocalDate.now();
+        ^
+symbol:   class LocalDate
+location: class Prueba</code></pre>
+
+<p>El compilador no sabe qué es <code>LocalDate</code> porque no está importada.</p>
+
+<hr>
+
+<h3><strong>Ubicación de las sentencias import</strong></h3>
+
+<p>Las sentencias <code>import</code> van <strong>al inicio del archivo</strong>, antes de la declaración de clase:</p>
+
+<pre class="language-java"><code>// 1. Imports (si hay)
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+// 2. Declaración de clase
+public class MiPrograma {
+
+    public static void main(String[] args) {
+        // Código
+    }
+
+}</code></pre>
+
+<p><strong>Orden correcto:</strong></p>
+
+<pre class="language-markup"><code>1. imports
+2. Declaración de clase
+3. Contenido de clase</code></pre>
+
+<hr>
+
+<p><strong>Ejemplo incorrecto (import después de clase):</strong></p>
+
+<pre class="language-java"><code>public class MiPrograma { // ✗ Clase antes de import
+    // ...
+}
+
+import java.time.LocalDate; // ✗ Error: import debe ir primero</code></pre>
+
+<p><strong>Error de compilación.</strong></p>
+
+<hr>
+
+<h3><strong>Importar múltiples clases</strong></h3>
+
+<p>Puede importar múltiples clases, cada una en su propia línea:</p>
+
+<pre class="language-java"><code>import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+public class FechaHora {
+
+    public static void main(String[] args) {
+
+        LocalDate fecha = LocalDate.now();
+        LocalTime hora = LocalTime.now();
+
+        System.out.println("Fecha: " + fecha);
+        System.out.println("Hora: " + hora);
+
+    }
+
+}</code></pre>
+
+<hr>
+
+<h3><strong>Importación con asterisco <code>*</code></strong></h3>
+
+<p>Puede importar <strong>todas las clases</strong> de un paquete con <code>*</code>:</p>
+
+<pre class="language-java"><code>import java.time.*; // Importa todas las clases de java.time</code></pre>
+
+<p><strong>Ejemplo:</strong></p>
+
+<pre class="language-java"><code>import java.time.*; // Importa LocalDate, LocalTime, etc.
+
+public class Ejemplo {
+
+    public static void main(String[] args) {
+
+        LocalDate fecha = LocalDate.now();
+        LocalTime hora = LocalTime.now();
+
+        System.out.println("Fecha: " + fecha);
+        System.out.println("Hora: " + hora);
+
+    }
+
+}</code></pre>
+
+<hr>
+
+<p><strong>Diferencia entre importación específica y con <code>*</code>:</strong></p>
+
+<pre class="language-java"><code>// Opción 1: Importar específicamente
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+// Opción 2: Importar todo el paquete
+import java.time.*;</code></pre>
+
+<p><strong>Ambas funcionan, pero la práctica recomendada es importar específicamente</strong> para claridad.</p>
+
+<hr>
+
+<h3><strong>Ejemplo completo: Sistema de registro con fecha</strong></h3>
+
+<pre class="language-java"><code>import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class RegistroVenta {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== REGISTRO DE VENTA =====");
+
+        // Obtener fecha actual
+        LocalDate fechaVenta = LocalDate.now();
+
+        // Formatear fecha a formato legible
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaFormateada = fechaVenta.format(formatoFecha);
+
+        // Datos de la venta
+        String nombreProducto = "Monitor LED 24 pulgadas";
+        int cantidad = 3;
+        double precioUnitario = 2500.00;
+        double totalVenta = cantidad * precioUnitario;
+
+        // Mostrar registro
+        System.out.println("Fecha: " + fechaFormateada);
+        System.out.println("Producto: " + nombreProducto);
+        System.out.println("Cantidad: " + cantidad + " unidades");
+        System.out.println("Precio unitario: Lps " + precioUnitario);
+        System.out.println("-----------------------------");
+        System.out.println("TOTAL: Lps " + totalVenta);
+
+    }
+
+}</code></pre>
+
+<p><strong>Salida (ejemplo):</strong></p>
+<pre class="language-markup"><code>===== REGISTRO DE VENTA =====
+Fecha: 28/03/2026
+Producto: Monitor LED 24 pulgadas
+Cantidad: 3 unidades
+Precio unitario: Lps 2500.0
+-----------------------------
+TOTAL: Lps 7500.0</code></pre>
+
+<p><strong>Imports necesarios:</strong></p>
+<ul>
+  <li><code>LocalDate</code> para obtener fecha actual</li>
+  <li><code>DateTimeFormatter</code> para formatear la fecha</li>
+</ul>
+
+<hr>
+
+<h3><strong>Clases comunes que requieren import</strong></h3>
+
+<p><strong>Para trabajar con fechas y tiempos:</strong></p>
+
+<pre class="language-java"><code>import java.time.LocalDate;     // Fechas
+import java.time.LocalTime;     // Horas
+import java.time.LocalDateTime; // Fecha y hora</code></pre>
+
+<hr>
+
+<p><strong>Para formatear fechas:</strong></p>
+
+<pre class="language-java"><code>import java.time.format.DateTimeFormatter;</code></pre>
+
+<hr>
+
+<p><strong>Para generar números aleatorios:</strong></p>
+
+<pre class="language-java"><code>import java.util.Random;</code></pre>
+
+<p><strong>Ejemplo:</strong></p>
+
+<pre class="language-java"><code>import java.util.Random;
+
+public class NumeroAleatorio {
+
+    public static void main(String[] args) {
+
+        Random generador = new Random();
+
+        // Generar número entre 1 y 100
+        int numeroAleatorio = generador.nextInt(100) + 1;
+
+        System.out.println("Número aleatorio: " + numeroAleatorio);
+
+    }
+
+}</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora con funciones matemáticas</strong></h3>
+
+<p><strong>Usando Math (NO requiere import):</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraMatematica {
+
+    public static void main(String[] args) {
+
+        double numero = 25.0;
+
+        // Math está en java.lang (automático)
+        double raizCuadrada = Math.sqrt(numero);
+        double potencia = Math.pow(numero, 2); // 25 al cuadrado
+        double valorAbsoluto = Math.abs(-numero);
+
+        System.out.println("===== CALCULADORA MATEMÁTICA =====");
+        System.out.println("Número: " + numero);
+        System.out.println("Raíz cuadrada: " + raizCuadrada);
+        System.out.println("Al cuadrado: " + potencia);
+        System.out.println("Valor absoluto de -" + numero + ": " + valorAbsoluto);
+
+    }
+
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>===== CALCULADORA MATEMÁTICA =====
+Número: 25.0
+Raíz cuadrada: 5.0
+Al cuadrado: 625.0
+Valor absoluto de -25.0: 25.0</code></pre>
+
+<p><strong>No necesita imports porque <code>Math</code> está en <code>java.lang</code></strong></p>
+
+<hr>
+
+<h3><strong>Errores comunes con imports</strong></h3>
+
+<h4><strong>Error 1: Olvidar el import</strong></h4>
+
+<pre class="language-java"><code>// Sin import
+public class Prueba {
+
+    public static void main(String[] args) {
+
+        LocalDate fecha = LocalDate.now(); // ✗ Error
+
+    }
+
+}</code></pre>
+
+<p><strong>Solución:</strong> Agregar <code>import java.time.LocalDate;</code> al inicio</p>
+
+<hr>
+
+<h4><strong>Error 2: Import después de la clase</strong></h4>
+
+<pre class="language-java"><code>public class Prueba {
+    // ...
+}
+
+import java.time.LocalDate; // ✗ Lugar incorrecto</code></pre>
+
+<p><strong>Solución:</strong> Mover import antes de la declaración de clase</p>
+
+<hr>
+
+<h4><strong>Error 3: Punto y coma faltante en import</strong></h4>
+
+<pre class="language-java"><code>import java.time.LocalDate // ✗ Falta ;</code></pre>
+
+<p><strong>Solución:</strong> Agregar <code>;</code> al final</p>
+
+<pre class="language-java"><code>import java.time.LocalDate; // ✓ Correcto</code></pre>
+
+<hr>
+
+<h3><strong>Buenas prácticas con imports</strong></h3>
+
+<p><strong>1. Importar solo lo que se usa</strong></p>
+
+<pre class="language-java"><code>// ✓ Solo lo necesario
+import java.time.LocalDate;
+
+// ✗ Importar de más
+import java.time.*; // Si solo usas LocalDate</code></pre>
+
+<hr>
+
+<p><strong>2. Organizar imports alfabéticamente</strong></p>
+
+<pre class="language-java"><code>import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;</code></pre>
+
+<p>Los IDEs hacen esto automáticamente.</p>
+
+<hr>
+
+<p><strong>3. No importar clases de java.lang</strong></p>
+
+<pre class="language-java"><code>// ✗ Innecesario
+import java.lang.String;
+import java.lang.Math;
+import java.lang.System;</code></pre>
+
+<p>Ya están disponibles automáticamente.</p>
+
+<hr>
+
+<p><strong>4. Agrupar imports del mismo paquete</strong></p>
+
+<pre class="language-java"><code>// Imports de java.time juntos
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+// Imports de java.util juntos
+import java.util.Random;</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo final: Sistema de cálculo de días laborables</strong></h3>
+
+<pre class="language-java"><code>import java.time.LocalDate;
+import java.time.DayOfWeek;
+
+public class CalculadoraDiasLaborables {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== CÁLCULO DE DÍAS LABORABLES =====");
+
+        // Fecha de hoy
+        LocalDate hoy = LocalDate.now();
+
+        // Obtener día de la semana
+        DayOfWeek diaSemana = hoy.getDayOfWeek();
+
+        // Datos del mes
+        int diaDelMes = hoy.getDayOfMonth();
+        int mes = hoy.getMonthValue();
+        int anio = hoy.getYear();
+
+        // Mostrar información
+        System.out.println("Fecha actual: " + diaDelMes + "/" + mes + "/" + anio);
+        System.out.println("Día de la semana: " + diaSemana);
+
+        // Determinar si es día laborable
+        boolean esDiaLaborable = (diaSemana != DayOfWeek.SATURDAY &amp;&amp;
+                                   diaSemana != DayOfWeek.SUNDAY);
+
+        System.out.println("-------------------------------------");
+
+        if (esDiaLaborable) {
+            System.out.println("Es día laborable");
+        } else {
+            System.out.println("Es fin de semana");
+        }
+
+    }
+
+}</code></pre>
+
+<p><strong>Imports necesarios:</strong></p>
+<ul>
+  <li><code>LocalDate</code> - Para trabajar con fechas</li>
+  <li><code>DayOfWeek</code> - Para obtener día de la semana</li>
+</ul>
+
+<p><strong>Salida (ejemplo un viernes):</strong></p>
+<pre class="language-markup"><code>===== CÁLCULO DE DÍAS LABORABLES =====
+Fecha actual: 28/3/2026
+Día de la semana: FRIDAY
+-------------------------------------
+Es día laborable</code></pre>
+
+<hr>
+
+<h3><strong>Resumen de conceptos clave</strong></h3>
+
+<p><strong>¿Qué es un paquete?</strong></p>
+<ul>
+  <li>Agrupación de clases relacionadas</li>
+</ul>
+
+<p><strong>¿Qué es import?</strong></p>
+<ul>
+  <li>Instrucción para usar clases de otros paquetes</li>
+</ul>
+
+<p><strong>¿Dónde van los imports?</strong></p>
+<ul>
+  <li>Al inicio del archivo, antes de la declaración de clase</li>
+</ul>
+
+<p><strong>¿Cuándo NO necesito import?</strong></p>
+<ul>
+  <li>Para clases en <code>java.lang</code> (String, Math, System)</li>
+</ul>
+
+<p><strong>Sintaxis:</strong></p>
+<pre class="language-java"><code>import nombre.paquete.NombreClase;</code></pre>
+
+<hr>
+
+<p>Las sentencias <code>import</code> nos permiten acceder a la vasta biblioteca de clases que Java proporciona, evitando tener que
+escribir todo desde cero. Comprender qué clases necesitan importación, cómo escribir las sentencias <code>import</code>
+correctamente, y dónde ubicarlas en el archivo nos permite aprovechar toda la funcionalidad que Java ofrece para crear
+programas más completos y potentes.</p>

@@ -1,0 +1,227 @@
+<h2>3.9: Uso de herramientas de versionado de Java (concepto)</h2>
+
+<p>El subtema anterior cubrió los aspectos prácticos de cómo instalar y cambiar entre múltiples versiones de Java usando
+  diversas herramientas. Este subtema complementa esa discusión explorando los conceptos fundamentales detrás de las
+  herramientas de versionado de Java: qué problema resuelven a nivel arquitectónico, cómo funcionan internamente, qué
+  patrones de diseño emplean, y cómo estas herramientas se integran con el ecosistema más amplio de desarrollo.
+  Comprender estos conceptos permite tomar decisiones más informadas sobre qué herramienta usar, cómo configurarla
+  óptimamente, y cómo resolver problemas cuando surgen.</p>
+
+<h3>El problema fundamental que resuelven</h3>
+
+<p>En un mundo ideal de desarrollo de software, cada proyecto usaría la versión más reciente de todas sus dependencias,
+  incluyendo el JDK. La realidad es dramáticamente diferente: los proyectos tienen vidas medidas en años o décadas, y
+  diferentes proyectos tienen diferentes requisitos de versión Java por razones técnicas, contractuales, o regulatorias.
+  Sin herramientas de versionado, el flujo de trabajo para cambiar entre proyectos requiere editar manualmente JAVA_HOME
+  y PATH, reiniciar la terminal, verificar la versión activa, y repetir el proceso en cada cambio — tedioso, propenso a
+  errores, e interrumpe la concentración. Las herramientas de versionado eliminan esta fricción automatizando el proceso
+  de cambio de versión.</p>
+
+<h3>Conceptos arquitectónicos fundamentales</h3>
+
+<h4>1. Gestión de variables de entorno dinámicas</h4>
+
+<p>Las herramientas de versionado fundamentalmente manipulan JAVA_HOME y PATH de manera dinámica según el contexto. En
+  lugar de establecer estas variables estáticamente en la configuración del sistema, las herramientas las modifican en
+  tiempo real cuando se invoca un comando o se cambia de directorio. Cuando se ejecuta <code>sdk use java 17.0.9-tem</code>,
+  la herramienta identifica la ruta de instalación, modifica JAVA_HOME y PATH en el entorno del shell actual, y estos
+  cambios solo afectan al shell actual y a los procesos hijos lanzados desde él — no persisten al cerrar la terminal.</p>
+
+<h4>2. Shims y wrappers de ejecutables</h4>
+
+<p>Muchas herramientas de versionado usan el concepto de "shims": scripts pequeños que interceptan llamadas a
+  ejecutables y las redirigen a la versión correcta. En lugar de que PATH apunte directamente al bin de una versión
+  específica, apunta al directorio de shims de la herramienta.</p>
+
+<p><strong>Flujo con shims:</strong></p>
+<pre class="language-markup">
+  <code>Usuario ejecuta: java -version
+↓
+Sistema encuentra: ~/.jenv/shims/java  (shim)
+↓
+Shim determina: "Versión activa es 17.0.9"
+↓
+Shim ejecuta: ~/.jenv/versions/17.0.9/bin/java -version
+↓
+Salida retornada al usuario</code>
+</pre>
+
+<p><strong>Ventajas del enfoque de shims:</strong></p>
+<ul>
+  <li>PATH puede permanecer estático (siempre apunta al directorio de shims)</li>
+  <li>Lógica de selección de versión centralizada en los shims</li>
+  <li>Soporta cambio de versión sin modificar PATH</li>
+  <li>Permite hooks y procesamiento adicional antes de ejecutar el comando real</li>
+</ul>
+
+<p><strong>Desventajas:</strong> capa de indirección adicional (overhead mínimo), debugging más complejo, y la
+  herramienta debe generar y mantener shims para todos los comandos del JDK.</p>
+
+<h4>3. Configuración jerárquica de versiones</h4>
+
+<p>Las herramientas sofisticadas soportan múltiples niveles de configuración con la siguiente precedencia:</p>
+<pre class="language-markup">
+  <code>Local  >  Shell  >  Global</code>
+</pre>
+
+<ul>
+  <li><strong>Global:</strong> Versión por defecto para todas las sesiones. Configurada con <code>sdk default java 21.0.1-tem</code>. Almacenada en archivo de configuración de la herramienta.</li>
+  <li><strong>Shell:</strong> Versión para el shell actual, sobrescribe global. Configurada con <code>sdk use java 17.0.9-tem</code>. No persiste al cerrar la terminal.</li>
+  <li><strong>Local:</strong> Versión para un proyecto específico, definida en archivo <code>.sdkmanrc</code> o <code>.java-version</code> en la raíz del proyecto. Se activa automáticamente al entrar al directorio.</li>
+</ul>
+
+<h4>4. Aislamiento de instalaciones</h4>
+
+<p>Las herramientas instalan versiones en directorios propios en lugar de ubicaciones estándar del sistema:</p>
+<ul>
+  <li><strong>SDKMAN:</strong> <code>~/.sdkman/candidates/java/&lt;version&gt;/</code></li>
+  <li><strong>jEnv:</strong> Referencias a instalaciones existentes, no instala directamente</li>
+  <li><strong>Jabba:</strong> <code>~/.jabba/jdk/&lt;version&gt;/</code></li>
+</ul>
+
+<p>Esto proporciona aislamiento completo entre versiones, facilidad para agregar o remover versiones sin afectar el
+  sistema, y no requiere privilegios administrativos. La desventaja es posible duplicación de espacio si múltiples
+  herramientas instalan las mismas versiones.</p>
+
+<h4>5. Metadatos y catálogos de versiones</h4>
+
+<p>Herramientas como SDKMAN mantienen catálogos de versiones disponibles que incluyen distribuciones (Temurin,
+  Corretto, Zulu, Oracle, GraalVM), múltiples versiones de cada una, URLs de descarga, checksums para verificación de
+  integridad, e información de plataforma (x64, ARM). Actualizar el catálogo local:</p>
+<pre class="language-bash">
+  <code>sdk update</code>
+</pre>
+
+<h4>6. Integración con herramientas de construcción</h4>
+
+<p>Maven y Gradle modernos soportan "toolchains" para detectar y usar versiones específicas de JDK
+  automáticamente.</p>
+
+<p><strong>Maven — <code>toolchains.xml</code>:</strong></p>
+<pre class="language-xml">
+  <code><toolchains>
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>17</version>
+    </provides>
+    <configuration>
+      <jdkHome>/path/to/jdk-17</jdkHome>
+    </configuration>
+  </toolchain>
+</toolchains></code>
+</pre>
+
+<p><strong>Gradle — toolchain:</strong></p>
+<pre class="language-groovy">
+  <code>java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}</code>
+</pre>
+
+<p>Cuando está configurado, el sistema de construcción puede usar una versión de Java diferente de la activa en el
+  shell, permitiendo builds con versión específica independiente del entorno.</p>
+
+<h4>7. Hooks y automatización</h4>
+
+<p>SDKMAN soporta scripts en <code>~/.sdkman/etc/config</code> que ejecutan en ciertos eventos, útiles para configurar
+  variables adicionales, notificar cambios de versión, o integrar con herramientas de monitoreo:</p>
+<pre class="language-bash">
+  <code># ~/.sdkman/etc/config
+sdkman_auto_answer=true
+sdkman_auto_env=true   # Activa automáticamente la versión en .sdkmanrc al entrar al directorio</code>
+</pre>
+
+<h4>8. Portabilidad y reproducibilidad de configuración</h4>
+
+<p>Los archivos de versión (<code>.sdkmanrc</code>, <code>.java-version</code>) en proyectos actúan como documentación
+  ejecutable de requisitos, facilitando tanto el onboarding como la consistencia en CI/CD.</p>
+
+<p><strong>Onboarding de nuevo desarrollador:</strong></p>
+<pre class="language-bash">
+  <code>git clone https://github.com/empresa/proyecto.git
+cd proyecto
+
+# SDKMAN detecta .sdkmanrc automáticamente
+sdk env install   # Instala la versión requerida si no existe
+sdk env           # Activa la versión del proyecto
+
+# Listo para trabajar con la versión correcta</code>
+</pre>
+
+<p><strong>CI/CD leyendo el mismo archivo de configuración:</strong></p>
+<pre class="language-yaml">
+  <code>- name: Setup Java
+  uses: actions/setup-java@v3
+  with:
+    java-version-file: '.tool-versions'</code>
+</pre>
+
+<h3>Patrones de diseño empleados</h3>
+
+<p><strong>Facade Pattern:</strong> la herramienta proporciona una interfaz simplificada sobre la complejidad de
+  gestionar múltiples versiones, manipular variables de entorno, y descargar instalaciones.</p>
+
+<p><strong>Strategy Pattern:</strong> diferentes estrategias para determinar qué versión usar (global, shell, local)
+  implementadas como estrategias intercambiables con jerarquía de precedencia.</p>
+
+<p><strong>Proxy Pattern:</strong> los shims actúan como proxies para los binarios reales de Java, interceptando
+  llamadas y dirigiéndolas a la versión apropiada.</p>
+
+<p><strong>Chain of Responsibility:</strong> la búsqueda de configuración de versión (directorio actual → directorios
+  padre → global) implementa una cadena de responsabilidad.</p>
+
+<h3>Consideraciones de rendimiento</h3>
+
+<p>Cada vez que se ejecuta un comando Java, la herramienta de versionado agrega un overhead pequeño para determinar la
+  versión activa, construir el PATH correcto, y ejecutar el binario real. Este overhead es típicamente menor a 10ms,
+  imperceptible para uso humano interactivo pero potencialmente relevante para scripts que ejecutan miles de invocaciones
+  de Java. Las optimizaciones comunes incluyen caching de resolución de versión, compilación de shims en lenguajes
+  eficientes (C, Go), y lazy loading de configuración.</p>
+
+<h3>Integración con IDEs</h3>
+
+<p>Los IDEs necesitan conocer qué versión de Java usar para cada proyecto. Las herramientas de versionado se integran
+  de varias formas:</p>
+<ul>
+  <li><strong>Lectura directa de JAVA_HOME:</strong> Si el IDE es lanzado desde una terminal con la versión activada, heredará el JAVA_HOME correcto.</li>
+  <li><strong>Configuración explícita:</strong> Especificar la ruta al JDK manualmente en la configuración del proyecto. Tedioso pero explícito.</li>
+  <li><strong>Plugins:</strong> IntelliJ IDEA puede leer toolchain configuration; las extensiones Java de VS Code pueden detectar múltiples JDKs instalados.</li>
+</ul>
+
+<h3>Limitaciones conceptuales</h3>
+
+<p><strong>Ámbito de efecto:</strong> los cambios de versión típicamente solo afectan el shell donde se ejecutó el
+  comando. Otras terminales, aplicaciones gráficas, y servicios del sistema no ven los cambios automáticamente.</p>
+
+<p><strong>Dependencia de shell:</strong> las herramientas dependen de características específicas de shells (bash,
+  zsh). Funcionan bien desde línea de comandos pero no automáticamente en contextos diferentes.</p>
+
+<p><strong>Conflictos potenciales:</strong> múltiples herramientas de versionado instaladas simultáneamente pueden
+  conflictuar si ambas intentan manipular PATH y JAVA_HOME.</p>
+
+<p><strong>Estado implícito:</strong> la versión activa es estado implícito del shell. Olvidar qué versión está activa
+  puede causar confusión difícil de diagnosticar.</p>
+
+<h3>Evolución futura</h3>
+
+<p><strong>Containers como aislamiento:</strong> Docker y contenedores proporcionan aislamiento completo de entornos.
+  Cada proyecto puede tener su propio contenedor con la versión exacta de Java, eliminando la necesidad de gestión de
+  versiones a nivel de sistema.</p>
+
+<p><strong>Distribuciones embebidas:</strong> proyectos que incluyen una distribución mínima de Java construida
+  específicamente para la aplicación mediante jlink, eliminando la dependencia de Java instalado en el sistema.</p>
+
+<p><strong>Gestión unificada de SDKs:</strong> herramientas como asdf gestionan versiones de múltiples
+  lenguajes/SDKs con una interfaz consistente, no solo Java, unificando la gestión de versiones en un único punto.</p>
+
+<p><strong>Integración con gestores de paquetes del sistema:</strong> los sistemas operativos están mejorando el
+  soporte nativo para múltiples versiones de software lado a lado, lo que podría reducir la necesidad de herramientas
+  externas.</p>
+
+<p>Las herramientas de versionado de Java representan una capa de abstracción que simplifica dramáticamente la gestión
+  de múltiples versiones. Comprender los conceptos subyacentes, no solo los comandos específicos de cada herramienta,
+  permite usarlas más efectivamente, diagnosticar problemas cuando surgen, y tomar decisiones informadas sobre qué
+  herramienta adoptar para necesidades específicas.</p>

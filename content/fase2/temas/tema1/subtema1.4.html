@@ -1,0 +1,89 @@
+<h2>1.4: Objetivos iniciales del lenguaje Java</h2>
+
+<p>Cuando James Gosling y el equipo del Proyecto Green comenzaron a diseñar el lenguaje que eventualmente se convertiría en
+Java, no partieron de una página en blanco sin restricciones. Tenían objetivos específicos y concretos derivados
+directamente de los problemas que enfrentaban al intentar desarrollar software para dispositivos electrónicos de consumo
+heterogéneos. Estos objetivos iniciales, establecidos entre 1991 y 1992, guiarían todas las decisiones de diseño del
+lenguaje y determinarían qué características incluir, qué características modificar de lenguajes existentes, y qué
+características omitir deliberadamente a pesar de su popularidad en otros lenguajes.</p>
+
+<p>El primer y más fundamental objetivo era la portabilidad absoluta del código. El equipo necesitaba escribir software que
+pudiera ejecutarse sin modificación en procesadores completamente diferentes: chips Intel x86, procesadores SPARC de
+Sun, procesadores MIPS, arquitecturas ARM, y otros. En la época, la práctica estándar era escribir código en C o C++,
+compilarlo específicamente para cada arquitectura objetivo, y distribuir binarios diferentes para cada plataforma. Este
+enfoque era completamente inviable para dispositivos de consumo donde los fabricantes usaban procesadores diversos y
+donde no era práctico distribuir múltiples versiones del mismo software. El equipo necesitaba una solución donde el
+mismo archivo binario pudiera ejecutarse en cualquier dispositivo, independientemente de su arquitectura de hardware
+subyacente.</p>
+
+<p>Este objetivo de portabilidad llevó directamente a la decisión más fundamental del diseño de Java: la creación de una
+máquina virtual. En lugar de compilar código fuente directamente a instrucciones de máquina nativas, Java se compilaría
+a un conjunto de instrucciones intermedias llamadas bytecode, diseñadas para una máquina abstracta. Cada plataforma
+tendría una implementación de esta máquina virtual que traduciría el bytecode a instrucciones nativas. Este enfoque no
+era completamente nuevo — lenguajes como Smalltalk y Pascal (con el P-code) habían usado conceptos similares — pero Java
+lo llevaría a un nivel de refinamiento y rendimiento que lo haría práctico para aplicaciones de producción reales.</p>
+
+<p>El segundo objetivo crítico era la seguridad. Los dispositivos de consumo conectados a redes descargarían y ejecutarían
+código de fuentes remotas, potencialmente no confiables. Si este código pudiera corromper la memoria, acceder a archivos
+arbitrarios del sistema, o ejecutar operaciones privilegiadas, los dispositivos serían vulnerables a ataques maliciosos.
+El equipo necesitaba un lenguaje donde fuera literalmente imposible que el código descargado realizara ciertas
+categorías de operaciones peligrosas, no mediante verificaciones en tiempo de ejecución que podrían ser evadidas, sino
+mediante la eliminación de las construcciones del lenguaje que permitían esas operaciones.</p>
+
+<p>Esta necesidad de seguridad motivó varias decisiones de diseño radicales. Los punteros fueron completamente eliminados
+del lenguaje. Las referencias de Java apuntarían a objetos, pero no habría aritmética de punteros, ni conversión entre
+punteros y enteros, ni forma de calcular la dirección de memoria de un objeto. Los arrays tendrían verificación
+automática de límites para prevenir desbordamientos de buffer. El acceso a recursos del sistema como archivos, red y
+procesos estaría mediado por un sistema de seguridad que podría imponer políticas granulares sobre qué código podría
+realizar qué operaciones.</p>
+
+<p>El tercer objetivo era la simplicidad relativa. El equipo había experimentado directamente la complejidad de C++, un
+lenguaje cuya especificación ocupaba cientos de páginas. Esta complejidad hacía difícil dominar el lenguaje
+completamente, creaba oportunidades para errores sutiles, y dificultaba la colaboración en equipos grandes. El equipo
+quería un lenguaje que pudiera ser aprendido completamente por un programador competente en un tiempo razonable, donde
+las mejores prácticas fueran obvias, y donde el código escrito por diferentes programadores fuera consistente y
+comprensible.</p>
+
+<p>Esta búsqueda de simplicidad llevó a la eliminación de muchas características de C++. La herencia múltiple de clases fue
+eliminada y reemplazada con un modelo más simple de herencia única de implementación más herencia múltiple de
+interfaces. La sobrecarga de operadores fue eliminada porque el equipo consideraba que creaba código confuso. Los tipos
+struct y union de C fueron eliminados en favor de un modelo de objetos más uniforme. Las macros de preprocesador y la
+compilación condicional fueron eliminadas.</p>
+
+<p>El cuarto objetivo era la confiabilidad del software. Los dispositivos de consumo no podían fallar de manera
+impredecible o requerir reinicios frecuentes. La gestión manual de memoria, fuente de una categoría enorme de errores
+difíciles de depurar, sería reemplazada por gestión automática de memoria mediante garbage collection. El sistema de
+tipos sería más estricto, con conversiones implícitas peligrosas eliminadas y verificación de tipos más rigurosa en
+tiempo de compilación.</p>
+
+<p>El lenguaje incluiría un sistema de manejo de excepciones que forzaría a los programadores a considerar y manejar
+condiciones de error explícitamente. Las excepciones verificadas, una característica distintiva de Java que no existía
+en C++, obligarían a los métodos a declarar qué excepciones podrían lanzar, y forzarían al código que los llamaba a
+capturar y manejar esas excepciones o declararlas explícitamente como no manejadas.</p>
+
+<p>El quinto objetivo era el soporte nativo para programación concurrente. Los dispositivos interactivos necesitaban
+realizar múltiples tareas simultáneamente: responder a la entrada del usuario mientras descargaban datos de la red
+mientras actualizaban la pantalla. Java incluiría primitivas de sincronización directamente en el lenguaje, con la
+palabra clave <code>synchronized</code> para proteger secciones críticas de código, y un modelo de memoria bien
+definido que especificara cómo los hilos verían las modificaciones realizadas por otros hilos.</p>
+
+<p>El sexto objetivo era el rendimiento adecuado, aunque no necesariamente óptimo. El equipo reconocía que el uso de una
+máquina virtual y garbage collection impondría una penalización de rendimiento comparada con código nativo
+cuidadosamente optimizado. Sin embargo, el objetivo no era igualar el rendimiento absoluto, sino alcanzar un rendimiento
+lo suficientemente bueno para aplicaciones interactivas. El bytecode debía ser diseñado para permitir compilación
+just-in-time eficiente, y el garbage collector debía ser lo suficientemente eficiente para no causar pausas perceptibles
+durante la interacción del usuario.</p>
+
+<p>El séptimo objetivo era la familiaridad sintáctica. Aunque el equipo estaba dispuesto a hacer cambios radicales en la
+semántica y el modelo de ejecución del lenguaje, querían mantener una sintaxis que fuera inmediatamente reconocible para
+los millones de programadores que ya conocían C y C++. Por esta razón, Java mantendría la sintaxis de llaves de C, sus
+convenciones de declaración de variables y funciones, y muchas de sus palabras clave. Un programador de C++ podría
+mirar código Java y comprender inmediatamente su estructura básica, incluso antes de aprender las diferencias
+semánticas importantes.</p>
+
+<p>Estos objetivos, establecidos en los primeros días del Proyecto Green, formaron la constitución no escrita del lenguaje.
+Cada característica propuesta sería evaluada contra estos objetivos. Si una característica comprometía la portabilidad,
+la seguridad o la simplicidad, sería rechazada sin importar cuán útil pudiera parecer en casos específicos. Esta
+disciplina de diseño, mantenida consistentemente a lo largo del desarrollo del lenguaje, es la razón por la que Java
+emergió como un lenguaje coherente y bien balanceado en lugar de una colección desordenada de características
+convenientes pero inconsistentes.</p>

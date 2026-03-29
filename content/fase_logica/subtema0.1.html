@@ -1,0 +1,394 @@
+<h2>0.1: Concepto de Algoritmo y Resolución de Problemas
+</h2>
+<h3>Introducción Conceptual</h3>
+
+<p>Un algoritmo es una secuencia finita, ordenada y no ambigua de instrucciones que, al ejecutarse con ciertos datos de
+  entrada, producen un resultado específico para resolver un problema determinado. Este concepto es fundamental no solo
+  en programación, sino en cualquier actividad que requiera planificación y ejecución sistemática de pasos para lograr
+  un objetivo.</p>
+
+<p>La importancia de los algoritmos en el desarrollo de software radica en que son la base conceptual sobre la cual se
+  construye cualquier programa. Antes de escribir una sola línea de código en Java, C++, Python o cualquier otro
+  lenguaje,
+  un programador debe ser capaz de diseñar el algoritmo que resolverá el problema planteado.Un algoritmo bien diseñado
+  garantiza que el programa resultante sea eficiente, mantenible y escalable.</p>
+
+<p>Los algoritmos existen desde mucho antes de las computadoras modernas. De hecho, el término
+  "<strong>algoritmo</strong> " proviene del
+  nombre del matemático persa <strong>Muhammad ibn Musa al-Khwarizmi</strong>, quien vivió en el siglo IX y desarrolló
+  métodos sistemáticos para resolver ecuaciones algebraicas. Sin embargo, fue con la llegada de las computadoras que los
+  algoritmos adquirieron su relevancia contemporánea, convirtiéndose en el lenguaje universal mediante el cual los seres
+  humanos comunican procedimientos lógicos a las máquinas.</p>
+
+<p>En el contexto profesional del desarrollo de software, la capacidad de diseñar algoritmos eficientes es una de las
+  habilidades más valoradas. Las empresas de tecnología, desde startups hasta gigantes como Google, Amazon o Microsoft,
+  evalúan constantemente las habilidades algorítmicas de sus desarrolladores porque estas determinan la calidad y el
+  rendimiento de los sistemas que construyen. Un algoritmo mal diseñado puede resultar en aplicaciones lentas, sistemas
+  que no escalan adecuadamente, o peor aún, resultados incorrectos que comprometen la integridad de los datos
+  empresariales.</p>
+
+<p>La resolución de problemas mediante algoritmos sigue un proceso metodológico que todo programador profesional debe
+  dominar. Este proceso no es intuitivo ni se aprende por simple exposición al código; requiere práctica deliberada y
+  comprensión profunda de los principios fundamentales. Antes de poder escribir código efectivo en Java, es esencial
+  desarrollar el pensamiento algorítmico, que es la capacidad de descomponer problemas complejos en pasos simples y
+  ejecutables.</p>
+
+<p>Los algoritmos poseen características específicas que los diferencian de simples listas de instrucciones. Deben ser
+  precisos (cada paso debe estar claramente definido sin ambigüedades), finitos (deben terminar después de un número
+  determinado de pasos), definidos (deben producir el mismo resultado para las mismas entradas), y efectivos (cada paso
+  debe ser realizable con los recursos disponibles). Estas características aseguran que un algoritmo pueda ser
+  implementado computacionalmente y producir resultados confiables.</p>
+
+<p>En el desarrollo de sistemas empresariales reales, los algoritmos se aplican constantemente: calcular el total de una
+  factura con impuestos y descuentos, ordenar productos por precio o popularidad, buscar registros en bases de datos
+  masivas, procesar transacciones financieras, validar datos de usuarios, generar reportes consolidados, y prácticamente
+  cualquier operación que requiera procesamiento de información. La diferencia entre un sistema exitoso y uno fallido
+  frecuentemente radica en la calidad de los algoritmos que lo sustentan\'.,.'.</p>
+
+<h2>Características Fundamentales de un Algoritmo</h2>
+
+<p>Un algoritmo válido debe cumplir con propiedades específicas que garantizan su correcto funcionamiento:</p>
+
+<ol>
+  <li><strong>Precisión:</strong> Cada instrucción debe ser clara e inequívoca. No puede haber ambigüedad en la
+    interpretación de los pasos. Por ejemplo, "sumar algunos números" no es preciso; "sumar los primeros 100 números
+    naturales" sí lo es.</li>
+  <li><strong>Finitud:</strong> El algoritmo debe completarse después de un número finito de pasos. No puede ejecutarse
+    indefinidamente. Debe existir una condición de finalización clara.</li>
+  <li><strong>Entrada:</strong> El algoritmo recibe cero o más valores de entrada que se procesan durante su ejecución.
+    Estos datos pueden provenir de diversas fuentes: teclado, archivos, bases de datos, sensores, etc.</li>
+  <li><strong>Salida:</strong> El algoritmo produce al menos un resultado como salida. Este resultado es la solución al
+    problema que el algoritmo fue diseñado para resolver.</li>
+  <li><strong>Efectividad:</strong> Cada operación del algoritmo debe ser lo suficientemente básica como para poder
+    ejecutarse con precisión en un tiempo finito usando recursos disponibles.</li>
+  <li><strong>Generalidad:</strong> Un buen algoritmo debe ser capaz de resolver no solo un caso específico, sino una
+    familia de problemas similares con diferentes datos de entrada.</li>
+</ol>
+
+<h2>Representación de Algoritmos</h2>
+
+<P>Los algoritmos pueden expresarse de múltiples formas antes de convertirse en código ejecutable:</P>
+<ol>
+  <li><strong>Lenguaje Natural:</strong> Descripción en idioma cotidiano de los pasos a seguir. Es la forma más
+    intuitiva pero también la más propensa a ambigüedades.
+  </li>
+  <li><strong>Pseudocódigo:</strong> Representación estructurada que combina lenguaje natural con elementos de lenguajes
+    de programación. Es más preciso que el lenguaje natural pero no requiere sintaxis estricta.</li>
+  <li><strong>Diagramas de Flujo:</strong> Representación gráfica mediante símbolos estandarizados que muestran el flujo
+    de ejecución del algoritmo.</li>
+  <li><strong>Código Fuente:</strong> Implementación del algoritmo en un lenguaje de programación específico como Java,
+    donde el algoritmo se convierte en instrucciones ejecutables por la computadora.</li>
+</ol>
+
+<h2>Ejemplo Básico Fundamental</h2>
+<p><strong>Contexto profesional:</strong> Sistema de punto de venta que debe calcular el precio final de un producto
+  aplicando un
+  descuento.</p>
+
+<p><strong>Problema:</strong> Dada la siguiente información de una transacción comercial:</p>
+<ul>
+  <li>Precio base de un producto: Lps 1000.00</li>
+  <li>Porcentaje de descuento aplicable: 15%</li>
+  <li>Calcular el precio final que debe pagar el cliente.</li>
+</ul>
+<p><strong>Algoritmo en lenguaje natural:</strong></p>
+<ol>
+  <li>Inicio</li>
+  <li>Establecer el precio base del producto en 1000</li>
+  <li>Establecer el porcentaje de descuento en 15</li>
+  <li>Calcular el monto del descuento</li>
+  <li>Calcular el precio final</li>
+  <li>Mostrar el precio final</li>
+  <li>Fin</li>
+</ol>
+
+<h3>Traza de ejecución (seguimiento paso a paso):</h3>
+<pre class="language-markdown">
+  <code>
+Paso 1: Inicio del algoritmo
+Paso 2: precioBase = 1000
+Paso 3: porcentajeDescuento = 15
+Paso 4: montoDescuento = (1000 × 15) / 100 = 150
+Paso 5: precioFinal = 1000 - 150 = 850
+Paso 6: Mostrar: "El precio final es: Lps 850.00"
+Paso 7: Fin del algoritmo
+</code>
+</pre>
+
+<h3>Salida esperada:</h3>
+<pre class="language-markdown">
+  <code>El precio final es: Lps 850.00</code>
+</pre>
+
+<h3>Análisis del algoritmo:</h3>
+
+<ul>
+
+  <li><strong>Entrada:</strong> precioBase (1000), porcentajeDescuento (15)</li>
+  <li><strong>Proceso:</strong> Cálculo del descuento y aplicación al precio base</li>
+  <li><strong>Salida:</strong> precioFinal (850)</li>
+  <li>Cumple con todas las características es <strong>preciso</strong>, <strong>finito</strong>,
+    <strong>definido</strong> y <strong>efectivo</strong>
+  </li>
+</ul>
+
+<h2>Ejemplo Intermedio Aplicado</h2>
+<p><strong> Contexto profesional:</strong> Sistema de facturación que debe calcular el total a pagar considerando
+  múltiples conceptos.</p>
+<p><strong>Problema:</strong>
+  Un sistema de facturación electrónica necesita calcular el total de una venta con los siguientes datos:</p>
+
+<ul>
+  <li>Subtotal de productos: Lps 5000.00</li>
+  <li>Descuento por cliente frecuente: 10%</li>
+  <li>Impuesto sobre ventas (IVA): 16%</li>
+</ul>
+
+<p>El algoritmo debe calcular el total final aplicando primero el descuento y luego el impuesto sobre el subtotal con
+  descuento.</p>
+
+<h3>Algoritmo en lenguaje natural:</h3>
+<ol>
+  <li>Inicio</li>
+  <li>Establecer el subtotal en 5000</li>
+  <li>Establecer el porcentaje de descuento en 10</li>
+  <li>Establecer el porcentaje de impuesto en 16</li>
+  <li>Calcular el monto del descuento</li>
+  <li>Calcular el subtotal con descuento</li>
+  <li>Calcular el monto del impuesto</li>
+  <li>Calcular el total final</li>
+  <li>Mostrar el desglose completo</li>
+  <li>Fin</li>
+</ol>
+
+<h3>Traza de ejecución detallada:</h3>
+<pre class="language-markdown">
+  <code >
+Paso 1: Inicio del algoritmo
+Paso 2: subtotal = 5000
+Paso 3: porcentajeDescuento = 10
+Paso 4: porcentajeImpuesto = 16
+Paso 5: montoDescuento = (5000 × 10) / 100 = 500
+Paso 6: subtotalConDescuento = 5000 - 500 = 4500
+Paso 7: montoImpuesto = (4500 × 16) / 100 = 720
+Paso 8: totalFinal = 4500 + 720 = 5220
+Paso 9: Mostrar desglose
+Paso 10: Fin del algoritmo
+</code>
+</pre>
+
+<h3>Salida esperada:</h3>
+<pre class="language-markdown">
+  <code >
+  === FACTURA ELECTRÓNICA ===
+  Subtotal:             Lps 5,000.00
+  Descuento (10%):       -Lps 500.00
+          ----------
+  Subtotal c/descuento:  Lps 4,500.00
+  IVA (16%):             +Lps 720.00
+          ----------
+  TOTAL A PAGAR:         Lps 5,220.00  
+  </code>
+</pre>
+
+<h3>Análisis del algoritmo:</h3>
+<ul>
+  <li><strong>Entradas:</strong> subtotal (5000), porcentajeDescuento (10), porcentajeImpuesto (16)</li>
+  <li><strong>Procesos:</strong> Cálculo secuencial de descuento, aplicación al subtotal, cálculo de impuesto sobre el
+    nuevo subtotal</li>
+  <li><strong>Salida:</strong> Desglose completo de la transacción con total final (5220)</li>
+  <li><strong>Orden de operaciones crítico:</strong> El descuento se aplica antes que el impuesto, lo cual afecta el
+    resultado final</li>
+</ul>
+
+
+<h2>Proceso Metodológico de Resolución de Problemas</h2>
+<p>Para diseñar algoritmos efectivos, los programadores profesionales siguen un proceso sistemático:</p>
+
+<h3>Fase 1: Comprensión del Problema</h3>
+<ul>
+  <li>Leer cuidadosamente el enunciado</li>
+  <li>Identificar qué datos están disponibles (entradas)</li>
+  <li>Determinar qué resultado se espera obtener (salidas)</li>
+  <li>Reconocer restricciones y condiciones especiales</li>
+</ul>
+
+<h3>Fase 2: Análisis del Problema</h3>
+<ul>
+  <li>Descomponer el problema en subproblemas más pequeños</li>
+  <li>Identificar patrones conocidos</li>
+  <li>Determinar qué operaciones matemáticas o lógicas se requieren</li>
+  <li>Establecer el orden de ejecución de las operaciones</li>
+</ul>
+
+<h3>Fase 3: Diseño del Algoritmo</h3>
+<ul>
+  <li>Expresar la solución en lenguaje natural o pseudocódigo</li>
+  <li>Definir variables necesarias para almacenar datos</li>
+  <li>Establecer la secuencia de pasos a seguir</li>
+  <li>Identificar puntos de decisión (si existen condiciones)</li>
+</ul>
+<h3>Fase 4: Verificación</h3>
+<ul>
+  <li>Realizar pruebas de escritorio con datos de ejemplo</li>
+  <li>Verificar que el algoritmo produce el resultado esperado</li>
+  <li>Comprobar casos especiales o extremos</li>
+  <li>Validar que el algoritmo termina en tiempo finito</li>
+</ul>
+
+<h3>Fase 5: Optimización (opcional)</h3>
+<ul>
+  <li>Evaluar si existen formas más eficientes de resolver el problema</li>
+  <li>Simplificar pasos redundantes</li>
+  <li>Mejorar la claridad de las instrucciones</li>
+</ul>
+
+<h2>Ejemplo Avanzado: Sistema de Cálculo de Nómina</h2>
+
+<p><strong>Contexto profesional:</strong> Sistema de recursos humanos que calcula el salario neto de un empleado.</p>
+
+<p><strong>Problema:</strong> Una empresa necesita calcular el salario neto mensual de un empleado considerando:</p>
+<ul>
+  <li>Salario base mensual: Lps 15,000.00</li>
+  <li>Horas extra trabajadas: 10 horas</li>
+  <li>Tarifa por hora extra: Lps 150.00 por hora</li>
+  <li>Deducciones obligatorias: 12% del salario bruto (impuestos y seguridad social)</li>
+  <li>Bono por desempeño: Lps 2,000.00</li>
+</ul>
+
+<p>El algoritmo debe calcular el salario neto que recibirá el empleado después de aplicar todos los conceptos.</p>
+
+<h3>Algoritmo en lenguaje natural:</h3>
+
+<OL>
+  <li>Inicio</li>
+  <li>Establecer el salario base en 15000</li>
+  <li>Establecer las horas extra trabajadas en 10</li>
+  <li>Establecer la tarifa por hora extra en 150</li>
+  <li>Establecer el porcentaje de deducciones en 12</li>
+  <li>Establecer el bono por desempeño en 2000</li>
+  <li>Calcular el pago por horas extra: horas extra × tarifa por hora extra</li>
+  <li>Calcular el salario bruto: salario base + pago por horas extra + bono por desempeño</li>
+  <li>Calcular el monto de deducciones: (salario bruto × porcentaje de deducciones) / 100</li>
+  <li>Calcular el salario neto: salario bruto - monto de deducciones</li>
+  <li>Mostrar el recibo de nómina detallado</li>
+  <li>Fin</li>
+</ol>
+
+<h3>Traza de ejecución completa:</h3>
+<pre class="language-markdown">
+  <code>
+Paso 1: Inicio del algoritmo de nómina
+Paso 2: salarioBase = 15000
+Paso 3: horasExtra = 10
+Paso 4: tarifaHoraExtra = 150
+Paso 5: porcentajeDeducciones = 12
+Paso 6: bonoDesempeno = 2000
+Paso 7: pagoHorasExtra = 10 × 150 = 1500
+Paso 8: salarioBruto = 15000 + 1500 + 2000 = 18500
+Paso 9: montoDeducciones = (18500 × 12) / 100 = 2220
+Paso 10: salarioNeto = 18500 - 2220 = 16280
+Paso 11: Generar recibo de nómina
+Paso 12: Fin del algoritmo
+</code>
+</pre>
+
+<h3>Salida esperada:</h3>
+
+<pre class="language-markdown copy-to-clipboard-button"><code>
+========================================
+RECIBO DE NÓMINA MENSUAL
+========================================
+PERCEPCIONES:
+Salario Base: Lps 15,000.00
+Horas Extra (10 hrs): Lps 1,500.00
+Bono Desempeño: Lps 2,000.00
+----------
+SALARIO BRUTO: Lps 18,500.00
+
+DEDUCCIONES:
+Impuestos y SS (12%): Lps 2,220.00
+----------
+TOTAL DEDUCCIONES: Lps 2,220.00
+
+========================================
+SALARIO NETO A PAGAR: Lps 16,280.00
+========================================
+</code></pre>
+
+
+<h3>Análisis del algoritmo:</h3>
+<ul>
+  <li> <STRONG>Entradas múltiples:</STRONG> salarioBase, horasExtra, tarifaHoraExtra, porcentajeDeducciones,
+    bonoDesempeno</li>
+  <li><STRONG>Cálculos intermedios:</STRONG> pagoHorasExtra, salarioBruto, montoDeducciones</li>
+  <li><STRONG>Salida final estructurada:</STRONG> Recibo de nómina completo con desglose detallado</li>
+  <li><STRONG>Orden crítico de operaciones:</STRONG> Primero se suman todas las percepciones para obtener el bruto,
+    luego se calculan y restan las deducciones</li>
+</ul>
+
+<H2>Notas Importantes</H2>
+
+<p><strong>Error Común 1: </strong>Orden Incorrecto de Operaciones</p>
+<strong>❌ INCORRECTO:</strong>
+<ul>
+  <li>Calcular impuesto sobre salario base</li>
+  <li>Luego sumar horas extra</li>
+  <li><strong>Resultado:</strong> Impuesto calculado incorrectamente</li>
+</ul>
+
+<strong>✓ CORRECTO:</strong>
+<ul>
+  <li>Sumar todas las percepciones primero</li>
+  <li>Calcular impuesto sobre el total</li>
+  <li><strong>Resultado:</strong> Impuesto calculado correctamente
+  </li>
+</ul>
+
+<p><strong>Error Común 2: </strong>Ambigüedad en las Instrucciones</p>
+<strong>❌ INCORRECTO:</strong>
+<p>"Aplicar descuento"</p>
+<p><strong>(¿Qué descuento? ¿Sobre qué valor? ¿Cuándo?)</strong></p>
+
+<strong>✓ CORRECTO:</strong>
+<p>"Calcular el monto del descuento multiplicando</p>
+<p>el precio base por 15 y dividiendo entre 100"</p>
+
+<p><strong>Error Común 3: </strong>Algoritmo sin Condición de Finalización</p>
+<strong>❌ INCORRECTO:</strong>
+<ol>
+  <li>Inicio</li>
+  <li>Sumar 1 al contador</li>
+  <li>Regresar al paso 2
+    (Este algoritmo nunca termina)</li>
+</ol>
+
+<strong>✓ CORRECTO:</strong>
+<ol>
+  <li>Establecer contador en 0</li>
+  <li>Mientras contador sea menor que 10:
+    - Sumar 1 al contador
+  </li>
+  <li>Fin</li>
+</ol>
+
+<h2>Consideraciones Profesionales</h2>
+
+<p>En el contexto empresarial real, los algoritmos deben diseñarse considerando:</p>
+<ul>
+  <li><strong>Mantenibilidad: </strong>Elalgoritmo debe ser comprensible para otros desarrolladores que trabajarán con
+    el código en el futuro.</li>
+  <li><strong>Escalabilidad: </strong>Debe poder adaptarse a volúmenes crecientes de datos sin degradación severa del
+    rendimiento.</li>
+  <li><strong>Robustez: </strong>Debe manejar casos especiales, datos inválidos y situaciones excepcionales sin
+    colapsar.</li>
+  <li><strong>Eficiencia: </strong>Debe utilizar los recursos computacionales (tiempo de procesamiento, memoria) de
+    manera óptima.</li>
+  <li><strong>Documentación: </strong>Los algoritmos complejos requieren documentación detallada que explique el
+    razonamiento detrás de decisiones de diseño específicas.</li>
+</ul>
+
+<p>
+  La habilidad de diseñar algoritmos efectivos no se desarrolla de la noche a la mañana. Requiere práctica constante,
+  exposición a diversos tipos de problemas, y la disciplina de seguir metodologías sistemáticas de análisis y diseño.
+</p>

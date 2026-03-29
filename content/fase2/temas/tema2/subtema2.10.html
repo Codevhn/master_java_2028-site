@@ -1,0 +1,235 @@
+<h2>2.10 Diferencias prácticas entre JDK, JRE y JVM</h2>
+
+
+<p>Aunque hemos explorado individualmente qué son el JDK, el JRE y la JVM, y cómo se relacionan conceptualmente,
+  comprender
+  las diferencias prácticas entre estos componentes, cómo se manifiestan estas diferencias en escenarios reales de
+  desarrollo y despliegue, y cuándo usar cada uno es conocimiento esencial para profesionales que trabajan con Java en
+  cualquier capacidad. Estas diferencias no son meramente académicas sino que tienen implicaciones directas y concretas
+  sobre qué software instalar en diferentes tipos de máquinas, cómo configurar entornos de desarrollo y producción, cómo
+  empaquetar y distribuir aplicaciones, y cómo diagnosticar y resolver problemas relacionados con el entorno de
+  ejecución
+  Java.</p>
+
+<p>
+  La diferencia más fundamental entre estos componentes es su propósito y su audiencia. La JVM es el motor de ejecución,
+  el componente que realmente ejecuta bytecode Java. Es software específico de plataforma implementado como biblioteca
+  nativa que proporciona la máquina virtual abstracta sobre la cual el código Java ejecuta. La JVM por sí sola, sin
+  embargo, no es suficiente para ejecutar programas Java reales porque los programas dependen de las bibliotecas
+  estándar
+  de Java. La JVM proporciona el mecanismo de ejecución, pero las bibliotecas proporcionan la funcionalidad que los
+  programas realmente usan.
+</p>
+<p>
+
+  El JRE, históricamente, era el JVM más las bibliotecas estándar de Java más las herramientas necesarias para ejecutar
+  aplicaciones pero no para desarrollarlas. Era el paquete mínimo necesario para que un usuario final ejecutara software
+  Java en su computadora. Contenía la JVM para ejecutar bytecode, todas las clases de las bibliotecas estándar para que
+  las aplicaciones tuvieran funcionalidad disponible, el launcher java para iniciar programas, bibliotecas nativas que
+  la
+  JVM y ciertas clases Java necesitaban, y archivos de configuración. El JRE estaba diseñado para usuarios no técnicos
+  que
+  simplemente querían ejecutar aplicaciones Java sin necesidad de compilar código o usar herramientas de desarrollo.
+</p>
+
+<p>
+
+  El JDK es el kit completo de desarrollo que incluye todo lo del JRE más herramientas adicionales para desarrolladores.
+  Contiene la JVM y las bibliotecas estándar necesarias tanto para ejecutar como para probar código durante el
+  desarrollo.
+  Contiene el compilador javac que transforma código fuente a bytecode, herramienta esencial que los desarrolladores
+  usan
+  constantemente pero que usuarios finales nunca necesitan. Contiene el debugger jdb, herramientas de generación de
+  documentación, herramientas de profiling y monitoreo, herramientas de empaquetado, y docenas de otras utilidades
+  útiles
+  para desarrollo pero irrelevantes para simplemente ejecutar aplicaciones.
+</p>
+
+<p>
+
+  En términos prácticos de instalación, estas diferencias históricamente significaban que los desarrolladores
+  descargaban
+  e instalaban el JDK mientras que los usuarios finales descargaban e instalaban el JRE. Un desarrollador escribiendo
+  código Java necesitaba el JDK completo instalado en su máquina de desarrollo. Podía escribir código fuente, usar javac
+  del JDK para compilarlo, usar java del JDK para ejecutar y probar el código, usar el debugger y profilers del JDK para
+  diagnosticar problemas, y usar herramientas de empaquetado del JDK para crear distribuciones. Toda esta actividad
+  requería los componentes completos del JDK.
+</p>
+
+<p>
+
+  Un usuario final que simplemente quería ejecutar una aplicación Java, como un programa de escritorio o un applet de
+  navegador, solo necesitaba el JRE. No compilaba código, no depuraba, no generaba documentación. Solo necesitaba la
+  capacidad de ejecutar bytecode Java ya compilado que alguien más había desarrollado. El JRE era significativamente más
+  pequeño que el JDK, típicamente 40-50% del tamaño, porque omitía todas las herramientas de desarrollo. Esto hacía la
+  descarga e instalación más rápida para usuarios finales que solo necesitaban ejecutar Java, no desarrollar con él.
+</p>
+
+<p>
+
+  Sin embargo, como se discutió anteriormente, con Java 11 Oracle discontinuó la distribución del JRE como producto
+  separado. Esta decisión reflejaba cambios en cómo Java era usado: los applets de navegador habían desaparecido, las
+  aplicaciones Java de escritorio eran menos comunes, y Java se había consolidado mayormente como tecnología del lado
+  del
+  servidor. En el mundo moderno, típicamente solo los desarrolladores instalan Java en sus máquinas locales, y ellos
+  necesitan el JDK completo. Para distribución de aplicaciones a usuarios finales, los enfoques modernos como jlink
+  permiten crear imágenes de runtime personalizadas que contienen exactamente los módulos necesarios, empaquetadas con
+  la
+  aplicación.
+</p>
+
+<p>
+
+  En servidores de producción, las diferencias prácticas entre JDK y JRE son relevantes pero matizadas. Técnicamente, un
+  servidor que solo ejecuta aplicaciones Java ya compiladas necesita solo los componentes de runtime, no las
+  herramientas
+  de desarrollo. Sin embargo, en la práctica, muchas organizaciones instalan el JDK completo incluso en servidores de
+  producción porque las herramientas de diagnóstico adicionales en el JDK son extremadamente valiosas cuando se
+  troubleshootean problemas de producción. Herramientas como jstack para obtener thread dumps, jmap para analizar uso de
+  memoria, jstat para monitorear garbage collection, y otras utilidades del JDK son frecuentemente necesarias para
+  diagnosticar problemas que solo se manifiestan bajo carga de producción.
+</p>
+
+<p>
+  La estructura de directorios del JDK refleja estas diferencias. El directorio bin contiene tanto herramientas de
+  desarrollo (javac, javadoc, jar, jdb) como herramientas de runtime (java, keytool). Históricamente, el JRE tenía un
+  subconjunto de los archivos en bin, solo aquellos necesarios para ejecución. El directorio lib contiene las
+  bibliotecas
+  necesarias tanto para desarrollo como para runtime. En JDKs modernos con el sistema de módulos, lib contiene los
+  módulos
+  de la plataforma Java en formato optimizado. El directorio include con archivos de cabecera C/C++ es específico del
+  JDK
+  porque solo los desarrolladores escribiendo código nativo con JNI necesitan estos archivos.
+</p>
+
+<p>
+
+  Las variables de entorno usadas con Java también reflejan estas diferencias. JAVA_HOME típicamente apunta a la
+  instalación del JDK completo en máquinas de desarrollo. Los IDEs, sistemas de construcción como Maven y Gradle, y
+  otras
+  herramientas de desarrollo buscan JAVA_HOME para localizar el JDK. En servidores de producción donde solo el runtime
+  es
+  conceptualmente necesario, JAVA_HOME podría apuntar a una instalación más mínima, aunque como se mencionó,
+  frecuentemente es el JDK completo por conveniencia de diagnóstico.
+</p>
+
+<p>
+
+  Las opciones de línea de comandos del launcher java también tienen diferencias prácticas relacionadas. Algunas
+  opciones
+  controlan aspectos de ejecución relevantes tanto para desarrollo como para producción: tamaño de heap, configuración
+  de
+  garbage collector, configuración de threads. Otras opciones son principalmente útiles durante desarrollo: opciones de
+  depuración que permiten que debuggers se conecten, opciones de profiling que recopilan estadísticas detalladas de
+  rendimiento con alta sobrecarga, opciones que habilitan aserciones que típicamente están deshabilitadas en producción.
+</p>
+
+<p>
+
+  El proceso de actualización también difiere. Durante el desarrollo, los desarrolladores pueden actualizar a nuevas
+  versiones del JDK libremente para obtener nuevas características de lenguaje, mejoras de herramientas, y correcciones
+  de
+  errores. Las máquinas de desarrollo son entornos controlados donde los problemas de compatibilidad pueden ser
+  identificados y resueltos sin impacto a usuarios. En producción, las actualizaciones deben ser más cautelosas. Aunque
+  las actualizaciones de seguridad son críticas y deben ser aplicadas prontamente, las actualizaciones de
+  características
+  mayores requieren pruebas extensivas para asegurar que no introducen incompatibilidades o regresiones de rendimiento.
+</p>
+
+<p>
+
+  Las diferencias de licenciamiento también son prácticas. Históricamente, Oracle permitía distribución libre del JRE
+  pero
+  tenía restricciones más estrictas sobre distribución del JDK. Con el movimiento a OpenJDK como implementación de
+  referencia y las múltiples distribuciones disponibles (Oracle OpenJDK, Adoptium, Amazon Corretto, Azul Zulu, Red Hat),
+  las consideraciones de licenciamiento son menos restrictivas pero aún relevantes. Las organizaciones necesitan
+  comprender los términos de licencia de qué distribución de JDK usan, si incluyen soporte comercial, qué restricciones
+  tienen sobre redistribución, y qué compromisos de actualización de seguridad proporciona el vendedor.
+</p>
+
+<p>
+
+  En contextos de contenedores y cloud, las diferencias prácticas entre JDK y runtime mínimo son particularmente
+  relevantes. Una imagen Docker para una aplicación Java idealmente contiene solo lo mínimo necesario para ejecutar la
+  aplicación, no herramientas de desarrollo completas. Esto minimiza el tamaño de la imagen, reduce el tiempo de
+  descarga
+  y despliegue, reduce el consumo de memoria, y reduce la superficie de ataque de seguridad. Herramientas como jlink
+  permiten crear imágenes de runtime personalizadas que contienen exactamente la JVM y los módulos de biblioteca
+  necesarios. Estas imágenes pueden ser significativamente más pequeñas que instalar el JDK completo.
+</p>
+
+<p>
+
+  Sin embargo, incluso en contenedores, hay argumentos para incluir herramientas de diagnóstico. Si un contenedor en
+  producción experimenta problemas, las herramientas del JDK como jstack y jmap son invaluables para diagnosticar. La
+  alternativa es conectar herramientas de diagnóstico remotamente, lo cual requiere configuración adicional y puede no
+  ser
+  posible en todos los entornos. Algunas organizaciones crean imágenes base con un subconjunto de herramientas de
+  diagnóstico pero no el JDK completo, proporcionando un compromiso entre tamaño mínimo y capacidad de diagnóstico.
+</p>
+
+<p>
+
+  La JVM como componente tiene su propia identidad práctica separada de JRE y JDK. Los desarrolladores de lenguajes que
+  compilan a bytecode de JVM (Kotlin, Scala, Groovy, Clojure) no necesitan el compilador javac porque tienen sus propios
+  compiladores que producen bytecode de JVM. Sin embargo, necesitan la JVM para ejecutar el bytecode y las bibliotecas
+  estándar de Java que su código puede usar. Esta independencia de lenguaje de la JVM la hace valiosa más allá del
+  lenguaje Java específicamente.
+</p>
+
+<p>
+
+  Las implementaciones alternativas de JVM también crean diferencias prácticas. Aunque Oracle HotSpot es la
+  implementación
+  más común, hay otras: Eclipse OpenJ9 (anteriormente IBM J9) con diferentes características de rendimiento y uso de
+  memoria, GraalVM que incluye compilación ahead-of-time y soporte para múltiples lenguajes, Azul Zing con garbage
+  collectors de baja latencia extrema. Estas JVMs alternativas comparten las bibliotecas estándar de Java y ejecutan el
+  mismo bytecode, pero tienen características de rendimiento diferentes, opciones de configuración diferentes, y
+  capacidades de diagnóstico diferentes. Elegir entre ellas es una decisión práctica basada en requisitos específicos de
+  la aplicación.
+</p>
+
+<p>
+
+  Las diferencias prácticas también se manifiestan en educación y aprendizaje. Los estudiantes aprendiendo Java
+  necesitan
+  el JDK instalado para poder compilar y ejecutar programas. Los tutoriales y cursos invariablemente instruyen a
+  instalar
+  el JDK, no solo el JRE. Sin embargo, la confusión histórica entre JDK y JRE era común: estudiantes a veces descargaban
+  el JRE pensando que era suficiente para desarrollo, luego se confundían cuando el comando javac no estaba disponible.
+  La
+  discontinuación del JRE como producto separado simplificó esto, los estudiantes ahora descargan el JDK y obtienen todo
+  lo necesario.
+</p>
+
+<p>
+
+  En ambientes corporativos, la gestión de instalaciones de Java a escala presenta desafíos prácticos relacionados con
+  estas diferencias. Las máquinas de desarrollo necesitan JDKs, y potencialmente múltiples versiones de JDK si los
+  desarrolladores trabajan en proyectos con diferentes requisitos de versión. Los servidores de construcción de CI/CD
+  necesitan JDKs para compilar código. Los servidores de aplicación necesitan al menos runtime, aunque frecuentemente
+  tienen JDK completo para diagnóstico. Coordinar estas instalaciones, asegurar versiones consistentes, gestionar
+  actualizaciones de seguridad, y proporcionar herramientas para que los desarrolladores cambien entre versiones son
+  preocupaciones prácticas de gestión de configuración.
+</p>
+
+<p>
+
+  Las herramientas de gestión de versiones como SDKMAN en Linux/Mac o Scoop en Windows ayudan con estas complejidades
+  prácticas, permitiendo instalar múltiples versiones de JDK lado a lado y cambiar entre ellas fácilmente. Estas
+  herramientas comprenden las diferencias entre distribuciones de JDK (Oracle, Adoptium, Corretto, etc.) y entre
+  versiones, y facilitan gestionar la complejidad práctica del ecosistema Java moderno.
+</p>
+
+<p>
+
+  Las diferencias prácticas entre JDK, JRE y JVM no son abstracciones teóricas sino consideraciones concretas que
+  afectan
+  decisiones diarias en desarrollo de software Java. Saber qué instalar en qué tipo de máquina, cómo configurar entornos
+  de desarrollo versus producción, cómo optimizar imágenes de contenedor, qué herramientas están disponibles para
+  diagnóstico, cómo gestionar actualizaciones, y cómo navegar el ecosistema de múltiples proveedores de JDK requiere
+  comprender claramente estas diferencias y sus implicaciones prácticas. Este conocimiento distingue a profesionales que
+  simplemente usan Java de aquellos que lo dominan y pueden tomar decisiones arquitectónicas y operacionales informadas
+  en
+  sus organizaciones.
+</p>

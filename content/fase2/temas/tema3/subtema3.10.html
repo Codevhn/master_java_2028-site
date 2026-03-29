@@ -1,0 +1,355 @@
+<h2>3.10: Organización profesional de proyectos Java en el sistema de archivos</h2>
+
+<p>La forma en que se organizan los proyectos Java en el sistema de archivos tiene un impacto directo y significativo en
+  la productividad del desarrollo, la facilidad de navegación del código, la eficiencia de las herramientas de
+  construcción, la claridad para colaboradores, y la mantenibilidad a largo plazo. Un proyecto bien organizado permite
+  que cualquier desarrollador Java comprenda su estructura inmediatamente, localice archivos rápidamente, y comprenda las
+  relaciones entre componentes sin necesidad de documentación extensa. En contraste, un proyecto desorganizado con
+  archivos dispersos en ubicaciones arbitrarias y sin convenciones claras crea fricción constante que reduce
+  productividad y aumenta errores.</p>
+
+<h3>Principios fundamentales de organización</h3>
+
+<p><strong>1. Separación clara de concerns:</strong> código fuente separado de archivos compilados, tests separados de
+  código de producción, recursos separados de código, documentación en ubicación dedicada, y scripts en directorio
+  apropiado.</p>
+
+<p><strong>2. Convenciones sobre configuración:</strong> usar la estructura de directorios estándar que herramientas de
+  construcción e IDEs reconocen automáticamente. Maven y Gradle establecen convenciones ampliamente adoptadas.</p>
+
+<p><strong>3. Jerarquía lógica reflejando arquitectura:</strong> la estructura de paquetes y directorios debe reflejar
+  la organización lógica del código, facilitando comprensión de la arquitectura mediante inspección de la estructura de
+  directorios.</p>
+
+<p><strong>4. Escalabilidad:</strong> la estructura debe funcionar tanto para proyectos pequeños como grandes, sin
+  requerir reorganización mayor a medida que el proyecto crece.</p>
+
+<p><strong>5. Compatibilidad con herramientas:</strong> la estructura debe ser compatible con Maven, Gradle, IntelliJ,
+  Eclipse, VS Code, Git, y herramientas de análisis de código.</p>
+
+<h3>Estructura estándar de proyecto Maven/Gradle</h3>
+
+<p>Maven estableció una estructura de directorios que se convirtió en estándar de facto para proyectos Java. Gradle
+  adoptó la misma convención. Incluso proyectos que no usan ninguno de los dos frecuentemente siguen esta estructura
+  por familiaridad.</p>
+
+<pre class="language-markup">
+  <code>mi-proyecto/
+├── src/
+│   ├── main/
+│   │   ├── java/              # Código fuente Java de producción
+│   │   │   └── com/empresa/proyecto/
+│   │   │       ├── Main.java
+│   │   │       ├── modelo/
+│   │   │       ├── servicio/
+│   │   │       └── util/
+│   │   └── resources/         # Recursos de producción
+│   │       ├── application.properties
+│   │       └── logback.xml
+│   └── test/
+│       ├── java/              # Código fuente de tests
+│       │   └── com/empresa/proyecto/
+│       └── resources/         # Recursos para tests
+├── target/                    # Archivos compilados Maven (ignorado por Git)
+├── build/                     # Archivos compilados Gradle (ignorado por Git)
+├── docs/
+├── scripts/
+├── .gitignore
+├── pom.xml
+├── build.gradle
+└── README.md</code>
+</pre>
+
+<h3>Desglose detallado de directorios</h3>
+
+<h4>src/main/java/ — Código fuente de producción</h4>
+
+<p>Contiene todo el código Java que será compilado y desplegado en producción. Organización de paquetes recomendada:</p>
+
+<pre class="language-markup">
+  <code>com.empresa.proyecto/
+├── Main.java
+├── config/
+│   ├── DatabaseConfig.java
+│   └── SecurityConfig.java
+├── modelo/
+│   ├── Usuario.java
+│   └── Producto.java
+├── repositorio/
+│   ├── UsuarioRepository.java
+│   └── ProductoRepository.java
+├── servicio/
+│   ├── UsuarioService.java
+│   └── ProductoService.java
+├── controlador/
+│   ├── UsuarioController.java
+│   └── ProductoController.java
+├── dto/
+├── excepcion/
+└── util/</code>
+</pre>
+
+<p><strong>Nomenclatura de paquetes:</strong> todo en minúsculas, nombres descriptivos que reflejan la función.
+  Organización por capa (modelo, servicio, repositorio) para proyectos pequeños; por característica/módulo para
+  proyectos grandes.</p>
+
+<h4>src/main/resources/ — Recursos de producción</h4>
+
+<p>Contiene archivos no-Java necesarios en producción. Incluidos en el classpath y accesibles mediante
+  <code>getResourceAsStream()</code>.</p>
+
+<pre class="language-markup">
+  <code>resources/
+├── application.properties
+├── application-dev.properties
+├── application-prod.properties
+├── logback.xml
+├── db/migration/
+│   ├── V1__Initial_schema.sql
+│   └── V2__Add_users_table.sql
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── templates/
+└── i18n/
+    ├── messages_es.properties
+    └── messages_en.properties</code>
+</pre>
+
+<h4>src/test/java/ — Código de tests</h4>
+
+<p>La estructura de paquetes debe espejear exactamente la de <code>src/main/java</code>, facilitando la localización
+  de tests para cada clase.</p>
+
+<pre class="language-markup">
+  <code>com.empresa.proyecto/
+├── modelo/
+│   ├── UsuarioTest.java
+│   └── ProductoTest.java
+├── servicio/
+│   ├── UsuarioServiceTest.java
+│   └── ProductoServiceTest.java
+└── util/
+    └── FechaUtilTest.java</code>
+</pre>
+
+<p><strong>Convenciones de nomenclatura:</strong> <code>&lt;ClaseTesteada&gt;Test.java</code>; métodos descriptivos
+  como <code>testCalcularDescuentoConPorcentajeValido()</code> o
+  <code>deberiaLanzarExcepcionCuandoUsuarioNoExiste()</code>.</p>
+
+<h4>target/ y build/ — Archivos generados</h4>
+
+<p>Contiene archivos <code>.class</code> compilados, JARs/WARs, reportes de tests, y documentación generada. Este
+  directorio <strong>nunca</strong> debe ser versionado en Git:</p>
+
+<pre class="language-markup">
+  <code># .gitignore
+target/
+build/
+*.class</code>
+</pre>
+
+<h3>Archivos en raíz del proyecto</h3>
+
+<p><strong>pom.xml / build.gradle:</strong> define dependencias, plugins, versión de Java objetivo, repositorios, y
+  configuración de empaquetado.</p>
+
+<p><strong>README.md:</strong> descripción del proyecto, requisitos, instrucciones de instalación y ejecución, y cómo
+  ejecutar tests:</p>
+
+<pre class="language-markup">
+  <code># Sistema de Gestión de Inventario
+
+## Requisitos
+- Java 17 o superior
+- Maven 3.8+
+- PostgreSQL 14+
+
+## Instalación
+git clone https://github.com/empresa/inventario.git
+cd inventario
+mvn clean install
+
+## Ejecución
+mvn spring-boot:run
+# Aplicación en: http://localhost:8080
+
+## Tests
+mvn test</code>
+</pre>
+
+<p><strong>.gitignore</strong> para proyecto Java:</p>
+
+<pre class="language-markup">
+  <code># Construcción
+target/
+build/
+out/
+bin/
+
+# Compilados
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+logs/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.eclipse/
+.settings/
+.classpath
+.project
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Configuraciones locales
+application-local.properties
+local.env
+
+# Temporales
+*.tmp
+*.bak
+*~</code>
+</pre>
+
+<p><strong>.editorconfig</strong> — estilo de código consistente entre IDEs:</p>
+
+<pre class="language-markup">
+  <code>root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false</code>
+</pre>
+
+<p>Otros archivos comunes en raíz: <code>LICENSE</code>, <code>CHANGELOG.md</code>, y <code>CONTRIBUTING.md</code>
+  para proyectos open source.</p>
+
+<h3>Organización de proyectos multi-módulo</h3>
+
+<p>Para aplicaciones grandes, la estructura de proyecto único puede ser insuficiente. Los proyectos multi-módulo
+  dividen la aplicación en módulos separados con dependencias explícitas.</p>
+
+<pre class="language-markup">
+  <code>empresa-erp/
+├── pom.xml                # POM padre
+├── erp-modelo/            # Entidades de dominio
+│   ├── pom.xml
+│   └── src/main/java/
+├── erp-repositorio/       # Acceso a datos
+│   ├── pom.xml
+│   └── src/main/java/
+├── erp-servicio/          # Lógica de negocio
+│   ├── pom.xml
+│   └── src/main/java/
+├── erp-api/               # API REST
+│   ├── pom.xml
+│   └── src/main/java/
+└── erp-web/               # Interfaz web
+    ├── pom.xml
+    └── src/main/java/</code>
+</pre>
+
+<p><strong>Ventajas:</strong> separación de responsabilidades más clara, compilación independiente de módulos,
+  reutilización, y aplicación de principios SOLID a nivel de módulos. <strong>Desventajas:</strong> mayor complejidad
+  inicial; puede ser overkill para proyectos pequeños.</p>
+
+<h3>Ubicación del workspace de desarrollo</h3>
+
+<p><strong>macOS/Linux — recomendado:</strong></p>
+<pre class="language-markup">
+  <code>~/projects/
+├── empresa/
+│   ├── proyecto-a/
+│   └── proyecto-b/
+├── personal/
+└── open-source/</code>
+</pre>
+
+<p><strong>Windows — recomendado:</strong></p>
+<pre class="language-markup">
+  <code>C:\dev\
+├── empresa\
+├── personal\
+└── open-source\</code>
+</pre>
+
+<p><strong>Evitar:</strong> Escritorio, Documentos, Descargas, y rutas con espacios o caracteres especiales, ya que
+  pueden causar problemas con herramientas de construcción.</p>
+
+<h3>Estructuras para tipos de proyecto específicos</h3>
+
+<p><strong>Aplicación Spring Boot:</strong></p>
+<pre class="language-markup">
+  <code>proyecto-springboot/src/main/java/com/empresa/app/
+├── Application.java
+├── config/
+├── controller/
+├── service/
+├── repository/
+└── model/</code>
+</pre>
+
+<p><strong>Biblioteca/Framework:</strong></p>
+<pre class="language-markup">
+  <code>mi-biblioteca/
+├── src/main/java/com/empresa/biblioteca/
+│   ├── core/
+│   ├── util/
+│   └── exception/
+├── docs/api/              # JavaDoc generado
+├── examples/
+└── LICENSE</code>
+</pre>
+
+<p><strong>Aplicación de línea de comandos:</strong></p>
+<pre class="language-markup">
+  <code>cli-tool/
+├── src/main/java/com/empresa/cli/
+│   ├── Main.java
+│   ├── command/
+│   ├── parser/
+│   └── output/
+└── scripts/install.sh</code>
+</pre>
+
+<h3>Buenas prácticas adicionales</h3>
+
+<p><strong>Un proyecto = un repositorio Git.</strong> Evitar monorepos accidentales donde múltiples proyectos no
+  relacionados comparten el mismo repositorio.</p>
+
+<p><strong>Documentar estructura en README</strong> si difiere del estándar Maven/Gradle.</p>
+
+<p><strong>Mantener la raíz del proyecto limpia.</strong> Evitar acumular archivos sueltos sin directorio claro.</p>
+
+<p><strong>Scripts de utilidad en <code>scripts/</code> o <code>tools/</code>.</strong></p>
+
+<p><strong>Archivos <code>.env</code> en <code>.gitignore</code>.</strong> Proporcionar <code>.env.example</code>
+  versionado con valores de ejemplo, nunca credenciales reales.</p>
+
+<p><strong>Consistencia entre proyectos.</strong> Una estructura uniforme facilita que los desarrolladores sean
+  productivos inmediatamente al unirse a cualquier proyecto de la organización.</p>
+
+<p>La organización profesional del sistema de archivos no es un detalle cosmético sino una práctica fundamental que
+  afecta eficiencia, mantenibilidad, y escalabilidad. Adoptar convenciones establecidas y mantener separación clara de
+  concerns facilita colaboración y permite que los desarrolladores sean productivos inmediatamente al unirse a un
+  proyecto.</p>

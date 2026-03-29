@@ -1,0 +1,355 @@
+<h2>3.6: Configuración de variables de entorno (JAVA_HOME y PATH)</h2>
+
+<p>Después de instalar el JDK, el sistema operativo aún no sabe dónde encontrarlo para usarlo. Las variables de entorno
+  JAVA_HOME y PATH son el mecanismo mediante el cual se comunica al sistema operativo, a las herramientas de desarrollo, y
+  a los IDEs dónde está ubicado el JDK y cómo acceder a sus comandos. Configurar estas variables correctamente es
+  absolutamente crítico; sin esta configuración, comandos como <code>java</code> y <code>javac</code> no funcionarán
+  desde línea de comandos, los sistemas de construcción como Maven y Gradle fallarán, y los IDEs tendrán problemas
+  localizando el JDK.</p>
+
+<h3>¿Qué son las variables de entorno?</h3>
+
+<p>Las variables de entorno son pares nombre-valor que el sistema operativo mantiene y que están disponibles para todos
+  los procesos ejecutándose en el sistema. Los programas pueden leer estas variables para obtener información de
+  configuración sin que necesite ser especificada cada vez que el programa ejecuta.</p>
+
+<p><strong>Ejemplos de variables de entorno comunes:</strong></p>
+<ul>
+  <li><code>PATH</code>: Lista de directorios donde el sistema busca ejecutables</li>
+  <li><code>HOME</code> (Unix) / <code>USERPROFILE</code> (Windows): Directorio home del usuario</li>
+  <li><code>TEMP</code> / <code>TMP</code>: Directorio para archivos temporales</li>
+</ul>
+
+<h3>JAVA_HOME: ¿Qué es y por qué es necesaria?</h3>
+
+<p>JAVA_HOME es una variable de entorno que apunta al directorio raíz de la instalación del JDK (no al subdirectorio
+  <code>bin</code>, sino a la raíz).</p>
+
+<p><strong>Ejemplos de valor correcto:</strong></p>
+<ul>
+  <li>Windows: <code>C:\Program Files\Eclipse Adoptium\jdk-21.0.1.12-hotspot</code></li>
+  <li>macOS: <code>/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home</code></li>
+  <li>Linux: <code>/opt/jdk-21</code> o <code>/usr/lib/jvm/temurin-21-jdk-amd64</code></li>
+</ul>
+
+<p><strong>¿Por qué es necesaria?</strong> Muchas herramientas Java dependen de JAVA_HOME para localizar el JDK:</p>
+<ul>
+  <li><strong>Maven y Gradle:</strong> Usan JAVA_HOME para encontrar el JDK al construir proyectos</li>
+  <li><strong>IDEs:</strong> IntelliJ IDEA y Eclipse frecuentemente usan JAVA_HOME como ubicación por defecto</li>
+  <li><strong>Servidores de aplicaciones:</strong> Tomcat, Jetty, WildFly requieren JAVA_HOME</li>
+  <li><strong>Scripts de deployment:</strong> Frecuentemente referencian JAVA_HOME</li>
+  <li><strong>Herramientas de terceros:</strong> Muchas herramientas Java asumen que JAVA_HOME está configurada</li>
+</ul>
+
+<p><strong>Error común si no está configurada:</strong></p>
+<pre class="language-markup">
+  <code>ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.</code>
+</pre>
+
+<h3>PATH: ¿Qué es y por qué agregar el JDK?</h3>
+
+<p>PATH es una variable de entorno que contiene lista de directorios separados por delimitador (<code>;</code> en
+  Windows, <code>:</code> en Unix) donde el sistema operativo busca ejecutables cuando se escribe un comando. Si
+  <code>$JAVA_HOME/bin</code> (Unix) o <code>%JAVA_HOME%\bin</code> (Windows) no está en PATH, el sistema no encontrará
+  los comandos <code>java</code> y <code>javac</code>.</p>
+
+<p><strong>Error común si no está en PATH:</strong></p>
+<pre class="language-bash">
+  <code>java -version
+# bash: java: command not found
+
+javac HelloWorld.java
+# 'javac' is not recognized as an internal or external command</code>
+</pre>
+
+<h3>Configuración en Windows</h3>
+
+<h4>Método 1: Interfaz gráfica (recomendado para principiantes)</h4>
+
+<p><strong>Abrir Variables de Entorno en Windows 10/11:</strong></p>
+<ol>
+  <li>Click derecho en "This PC" → "Properties"</li>
+  <li>Click "Advanced system settings"</li>
+  <li>En la pestaña "Advanced", click "Environment Variables..."</li>
+</ol>
+
+<p><strong>Método alternativo (más rápido):</strong> Presionar <code>Win + R</code>, escribir <code>sysdm.cpl</code>,
+  Enter → Pestaña "Advanced" → "Environment Variables..."</p>
+
+<p><strong>Crear JAVA_HOME:</strong></p>
+<ol>
+  <li>En "System variables", click "New..."</li>
+  <li>Variable name: <code>JAVA_HOME</code> / Variable value: ruta completa al JDK sin <code>\bin</code> al final</li>
+</ol>
+
+<pre class="language-markup">
+  <code>C:\Program Files\Eclipse Adoptium\jdk-21.0.1.12-hotspot</code>
+</pre>
+
+<ol start="3">
+  <li>Click "OK". La ruta debe apuntar al directorio que contiene <code>bin</code>, <code>lib</code>, <code>include</code>.</li>
+</ol>
+
+<p><strong>Modificar PATH:</strong></p>
+<ol>
+  <li>En "System variables", buscar <code>Path</code> y click "Edit..."</li>
+  <li>Click "New" y agregar: <code>%JAVA_HOME%\bin</code></li>
+  <li>Click "OK" en todas las ventanas para guardar.</li>
+</ol>
+
+<h4>Método 2: PowerShell como Administrador</h4>
+
+<pre class="language-powershell">
+  <code># Establecer JAVA_HOME permanentemente
+[System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'C:\Program Files\Eclipse Adoptium\jdk-21.0.1.12-hotspot', 'Machine')
+
+# Agregar al PATH
+$currentPath = [System.Environment]::GetEnvironmentVariable('Path', 'Machine')
+if ($currentPath -notlike "*%JAVA_HOME%\bin*") {
+    $newPath = $currentPath + ";%JAVA_HOME%\bin"
+    [System.Environment]::SetEnvironmentVariable('Path', $newPath, 'Machine')
+}</code>
+</pre>
+
+<p>Reiniciar PowerShell después de ejecutar estos comandos.</p>
+
+<h4>Método 3: CMD como Administrador</h4>
+
+<pre class="language-bash">
+  <code>setx JAVA_HOME "C:\Program Files\Eclipse Adoptium\jdk-21.0.1.12-hotspot" /M
+setx PATH "%PATH%;%JAVA_HOME%\bin" /M</code>
+</pre>
+
+<p>La opción <code>/M</code> establece la variable a nivel de sistema (requiere privilegios de administrador). Reiniciar
+  CMD después de ejecutar estos comandos.</p>
+
+<h3>Configuración en macOS</h3>
+
+<p>La configuración depende del shell usado. macOS Catalina (10.15) y posteriores usan <strong>zsh</strong> por defecto;
+  versiones anteriores usaban <strong>bash</strong>.</p>
+
+<pre class="language-bash">
+  <code># Determinar shell actual
+echo $SHELL</code>
+</pre>
+
+<h4>Para zsh (macOS Catalina 10.15+)</h4>
+
+<p><strong>Paso 1: Identificar ruta del JDK:</strong></p>
+<pre class="language-bash">
+  <code>/usr/libexec/java_home -V</code>
+</pre>
+
+<p>Ejemplo de salida:</p>
+<pre class="language-markup">
+  <code>Matching Java Virtual Machines (1):
+    21.0.1 (x86_64) "Eclipse Adoptium" - "Eclipse Temurin 21" /Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home</code>
+</pre>
+
+<p><strong>Paso 2: Editar <code>~/.zshrc</code> y agregar las variables:</strong></p>
+<pre class="language-bash">
+  <code># Abrir archivo
+nano ~/.zshrc
+
+# Agregar al final:
+# Java Environment
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+export PATH=$JAVA_HOME/bin:$PATH</code>
+</pre>
+
+<p><strong>Alternativa con ruta explícita:</strong></p>
+<pre class="language-bash">
+  <code>export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH</code>
+</pre>
+
+<p><strong>Paso 3: Guardar y aplicar cambios:</strong></p>
+<pre class="language-bash">
+  <code># En nano: Ctrl+O (guardar), Enter, Ctrl+X (salir)
+
+# Aplicar cambios inmediatamente
+source ~/.zshrc</code>
+</pre>
+
+<h4>Para bash (macOS anterior a Catalina)</h4>
+
+<pre class="language-bash">
+  <code># Editar archivo
+nano ~/.bash_profile
+
+# Agregar al final:
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+export PATH=$JAVA_HOME/bin:$PATH
+
+# Aplicar cambios
+source ~/.bash_profile</code>
+</pre>
+
+<h3>Configuración en Linux</h3>
+
+<h4>Para bash (más común)</h4>
+
+<p><strong>Paso 1: Verificar ruta del JDK según método de instalación:</strong></p>
+<ul>
+  <li>Paquete sistema: <code>/usr/lib/jvm/temurin-21-jdk-amd64/</code></li>
+  <li>Manual en /opt: <code>/opt/jdk-21/</code></li>
+  <li>Manual en home: <code>~/java/jdk-21/</code></li>
+</ul>
+
+<pre class="language-bash">
+  <code># Verificar contenido del directorio
+ls /opt/jdk-21/
+# Debe mostrar: bin conf include jmods legal lib release</code>
+</pre>
+
+<p><strong>Paso 2: Editar archivo de configuración:</strong></p>
+<pre class="language-bash">
+  <code># Para usuario actual
+nano ~/.bashrc
+
+# Para todos los usuarios (requiere sudo)
+sudo nano /etc/profile</code>
+</pre>
+
+<p><strong>Paso 3: Agregar variables al final del archivo:</strong></p>
+<pre class="language-bash">
+  <code># Java Environment
+export JAVA_HOME=/opt/jdk-21
+export PATH=$JAVA_HOME/bin:$PATH</code>
+</pre>
+
+<p><strong>Paso 4: Guardar y aplicar:</strong></p>
+<pre class="language-bash">
+  <code>source ~/.bashrc
+# o si editó /etc/profile:
+source /etc/profile</code>
+</pre>
+
+<h4>Para zsh en Linux</h4>
+
+<pre class="language-bash">
+  <code>nano ~/.zshrc
+
+# Agregar:
+export JAVA_HOME=/opt/jdk-21
+export PATH=$JAVA_HOME/bin:$PATH
+
+source ~/.zshrc</code>
+</pre>
+
+<h4>Método alternativo: /etc/environment (Ubuntu/Debian)</h4>
+
+<pre class="language-bash">
+  <code>sudo nano /etc/environment
+
+# Agregar:
+JAVA_HOME="/opt/jdk-21"
+
+# Modificar línea PATH existente:
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$JAVA_HOME/bin"</code>
+</pre>
+
+<p>Reiniciar sesión para aplicar cambios.</p>
+
+<h3>Verificación de configuración correcta</h3>
+
+<p>Abrir una <strong>nueva</strong> ventana de terminal (importante: las ventanas abiertas antes de configurar no
+  tendrán las variables nuevas) y ejecutar:</p>
+
+<p><strong>Verificar JAVA_HOME en Windows (CMD):</strong></p>
+<pre class="language-bash">
+  <code>echo %JAVA_HOME%</code>
+</pre>
+
+<p><strong>Verificar JAVA_HOME en Windows (PowerShell):</strong></p>
+<pre class="language-powershell">
+  <code>echo $env:JAVA_HOME</code>
+</pre>
+
+<p><strong>Verificar JAVA_HOME en macOS/Linux:</strong></p>
+<pre class="language-bash">
+  <code>echo $JAVA_HOME</code>
+</pre>
+
+<p>Debe mostrar la ruta al directorio JDK. Si muestra vacío, la variable no está configurada correctamente.</p>
+
+<p><strong>Verificar que java y javac funcionan:</strong></p>
+<pre class="language-bash">
+  <code>java -version</code>
+</pre>
+
+<pre class="language-markup">
+  <code>openjdk version "21.0.1" 2023-10-17 LTS
+OpenJDK Runtime Environment Temurin-21.0.1+12 (build 21.0.1+12-LTS)
+OpenJDK 64-Bit Server VM Temurin-21.0.1+12 (build 21.0.1+12-LTS, mixed mode, sharing)</code>
+</pre>
+
+<pre class="language-bash">
+  <code>javac -version</code>
+</pre>
+
+<pre class="language-markup">
+  <code>javac 21.0.1</code>
+</pre>
+
+<p><strong>Verificar ubicación de los ejecutables:</strong></p>
+<pre class="language-bash">
+  <code># macOS/Linux
+which java
+which javac
+
+# Windows
+where java
+where javac</code>
+</pre>
+
+<p>La salida debe mostrar una ruta dentro del directorio JDK instalado, no otra ubicación del sistema.</p>
+
+<h3>Problemas comunes y soluciones</h3>
+
+<p><strong>Problema 1: "java/javac no se reconoce como comando".</strong> Causa: PATH no contiene el bin del JDK.
+  Solución: verificar que se agregó <code>%JAVA_HOME%\bin</code> o <code>$JAVA_HOME/bin</code> al PATH, abrir una
+  <strong>nueva</strong> ventana de terminal, y verificar ortografía (mayúsculas/minúsculas importan en Unix).</p>
+
+<p><strong>Problema 2: JAVA_HOME apunta a directorio incorrecto.</strong> Causa: ruta especificada incorrectamente.
+  Solución: JAVA_HOME debe apuntar al directorio raíz del JDK sin <code>/bin</code> al final. Verificar con
+  <code>ls $JAVA_HOME</code> (Unix) o <code>dir %JAVA_HOME%</code> (Windows) que muestra <code>bin</code>,
+  <code>lib</code>, <code>include</code>, <code>conf</code>.</p>
+
+<p><strong>Problema 3: Múltiples versiones de Java, versión incorrecta ejecuta.</strong> Causa: otra instalación de
+  Java está antes en PATH. Solución: asegurar que <code>export PATH=$JAVA_HOME/bin:$PATH</code> pone JAVA_HOME
+  <strong>antes</strong> del PATH existente. En Windows, mover <code>%JAVA_HOME%\bin</code> al inicio de la lista.</p>
+
+<p><strong>Problema 4: Cambios no persisten después de reiniciar.</strong> En Windows: verificar que se usó "System
+  variables" y que todos los diálogos se cerraron con OK. En macOS/Linux: verificar que se editó el archivo correcto
+  (<code>.bashrc</code>, <code>.zshrc</code>, o <code>.bash_profile</code>) y que tiene permisos de lectura.</p>
+
+<h3>Configuración para múltiples versiones de JDK</h3>
+
+<p>Si se necesita cambiar entre múltiples versiones, se puede definir funciones en el shell para cambiar JAVA_HOME
+  rápidamente:</p>
+
+<pre class="language-bash">
+  <code># En .bashrc o .zshrc
+
+# Función para cambiar a Java 21
+java21() {
+    export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+    export PATH=$JAVA_HOME/bin:$PATH
+}
+
+# Función para cambiar a Java 17
+java17() {
+    export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
+    export PATH=$JAVA_HOME/bin:$PATH
+}
+
+# Uso: simplemente escribir java21 o java17 en terminal</code>
+</pre>
+
+<p>Para gestión más avanzada de múltiples versiones, herramientas como SDKMAN y jEnv se cubren en el subtema 3.9.</p>
+
+<p>La configuración correcta de JAVA_HOME y PATH es absolutamente fundamental. Todos los problemas que surgen
+  posteriormente con herramientas de construcción, IDEs, o deployment frecuentemente trazan de vuelta a configuración
+  incorrecta de estas variables. Invertir tiempo en configurarlas correctamente desde el inicio previene innumerables
+  horas de frustración posterior.</p>

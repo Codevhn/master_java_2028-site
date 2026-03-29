@@ -1,0 +1,517 @@
+<h2><strong>4.2 Concepto de archivo fuente (.java)</strong></h2>
+
+<p>El archivo con extensión <code>.java</code> es donde escribimos nuestros programas Java. Es un archivo de texto simple y común que
+cualquier editor puede abrir, pero que sigue reglas muy específicas sobre su nombre, contenido y organización.
+Comprender qué es exactamente un archivo <code>.java</code>, cómo debe llamarse, dónde debe ubicarse, y qué reglas debe seguir es
+fundamental para evitar errores de compilación y escribir programas que funcionen correctamente. Este subtema explora el
+concepto de archivo fuente Java en profundidad, estableciendo las bases para comprender cómo organizar correctamente
+nuestro código.</p>
+
+<hr>
+
+<h3><strong>¿Qué es un archivo .java?</strong></h3>
+
+<p>Un archivo <code>.java</code> es:</p>
+
+<p><strong>1. Un archivo de texto plano</strong></p>
+<ul>
+  <li>No es un documento de Word, PDF, o archivo binario</li>
+  <li>Puede abrirse con cualquier editor de texto (Notepad, VS Code, IntelliJ, etc.)</li>
+  <li>No contiene formato especial (negrita, colores, fuentes)</li>
+  <li>El código que escribimos es texto legible por humanos</li>
+</ul>
+
+<p><strong>2. Con extensión .java obligatoria</strong></p>
+<ul>
+  <li>El nombre del archivo DEBE terminar en <code>.java</code></li>
+  <li><code>MiPrograma.java</code> ✓ Correcto</li>
+  <li><code>MiPrograma.txt</code> ✗ No funcionará</li>
+  <li><code>MiPrograma</code> ✗ Sin extensión, no válido</li>
+</ul>
+
+<p><strong>3. Contiene código Java</strong></p>
+<ul>
+  <li>Código escrito siguiendo la sintaxis del lenguaje Java</li>
+  <li>Organizado en clases (todo debe estar dentro de una clase)</li>
+  <li>Sigue reglas estrictas de nombres y estructura</li>
+</ul>
+
+<hr>
+
+<h3><strong>Cómo crear un archivo .java</strong></h3>
+
+<p><strong>Opción 1: Usar un editor de texto simple</strong></p>
+
+<p><strong>Windows:</strong></p>
+<pre class="language-markup"><code>1. Abrir Notepad (Bloc de notas)
+2. Escribir el código
+3. Guardar como "MiPrograma.java"
+IMPORTANTE: En "Tipo", seleccionar "Todos los archivos (*.*)"
+Si no, se guardará como "MiPrograma.java.txt"</code></pre>
+
+<p><strong>macOS/Linux:</strong></p>
+<pre class="language-bash"><code># Usar nano, vim, o cualquier editor
+nano MiPrograma.java
+
+# Escribir código, guardar (Ctrl+O, Enter, Ctrl+X)</code></pre>
+
+<hr>
+
+<p><strong>Opción 2: Usar un IDE (recomendado)</strong></p>
+
+<p>Los IDEs (IntelliJ IDEA, Eclipse, VS Code) crean el archivo automáticamente con la estructura correcta y evitan errores
+comunes de nombres.</p>
+
+<hr>
+
+<h3><strong>Regla fundamental: El nombre del archivo debe coincidir con el nombre de la clase</strong></h3>
+
+<p>Esta es la regla más importante y la fuente más común de errores para principiantes.</p>
+
+<p><strong>Ejemplo correcto:</strong></p>
+
+<pre class="language-java"><code>// Archivo: Calculadora.java
+
+class Calculadora {
+    public static void main(String[] args) {
+        System.out.println("Calculadora funcionando");
+    }
+}</code></pre>
+
+<p><strong>Correspondencia:</strong></p>
+<ul>
+  <li>Nombre de clase: <code>Calculadora</code></li>
+  <li>Nombre de archivo: <code>Calculadora.java</code></li>
+  <li>✓ Coinciden exactamente</li>
+</ul>
+
+<hr>
+
+<p><strong>Ejemplo incorrecto:</strong></p>
+
+<pre class="language-java"><code>// Archivo: Programa.java (nombre diferente)
+
+class Calculadora {
+    public static void main(String[] args) {
+        System.out.println("No funcionará");
+    }
+}</code></pre>
+
+<p><strong>Intento de compilar:</strong></p>
+<pre class="language-bash"><code>javac Programa.java</code></pre>
+
+<p><strong>Error:</strong></p>
+<pre class="language-markup"><code>Programa.java:3: error: class Calculadora is public, should be declared in a file named Calculadora.java
+class Calculadora {
+^</code></pre>
+
+<p>El compilador dice claramente: la clase <code>Calculadora</code> debe estar en un archivo llamado <code>Calculadora.java</code>.</p>
+
+<hr>
+
+<h3><strong>Sensibilidad a mayúsculas y minúsculas</strong></h3>
+
+<p>Java distingue entre mayúsculas y minúsculas. <code>Calculadora</code> y <code>calculadora</code> son DIFERENTES.</p>
+
+<p><strong>Ejemplo de problema:</strong></p>
+
+<pre class="language-java"><code>// Archivo: calculadora.java (todo minúsculas)
+
+class Calculadora { // Nombre con mayúscula
+    public static void main(String[] args) {
+        System.out.println("Hola");
+    }
+}</code></pre>
+
+<p><strong>En Windows:</strong></p>
+<ul>
+  <li>Puede funcionar (Windows no distingue mayúsculas/minúsculas en nombres de archivo)</li>
+  <li>Pero NO es recomendado, causará problemas en otros sistemas</li>
+</ul>
+
+<p><strong>En macOS/Linux:</strong></p>
+<pre class="language-bash"><code>javac calculadora.java
+# Error: nombres no coinciden</code></pre>
+
+<p><strong>Solución:</strong> Siempre coincidir exactamente:</p>
+<pre class="language-java"><code>// Archivo: Calculadora.java
+class Calculadora {
+    // ✓ Correcto
+}</code></pre>
+
+<hr>
+
+<h3><strong>Estructura básica de un archivo .java</strong></h3>
+
+<p>Un archivo <code>.java</code> típico tiene esta estructura simple:</p>
+
+<pre class="language-java"><code>// 1. Comentarios (opcional)
+// Descripción de lo que hace el programa
+
+// 2. Declaración de la clase (obligatorio)
+class NombreClase {
+
+    // 3. Método main (obligatorio en programa ejecutable)
+    public static void main(String[] args) {
+
+        // 4. Código del programa (instrucciones)
+        System.out.println("Hola mundo");
+    }
+}</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo completo de archivo .java</strong></h3>
+
+<p><strong>Archivo: CalculadoraSalario.java</strong></p>
+
+<pre class="language-java"><code>// Calculadora de salario semanal
+// Calcula el salario basado en horas trabajadas y tarifa por hora
+
+class CalculadoraSalario {
+    public static void main(String[] args) {
+        // Datos del empleado
+        double horasTrabajadas = 40.0;
+        double tarifaPorHora = 125.00;
+
+        // Calcular salario semanal
+        double salarioSemanal = horasTrabajadas * tarifaPorHora;
+
+        // Mostrar resultado
+        System.out.println("=== Calculadora de Salario ===");
+        System.out.println("Horas trabajadas: " + horasTrabajadas);
+        System.out.println("Tarifa por hora: Lps " + tarifaPorHora);
+        System.out.println("Salario semanal: Lps " + salarioSemanal);
+    }
+}</code></pre>
+
+<p><strong>Guardar como:</strong> <code>CalculadoraSalario.java</code></p>
+
+<p><strong>Compilar:</strong></p>
+<pre class="language-bash"><code>javac CalculadoraSalario.java</code></pre>
+
+<p><strong>Resultado:</strong> Se crea <code>CalculadoraSalario.class</code></p>
+
+<p><strong>Ejecutar:</strong></p>
+<pre class="language-bash"><code>java CalculadoraSalario</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>=== Calculadora de Salario ===
+Horas trabajadas: 40.0
+Tarifa por hora: Lps 125.0
+Salario semanal: Lps 5000.0</code></pre>
+
+<hr>
+
+<h3><strong>Relación entre archivo .java y archivo .class</strong></h3>
+
+<p><strong>Proceso:</strong></p>
+
+<pre class="language-markup"><code>1. Escribir código
+↓
+CalculadoraSalario.java (código fuente, legible)
+
+2. Compilar con javac
+↓
+javac CalculadoraSalario.java
+↓
+CalculadoraSalario.class (bytecode, no legible)
+
+3. Ejecutar con java
+↓
+java CalculadoraSalario
+↓
+Programa ejecutándose</code></pre>
+
+<p><strong>Diferencias clave:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Archivo .java</th>
+      <th>Archivo .class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Código fuente</td>
+      <td>Bytecode</td>
+    </tr>
+    <tr>
+      <td>Legible por humanos</td>
+      <td>No legible por humanos</td>
+    </tr>
+    <tr>
+      <td>Editamos este archivo</td>
+      <td>Generado automáticamente</td>
+    </tr>
+    <tr>
+      <td>Se versiona en Git</td>
+      <td>NO se versiona en Git</td>
+    </tr>
+    <tr>
+      <td>Texto plano</td>
+      <td>Binario</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h3><strong>¿Dónde debe ubicarse el archivo .java?</strong></h3>
+
+<p>Para programas simples (por ahora):</p>
+
+<pre class="language-markup"><code>mi-proyecto/
+├── CalculadoraSalario.java
+├── CalculadoraDescuento.java
+└── ProgramaInventario.java</code></pre>
+
+<p>Todos los archivos <code>.java</code> pueden estar en el mismo directorio.</p>
+
+<p><strong>Compilar desde ese directorio:</strong></p>
+<pre class="language-bash"><code>cd mi-proyecto
+javac CalculadoraSalario.java
+java CalculadoraSalario</code></pre>
+
+<hr>
+
+<h3><strong>Convenciones de nombres para archivos .java</strong></h3>
+
+<p><strong>Reglas obligatorias:</strong></p>
+<ol>
+  <li>Debe terminar en <code>.java</code></li>
+  <li>Debe coincidir con el nombre de la clase</li>
+  <li>Distingue mayúsculas/minúsculas</li>
+</ol>
+
+<p><strong>Convenciones recomendadas (estilo Java):</strong></p>
+
+<p><strong>✓ Correcto (PascalCase):</strong></p>
+<pre class="language-markup"><code>CalculadoraImpuestos.java
+SistemaInventario.java
+ProcesadorVentas.java
+ReporteFacturas.java</code></pre>
+
+<p>Cada palabra empieza con mayúscula, sin espacios ni guiones.</p>
+
+<p><strong>✗ No recomendado (funcionan pero no son estilo Java):</strong></p>
+<pre class="language-markup"><code>calculadora_impuestos.java // Estilo snake_case (Python/C)
+calculadoraimpuestos.java  // Todo minúsculas
+CALCULADORAIMPUESTOS.java  // Todo mayúsculas
+calculadora-impuestos.java // Kebab-case
+calculadora impuestos.java // Espacios (inválido en muchos sistemas)</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo: Sistema de cálculo de inventario</strong></h3>
+
+<p><strong>Archivo: CalculadoraInventario.java</strong></p>
+
+<pre class="language-java"><code>// Sistema de cálculo de valor de inventario
+// Calcula el valor total basado en cantidades y precios
+
+class CalculadoraInventario {
+    public static void main(String[] args) {
+        // Producto 1: Laptops
+        int cantidadLaptops = 15;
+        double precioLaptop = 12000.00;
+        double valorLaptops = cantidadLaptops * precioLaptop;
+
+        // Producto 2: Teclados
+        int cantidadTeclados = 50;
+        double precioTeclado = 350.00;
+        double valorTeclados = cantidadTeclados * precioTeclado;
+
+        // Producto 3: Monitores
+        int cantidadMonitores = 25;
+        double precioMonitor = 2500.00;
+        double valorMonitores = cantidadMonitores * precioMonitor;
+
+        // Calcular valor total del inventario
+        double valorTotalInventario = valorLaptops + valorTeclados + valorMonitores;
+
+        // Mostrar reporte
+        System.out.println("========== INVENTARIO ==========");
+        System.out.println("Laptops: " + cantidadLaptops + " x Lps " + precioLaptop + " = Lps " + valorLaptops);
+        System.out.println("Teclados: " + cantidadTeclados + " x Lps " + precioTeclado + " = Lps " + valorTeclados);
+        System.out.println("Monitores: " + cantidadMonitores + " x Lps " + precioMonitor + " = Lps " + valorMonitores);
+        System.out.println("================================");
+        System.out.println("Valor Total: Lps " + valorTotalInventario);
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>========== INVENTARIO ==========
+Laptops: 15 x Lps 12000.0 = Lps 180000.0
+Teclados: 50 x Lps 350.0 = Lps 17500.0
+Monitores: 25 x Lps 2500.0 = Lps 62500.0
+================================
+Valor Total: Lps 260000.0</code></pre>
+
+<hr>
+
+<h3><strong>Errores comunes con archivos .java</strong></h3>
+
+<h4><strong>Error 1: Extensión incorrecta</strong></h4>
+
+<pre class="language-markup"><code>Guardado como: MiPrograma.txt</code></pre>
+
+<p><strong>Intento de compilar:</strong></p>
+<pre class="language-bash"><code>javac MiPrograma.txt
+# Error: file not found</code></pre>
+
+<p><strong>Solución:</strong> Cambiar nombre a <code>MiPrograma.java</code></p>
+
+<hr>
+
+<h4><strong>Error 2: Nombre no coincide con clase</strong></h4>
+
+<pre class="language-java"><code>// Archivo: Programa.java
+
+class CalculadoraVentas {
+    public static void main(String[] args) {
+        System.out.println("Hola");
+    }
+}</code></pre>
+
+<p><strong>Error de compilación:</strong> Nombres no coinciden</p>
+<p><strong>Solución:</strong> Cambiar nombre de archivo a <code>CalculadoraVentas.java</code></p>
+
+<hr>
+
+<h4><strong>Error 3: Mayúsculas/minúsculas incorrectas</strong></h4>
+
+<pre class="language-java"><code>// Archivo: calculadora.java (minúsculas)
+
+class Calculadora { // Mayúscula inicial
+    // ...
+}</code></pre>
+
+<p><strong>En Linux/macOS:</strong> Error de compilación</p>
+<p><strong>Solución:</strong> Renombrar archivo a <code>Calculadora.java</code></p>
+
+<hr>
+
+<h4><strong>Error 4: Doble extensión (Windows)</strong></h4>
+
+<p>Al guardar en Notepad, si no selecciona "Todos los archivos", puede quedar:</p>
+<pre class="language-markup"><code>MiPrograma.java.txt // ✗ Doble extensión</code></pre>
+
+<p><strong>Solución:</strong></p>
+<ol>
+  <li>En Notepad, al guardar, en "Tipo" seleccionar "Todos los archivos (*.*)"</li>
+  <li>O renombrar el archivo en el explorador mostrando extensiones</li>
+</ol>
+
+<hr>
+
+<h3><strong>Buenas prácticas con archivos .java</strong></h3>
+
+<p><strong>1. Un archivo por programa</strong></p>
+
+<p>Para programas simples, mantenga cada programa en su propio archivo:</p>
+
+<pre class="language-markup"><code>proyecto/
+├── CalculadoraDescuento.java
+├── CalculadoraSalario.java
+└── ReporteInventario.java</code></pre>
+
+<p>No mezcle múltiples programas en un archivo.</p>
+
+<hr>
+
+<p><strong>2. Nombres descriptivos</strong></p>
+
+<pre class="language-markup"><code>// ✓ Descriptivo
+CalculadoraImpuestoVentas.java
+SistemaRegistroEmpleados.java
+
+// ✗ Genérico
+Programa1.java
+Calc.java
+Test.java</code></pre>
+
+<hr>
+
+<p><strong>3. Mantener archivos organizados</strong></p>
+
+<pre class="language-markup"><code>mis-programas/
+├── calculadoras/
+│   ├── CalculadoraDescuento.java
+│   └── CalculadoraImpuesto.java
+└── reportes/
+    ├── ReporteVentas.java
+    └── ReporteInventario.java</code></pre>
+
+<hr>
+
+<p><strong>4. Evitar caracteres especiales en nombres</strong></p>
+
+<pre class="language-markup"><code>// ✓ Solo caracteres simples
+CalculadoraBasica.java
+
+// ✗ Caracteres especiales
+Calculadora-Básica.java // Guión y tilde
+Calculadora#1.java      // Símbolo #</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de préstamo simple</strong></h3>
+
+<p><strong>Archivo: CalculadoraPrestamo.java</strong></p>
+
+<pre class="language-java"><code>// Calculadora de cuota mensual de préstamo
+// Cálculo simple sin intereses
+
+class CalculadoraPrestamo {
+    public static void main(String[] args) {
+        // Datos del préstamo
+        double montoPrestamo = 50000.00;
+        int plazomeses = 12;
+
+        // Calcular cuota mensual (sin interés, solo ejemplo)
+        double cuotaMensual = montoPrestamo / plazomeses;
+
+        // Mostrar información
+        System.out.println("===== PRÉSTAMO =====");
+        System.out.println("Monto prestado: Lps " + montoPrestamo);
+        System.out.println("Plazo: " + plazomeses + " meses");
+        System.out.println("Cuota mensual: Lps " + cuotaMensual);
+        System.out.println("====================");
+    }
+}</code></pre>
+
+<p><strong>Compilar y ejecutar:</strong></p>
+<pre class="language-bash"><code>javac CalculadoraPrestamo.java
+java CalculadoraPrestamo</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>===== PRÉSTAMO =====
+Monto prestado: Lps 50000.0
+Plazo: 12 meses
+Cuota mensual: Lps 4166.666666666667
+====================</code></pre>
+
+<hr>
+
+<h3><strong>Verificar archivos creados</strong></h3>
+
+<p>Después de compilar, puede verificar qué archivos se crearon:</p>
+
+<p><strong>Windows:</strong></p>
+<pre class="language-bash"><code>dir</code></pre>
+
+<p><strong>macOS/Linux:</strong></p>
+<pre class="language-bash"><code>ls -l</code></pre>
+
+<p>Debería ver:</p>
+<pre class="language-markup"><code>CalculadoraPrestamo.java  (archivo fuente)
+CalculadoraPrestamo.class (archivo compilado)</code></pre>
+
+<hr>
+
+<p>El archivo <code>.java</code> es la base de todo desarrollo en Java. Es donde escribimos nuestro código, y debe seguir reglas
+estrictas de nomenclatura y organización para que el compilador pueda procesarlo correctamente. Comprender estas reglas
+desde el inicio evita errores frustrantes y establece buenos hábitos de programación que facilitarán el trabajo a medida
+que los programas se vuelvan más complejos.</p>

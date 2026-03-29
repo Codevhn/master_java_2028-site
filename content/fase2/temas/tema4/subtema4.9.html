@@ -1,0 +1,587 @@
+<h2><strong>4.9 Uso de comentarios en la estructura del programa</strong></h2>
+
+<p>Los comentarios son anotaciones en el código que explican qué hace el programa, por qué se tomaron ciertas decisiones, o
+qué representa una sección específica. No son instrucciones ejecutables sino notas para humanos que leen el código. El
+compilador ignora completamente los comentarios, pero para los desarrolladores son herramientas esenciales para
+documentar, aclarar y organizar el código. Comprender qué son los comentarios, cuándo usarlos, cómo escribirlos
+correctamente, y qué buenas prácticas seguir es fundamental para escribir código profesional que otros (y nuestro yo
+futuro) puedan entender fácilmente.</p>
+
+<hr>
+
+<h3><strong>¿Qué son los comentarios?</strong></h3>
+
+<p>Los <strong>comentarios</strong> son texto dentro del código fuente que:</p>
+<ul>
+  <li>El compilador <strong>ignora completamente</strong></li>
+  <li>NO se ejecutan</li>
+  <li>Sirven para explicar el código a humanos</li>
+  <li>Ayudan a documentar el programa</li>
+</ul>
+
+<p><strong>Analogía:</strong></p>
+
+<p>Los comentarios son como notas al margen en un libro:</p>
+<ul>
+  <li>El contenido principal (código) es lo que se ejecuta</li>
+  <li>Las notas (comentarios) explican el contenido</li>
+  <li>Puede leer el libro sin las notas, pero las notas ayudan a entender mejor</li>
+</ul>
+
+<hr>
+
+<h3><strong>Tipos de comentarios en Java</strong></h3>
+
+<p>Java tiene <strong>tres tipos</strong> de comentarios:</p>
+
+<p><strong>1. Comentarios de una sola línea (<code>//</code>)</strong><br>
+<strong>2. Comentarios de múltiples líneas (<code>/* */</code>)</strong><br>
+<strong>3. Comentarios de documentación (<code>/** */</code>)</strong> (veremos más adelante)</p>
+
+<p>Por ahora nos enfocaremos en los dos primeros.</p>
+
+<hr>
+
+<h3><strong>Comentarios de una sola línea (<code>//</code>)</strong></h3>
+
+<p><strong>Sintaxis:</strong> Todo lo que está después de <code>//</code> hasta el final de la línea es un comentario.</p>
+
+<p><strong>Ejemplo:</strong></p>
+
+<pre class="language-java"><code>// Este es un comentario de una sola línea
+double precio = 100.0; // Esto también es un comentario</code></pre>
+
+<p><strong>Características:</strong></p>
+<ul>
+  <li>Comienza con <code>//</code></li>
+  <li>Termina automáticamente al final de la línea</li>
+  <li>Útil para comentarios breves o explicaciones inline</li>
+</ul>
+
+<hr>
+
+<p><strong>Ejemplo con comentarios de una línea:</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraDescuento {
+
+    public static void main(String[] args) {
+
+        // Precio original del producto
+        double precioOriginal = 850.00;
+
+        // Porcentaje de descuento aplicable
+        double porcentajeDescuento = 15.0;
+
+        // Calcular el monto del descuento
+        double montoDescuento = precioOriginal * porcentajeDescuento / 100.0;
+
+        // Calcular el precio final
+        double precioFinal = precioOriginal - montoDescuento;
+
+        // Mostrar resultados
+        System.out.println("Precio original: Lps " + precioOriginal);
+        System.out.println("Descuento (15%): Lps " + montoDescuento);
+        System.out.println("Precio final: Lps " + precioFinal);
+
+    }
+
+}</code></pre>
+
+<p><strong>Los comentarios explican qué hace cada sección del código.</strong></p>
+
+<hr>
+
+<h3><strong>Comentarios de múltiples líneas (<code>/* */</code>)</strong></h3>
+
+<p><strong>Sintaxis:</strong> Todo lo que está entre <code>/*</code> y <code>*/</code> es un comentario, puede ocupar múltiples líneas.</p>
+
+<p><strong>Ejemplo:</strong></p>
+
+<pre class="language-java"><code>/*
+Este es un comentario
+que ocupa múltiples líneas.
+Puede escribir varias líneas de explicación.
+*/
+double precio = 100.0;</code></pre>
+
+<p><strong>Características:</strong></p>
+<ul>
+  <li>Comienza con <code>/*</code></li>
+  <li>Termina con <code>*/</code></li>
+  <li>Puede ocupar una o muchas líneas</li>
+  <li>Útil para bloques grandes de explicación</li>
+</ul>
+
+<hr>
+
+<p><strong>Ejemplo con comentarios de múltiples líneas:</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraNomina {
+
+    public static void main(String[] args) {
+
+        /*
+         * Sistema de cálculo de nómina
+         * Calcula salario semanal incluyendo horas extras
+         * Tarifa normal: Lps 125 por hora
+         * Tarifa horas extras: Lps 187.50 por hora (1.5x)
+         */
+
+        double horasNormales = 40.0;
+        double horasExtras = 5.0;
+        double tarifaNormal = 125.00;
+
+        /* Calcular tarifa de horas extras (1.5 veces la tarifa normal) */
+        double tarifaExtras = tarifaNormal * 1.5;
+
+        /* Calcular salarios */
+        double salarioNormal = horasNormales * tarifaNormal;
+        double salarioExtras = horasExtras * tarifaExtras;
+        double salarioTotal = salarioNormal + salarioExtras;
+
+        System.out.println("===== NÓMINA SEMANAL =====");
+        System.out.println("Horas normales: " + horasNormales + " hrs");
+        System.out.println("Horas extras: " + horasExtras + " hrs");
+        System.out.println("-------------------------");
+        System.out.println("Salario normal: Lps " + salarioNormal);
+        System.out.println("Salario extras: Lps " + salarioExtras);
+        System.out.println("=========================");
+        System.out.println("TOTAL: Lps " + salarioTotal);
+
+    }
+
+}</code></pre>
+
+<hr>
+
+<h3><strong>Diferencia entre <code>//</code> y <code>/* */</code></strong></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Característica</th>
+      <th><code>//</code></th>
+      <th><code>/* */</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Líneas</td>
+      <td>Una sola</td>
+      <td>Una o múltiples</td>
+    </tr>
+    <tr>
+      <td>Uso típico</td>
+      <td>Comentarios breves</td>
+      <td>Bloques de explicación</td>
+    </tr>
+    <tr>
+      <td>Finaliza</td>
+      <td>Al final de línea</td>
+      <td>Con <code>*/</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Ejemplo comparativo:</strong></p>
+
+<pre class="language-java"><code>// Esto es un comentario corto de una línea
+
+/*
+Esto es un comentario más largo
+que requiere varias líneas
+para explicar algo complejo
+*/</code></pre>
+
+<hr>
+
+<h3><strong>El compilador ignora los comentarios</strong></h3>
+
+<p><strong>Código con comentarios:</strong></p>
+
+<pre class="language-java"><code>double precio = 100.0;               // Declarar precio
+// double descuento = 20.0;          // Esta línea está comentada
+double total = precio;               // Sin descuento</code></pre>
+
+<p><strong>Lo que el compilador "ve":</strong></p>
+
+<pre class="language-java"><code>double precio = 100.0;
+double total = precio;</code></pre>
+
+<p>El compilador elimina completamente todos los comentarios antes de compilar.</p>
+
+<hr>
+
+<h3><strong>Comentar código temporalmente</strong></h3>
+
+<p>Los comentarios son útiles para <strong>desactivar</strong> temporalmente código sin borrarlo:</p>
+
+<pre class="language-java"><code>public class Prueba {
+
+    public static void main(String[] args) {
+
+        double precio = 500.0;
+
+        // Temporalmente desactivado
+        // double descuento = precio * 0.1;
+        // precio = precio - descuento;
+
+        System.out.println("Precio: " + precio);
+
+    }
+
+}</code></pre>
+
+<p>El código comentado no se ejecuta, pero está ahí para referencia o para reactivarlo después.</p>
+
+<hr>
+
+<h3><strong>Comentarios dentro de líneas de código</strong></h3>
+
+<p>Puede poner comentarios al final de líneas de código:</p>
+
+<pre class="language-java"><code>double precioBase = 1000.00;             // Precio antes de impuestos
+double tasaImpuesto = 15.0;              // Tasa del 15%
+double impuesto = precioBase * 0.15;    // Calcular impuesto
+double total = precioBase + impuesto;   // Sumar precio e impuesto</code></pre>
+
+<hr>
+
+<h3><strong>¿Cuándo usar comentarios?</strong></h3>
+
+<p><strong>USE comentarios para:</strong></p>
+
+<p><strong>1. Explicar secciones del programa</strong></p>
+
+<pre class="language-java"><code>// ===== SECCIÓN: CÁLCULO DE IMPUESTOS =====
+double impuesto = subtotal * 0.15;</code></pre>
+
+<hr>
+
+<p><strong>2. Aclarar cálculos complejos</strong></p>
+
+<pre class="language-java"><code>// Fórmula: interés = capital * tasa * tiempo / 100
+double interes = capital * tasaAnual * anios / 100.0;</code></pre>
+
+<hr>
+
+<p><strong>3. Documentar decisiones importantes</strong></p>
+
+<pre class="language-java"><code>// Usamos 24.50 como tasa de cambio fija según acuerdo del 15/03/2026
+double tasaCambio = 24.50;</code></pre>
+
+<hr>
+
+<p><strong>4. Marcar secciones de código</strong></p>
+
+<pre class="language-java"><code>// ===== ENTRADA DE DATOS =====
+double precio = 500.0;
+
+// ===== CÁLCULOS =====
+double descuento = precio * 0.1;
+
+// ===== RESULTADOS =====
+System.out.println(descuento);</code></pre>
+
+<hr>
+
+<p><strong>NO use comentarios para:</strong></p>
+
+<p><strong>1. Explicar código obvio</strong></p>
+
+<pre class="language-java"><code>// ✗ Comentario innecesario
+double precio = 100.0; // Declarar variable precio con valor 100.0</code></pre>
+
+<p>El código ya es claro por sí mismo.</p>
+
+<hr>
+
+<p><strong>2. Comentar cada línea</strong></p>
+
+<pre class="language-java"><code>// ✗ Exceso de comentarios
+double x = 10.0; // Declarar x
+double y = 20.0; // Declarar y
+double z = x + y; // Sumar x e y</code></pre>
+
+<p>Demasiados comentarios hacen el código difícil de leer.</p>
+
+<hr>
+
+<p><strong>3. Información desactualizada</strong></p>
+
+<pre class="language-java"><code>// ✗ Comentario desactualizado
+// Tasa de cambio: 20.00 Lps/USD
+double tasaCambio = 24.50; // El comentario no coincide con el código</code></pre>
+
+<hr>
+
+<h3><strong>Buenas prácticas con comentarios</strong></h3>
+
+<p><strong>1. Usar nombres de variables descriptivos en lugar de comentarios</strong></p>
+
+<pre class="language-java"><code>// ✗ Necesita comentario
+double t = 24.50; // Tasa de cambio
+
+// ✓ No necesita comentario (nombre claro)
+double tasaCambioDolarLempira = 24.50;</code></pre>
+
+<hr>
+
+<p><strong>2. Comentar el "por qué", no el "qué"</strong></p>
+
+<pre class="language-java"><code>// ✗ Comenta lo obvio
+double descuento = precio * 0.1; // Multiplicar precio por 0.1
+
+// ✓ Explica la razón
+double descuento = precio * 0.1; // 10% de descuento por compra mayorista</code></pre>
+
+<hr>
+
+<p><strong>3. Mantener comentarios actualizados</strong></p>
+
+<p>Si cambia el código, actualice los comentarios relacionados.</p>
+
+<hr>
+
+<p><strong>4. Usar comentarios para organizar secciones</strong></p>
+
+<pre class="language-java"><code>public class SistemaVentas {
+
+    public static void main(String[] args) {
+
+        // ===== CONFIGURACIÓN INICIAL =====
+        double tasaImpuesto = 15.0;
+
+        // ===== DATOS DE VENTA =====
+        double precioProducto = 500.0;
+        int cantidad = 3;
+
+        // ===== CÁLCULOS =====
+        double subtotal = precioProducto * cantidad;
+        double impuesto = subtotal * tasaImpuesto / 100.0;
+        double total = subtotal + impuesto;
+
+        // ===== MOSTRAR RESULTADOS =====
+        System.out.println("Subtotal: Lps " + subtotal);
+        System.out.println("Impuesto: Lps " + impuesto);
+        System.out.println("Total: Lps " + total);
+
+    }
+
+}</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo completo: Sistema de facturación con comentarios bien usados</strong></h3>
+
+<pre class="language-java"><code>public class SistemaFacturacion {
+
+    public static void main(String[] args) {
+
+        /*
+         * Sistema de Facturación - Versión 1.0
+         * Calcula factura con descuento por volumen e impuesto
+         * Autor: Equipo de Desarrollo
+         */
+
+        System.out.println("===== SISTEMA DE FACTURACIÓN =====");
+        System.out.println();
+
+        // ===== DATOS DEL CLIENTE =====
+        String nombreCliente = "Comercial Hernández";
+
+        // ===== DATOS DE PRODUCTOS =====
+        double precioUnitario = 125.00;
+        int cantidadComprada = 50;
+
+        // ===== CÁLCULO DE SUBTOTAL =====
+        double subtotal = precioUnitario * cantidadComprada;
+
+        // ===== DESCUENTO POR VOLUMEN =====
+        // Aplicar 10% de descuento si compra 50 unidades o más
+        double porcentajeDescuento = 10.0;
+        double montoDescuento = subtotal * porcentajeDescuento / 100.0;
+
+        // Subtotal después de descuento
+        double subtotalConDescuento = subtotal - montoDescuento;
+
+        // ===== CÁLCULO DE IMPUESTO =====
+        // Tasa de ISV (Impuesto sobre Ventas) en Honduras
+        double tasaImpuesto = 15.0;
+        double montoImpuesto = subtotalConDescuento * tasaImpuesto / 100.0;
+
+        // ===== TOTAL FINAL =====
+        double totalFactura = subtotalConDescuento + montoImpuesto;
+
+        // ===== MOSTRAR FACTURA =====
+        System.out.println("Cliente: " + nombreCliente);
+        System.out.println("Cantidad: " + cantidadComprada + " unidades");
+        System.out.println("Precio unitario: Lps " + precioUnitario);
+        System.out.println("----------------------------------");
+        System.out.println("Subtotal: Lps " + subtotal);
+        System.out.println("Descuento (10%): -Lps " + montoDescuento);
+        System.out.println("Subtotal con desc.: Lps " + subtotalConDescuento);
+        System.out.println("Impuesto (15%): Lps " + montoImpuesto);
+        System.out.println("==================================");
+        System.out.println("TOTAL A PAGAR: Lps " + totalFactura);
+
+    }
+
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>===== SISTEMA DE FACTURACIÓN =====
+
+Cliente: Comercial Hernández
+Cantidad: 50 unidades
+Precio unitario: Lps 125.0
+----------------------------------
+Subtotal: Lps 6250.0
+Descuento (10%): -Lps 625.0
+Subtotal con desc.: Lps 5625.0
+Impuesto (15%): Lps 843.75
+==================================
+TOTAL A PAGAR: Lps 6468.75</code></pre>
+
+<hr>
+
+<h3><strong>Comentarios anidados (CUIDADO)</strong></h3>
+
+<p><strong>NO puede anidar comentarios de múltiples líneas:</strong></p>
+
+<pre class="language-java"><code>/*
+Este es un comentario
+/* Intentando anidar otro comentario */ // ✗ Causa error
+*/</code></pre>
+
+<p><strong>Error:</strong> El primer <code>*/</code> cierra el comentario, dejando código inválido después.</p>
+
+<p><strong>Solución:</strong> Usar solo un nivel de comentarios <code>/* */</code> o usar <code>//</code> dentro:</p>
+
+<pre class="language-java"><code>/*
+Este es un comentario
+// Puedo usar // dentro de /* */
+*/</code></pre>
+
+<hr>
+
+<h3><strong>Comentarios y depuración</strong></h3>
+
+<p>Los comentarios son útiles para depurar (encontrar errores):</p>
+
+<p><strong>Técnica: Comentar secciones para aislar errores</strong></p>
+
+<pre class="language-java"><code>public class Prueba {
+
+    public static void main(String[] args) {
+
+        double precio = 500.0;
+
+        // Comentar temporalmente para probar
+        // double descuento = precio * 0.1;
+        // precio = precio - descuento;
+
+        System.out.println("Precio: " + precio);
+
+        // Una vez que funcione, descomentar
+
+    }
+
+}</code></pre>
+
+<hr>
+
+<h3><strong>Estilo de comentarios: Encabezado de archivo</strong></h3>
+
+<p><strong>Práctica profesional:</strong> Comentario al inicio del archivo explicando qué hace:</p>
+
+<pre class="language-java"><code>/*
+ * Calculadora de Préstamos
+ *
+ * Calcula cuota mensual de préstamos bancarios
+ * incluyendo capital e intereses.
+ *
+ * Autor: Equipo de Desarrollo
+ * Fecha: Marzo 2026
+ * Versión: 1.0
+ */
+
+public class CalculadoraPrestamos {
+    // ...
+}</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo final: Control de inventario con comentarios profesionales</strong></h3>
+
+<pre class="language-java"><code>/*
+ * Sistema de Control de Inventario
+ * Registra movimientos diarios de entrada y salida
+ * Versión: 1.0
+ */
+
+public class ControlInventario {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== CONTROL DE INVENTARIO =====");
+        System.out.println();
+
+        // ===== INVENTARIO INICIAL =====
+        // Stock al inicio del día
+        int stockInicial = 200;
+
+        // ===== MOVIMIENTOS DEL DÍA =====
+
+        // Turno mañana
+        int entradasMañana = 40; // Recepción de proveedor
+        int salidasMañana = 55;  // Ventas matutinas
+
+        // Turno tarde
+        int entradasTarde = 25;  // Devoluciones de clientes
+        int salidasTarde = 48;   // Ventas vespertinas
+
+        // ===== CÁLCULO DE TOTALES =====
+        int totalEntradas = entradasMañana + entradasTarde;
+        int totalSalidas = salidasMañana + salidasTarde;
+
+        // Calcular stock final del día
+        int stockFinal = stockInicial + totalEntradas - totalSalidas;
+
+        // ===== REPORTE DEL DÍA =====
+        System.out.println("Stock inicial: " + stockInicial + " unidades");
+        System.out.println("----------------------------------");
+        System.out.println("MOVIMIENTOS:");
+        System.out.println("  Entradas mañana: +" + entradasMañana);
+        System.out.println("  Salidas mañana: -" + salidasMañana);
+        System.out.println("  Entradas tarde: +" + entradasTarde);
+        System.out.println("  Salidas tarde: -" + salidasTarde);
+        System.out.println("----------------------------------");
+        System.out.println("Total entradas: +" + totalEntradas);
+        System.out.println("Total salidas: -" + totalSalidas);
+        System.out.println("==================================");
+        System.out.println("Stock final: " + stockFinal + " unidades");
+
+        // Advertencia si stock bajo
+        // En versión futura se agregará alerta automática si stock &lt; 50
+
+    }
+
+}</code></pre>
+
+<p><strong>Comentarios bien usados:</strong></p>
+<ul>
+  <li>✓ Explican secciones del código</li>
+  <li>✓ Aclaran decisiones de negocio</li>
+  <li>✓ Organizan visualmente el programa</li>
+  <li>✓ Documentan funcionalidad futura</li>
+  <li>✓ No comentan lo obvio</li>
+</ul>
+
+<hr>
+
+<p>Los comentarios son herramientas esenciales para documentar y explicar el código, facilitando su comprensión tanto para
+otros desarrolladores como para nosotros mismos cuando revisamos código antiguo. Usados correctamente, hacen el código
+más mantenible y profesional. Usados en exceso o incorrectamente, pueden hacer el código más confuso. La clave es
+comentar el "por qué" de las decisiones, organizar visualmente el código, y mantener los comentarios actualizados con
+los cambios del programa.</p>

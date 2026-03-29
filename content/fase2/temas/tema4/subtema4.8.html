@@ -1,0 +1,553 @@
+<h2><strong>4.8 Sentencias y terminadores de instrucción</strong></h2>
+
+<p>En Java, las sentencias son las instrucciones individuales que le dicen al programa qué hacer: declarar variables,
+realizar cálculos, mostrar resultados, o ejecutar cualquier acción específica. Cada sentencia debe terminar con un
+símbolo específico que indica al compilador "esta instrucción ha finalizado". Comprender qué es una sentencia, cómo se
+estructura, por qué debe terminar con punto y coma, y qué errores surgen cuando se omite este terminador es fundamental
+para escribir código Java sintácticamente correcto. Este subtema explora el concepto de sentencias y el uso del punto y
+coma como terminador obligatorio.</p>
+
+<hr>
+
+<h3><strong>¿Qué es una sentencia?</strong></h3>
+
+<p>Una <strong>sentencia</strong> (también llamada instrucción) es una unidad completa de ejecución en Java. Es una orden específica que
+el programa debe realizar.</p>
+
+<p><strong>Ejemplos de sentencias:</strong></p>
+
+<pre class="language-java"><code>double precio = 100.0;                     // Declaración de variable
+double descuento = precio * 0.1;           // Cálculo
+System.out.println("Total: " + precio);   // Mostrar en pantalla</code></pre>
+
+<p>Cada línea es una sentencia completa.</p>
+
+<p><strong>Analogía:</strong></p>
+
+<p>Una sentencia en Java es como una oración en español:</p>
+<ul>
+  <li>Tiene un inicio</li>
+  <li>Tiene un final (punto y coma <code>;</code>)</li>
+  <li>Expresa una idea completa</li>
+  <li>"Declara la variable precio con valor 100.0;"</li>
+</ul>
+
+<hr>
+
+<h3><strong>El punto y coma <code>;</code> como terminador</strong></h3>
+
+<p>En Java, <strong>cada sentencia debe terminar con punto y coma</strong> <code>;</code></p>
+
+<p><strong>Regla fundamental:</strong> El punto y coma indica al compilador "esta instrucción terminó, comienza la siguiente".</p>
+
+<p><strong>Ejemplo correcto:</strong></p>
+
+<pre class="language-java"><code>double valorA = 50.0;            // ✓ Termina con ;
+double valorB = 30.0;            // ✓ Termina con ;
+double suma = valorA + valorB;   // ✓ Termina con ;</code></pre>
+
+<p><strong>Ejemplo incorrecto:</strong></p>
+
+<pre class="language-java"><code>double valorA = 50.0  // ✗ Falta ;
+double valorB = 30.0  // ✗ Falta ;</code></pre>
+
+<p><strong>Error de compilación:</strong></p>
+<pre class="language-markup"><code>error: ';' expected
+double valorA = 50.0
+^</code></pre>
+
+<p>El compilador indica exactamente dónde falta el punto y coma.</p>
+
+<hr>
+
+<h3><strong>Tipos de sentencias básicas</strong></h3>
+
+<h4><strong>1. Declaración de variable</strong></h4>
+
+<p>Crea una variable con un nombre y tipo:</p>
+
+<pre class="language-java"><code>int cantidad;
+double precio;
+String producto;</code></pre>
+
+<p>Cada declaración termina con <code>;</code></p>
+
+<hr>
+
+<h4><strong>2. Declaración con inicialización</strong></h4>
+
+<p>Crea una variable y le asigna un valor inicial:</p>
+
+<pre class="language-java"><code>int cantidad = 10;
+double precio = 250.50;
+String producto = "Laptop";</code></pre>
+
+<p>Cada una es una sentencia completa con <code>;</code></p>
+
+<hr>
+
+<h4><strong>3. Asignación</strong></h4>
+
+<p>Asigna un valor a una variable ya existente:</p>
+
+<pre class="language-java"><code>cantidad = 20;
+precio = 300.00;
+producto = "Monitor";</code></pre>
+
+<hr>
+
+<h4><strong>4. Expresión de cálculo</strong></h4>
+
+<p>Realiza una operación y guarda el resultado:</p>
+
+<pre class="language-java"><code>double total = precio * cantidad;
+double descuento = total * 0.15;
+double precioFinal = total - descuento;</code></pre>
+
+<hr>
+
+<h4><strong>5. Llamada a método (como <code>println</code>)</strong></h4>
+
+<p>Invoca una acción específica:</p>
+
+<pre class="language-java"><code>System.out.println("Hola mundo");
+System.out.println("Precio: " + precio);</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo completo con diferentes tipos de sentencias</strong></h3>
+
+<pre class="language-java"><code>public class EjemploSentencias {
+
+    public static void main(String[] args) {
+
+        // Sentencia 1: Declaración con inicialización
+        double precioUnitario = 125.00;
+
+        // Sentencia 2: Declaración con inicialización
+        int cantidadProductos = 5;
+
+        // Sentencia 3: Cálculo (expresión)
+        double subtotal = precioUnitario * cantidadProductos;
+
+        // Sentencia 4: Declaración de variable
+        double tasaImpuesto;
+
+        // Sentencia 5: Asignación
+        tasaImpuesto = 15.0;
+
+        // Sentencia 6: Cálculo
+        double montoImpuesto = subtotal * tasaImpuesto / 100.0;
+
+        // Sentencia 7: Cálculo
+        double totalFactura = subtotal + montoImpuesto;
+
+        // Sentencia 8: Llamada a método
+        System.out.println("===== FACTURA =====");
+
+        // Sentencia 9: Llamada a método
+        System.out.println("Subtotal: Lps " + subtotal);
+
+        // Sentencia 10: Llamada a método
+        System.out.println("Impuesto: Lps " + montoImpuesto);
+
+        // Sentencia 11: Llamada a método
+        System.out.println("Total: Lps " + totalFactura);
+
+    }
+
+}</code></pre>
+
+<p><strong>Todas las sentencias terminan con <code>;</code></strong></p>
+
+<hr>
+
+<h3><strong>¿Por qué es obligatorio el punto y coma?</strong></h3>
+
+<p><strong>Razón 1: Delimita instrucciones</strong></p>
+
+<p>Sin el punto y coma, el compilador no sabría dónde termina una instrucción y comienza la siguiente:</p>
+
+<pre class="language-java"><code>// Sin punto y coma (ambiguo)
+double x = 10 double y = 20 // ¿Es una instrucción o dos?
+
+// Con punto y coma (claro)
+double x = 10; // Primera instrucción
+double y = 20; // Segunda instrucción</code></pre>
+
+<hr>
+
+<p><strong>Razón 2: Permite instrucciones en múltiples líneas</strong></p>
+
+<p>Una sentencia puede ocupar varias líneas, el <code>;</code> indica que terminó:</p>
+
+<pre class="language-java"><code>double resultado = (precioProducto1 + precioProducto2 +
+                   precioProducto3 + precioProducto4) *
+                   tasaImpuesto / 100.0; // ✓ Una sola sentencia</code></pre>
+
+<p>El compilador sabe que es UNA sentencia porque solo hay un <code>;</code> al final.</p>
+
+<hr>
+
+<p><strong>Razón 3: Permite múltiples instrucciones en una línea (aunque no recomendado)</strong></p>
+
+<pre class="language-java"><code>double x = 10; double y = 20; double z = 30; // Técnicamente válido</code></pre>
+
+<p>Aunque esto compila, NO es recomendado. Mejor práctica: una sentencia por línea.</p>
+
+<hr>
+
+<h3><strong>Errores comunes con punto y coma</strong></h3>
+
+<h4><strong>Error 1: Olvidar el punto y coma</strong></h4>
+
+<pre class="language-java"><code>double precio = 100.0  // ✗ Falta ;
+double descuento = 10.0; // ✗ Falta ; en línea anterior</code></pre>
+
+<p><strong>Error:</strong></p>
+<pre class="language-markup"><code>error: ';' expected
+double precio = 100.0
+^</code></pre>
+
+<p><strong>Solución:</strong> Agregar <code>;</code> al final de cada sentencia.</p>
+
+<hr>
+
+<h4><strong>Error 2: Punto y coma en lugar equivocado</strong></h4>
+
+<pre class="language-java"><code>double; precio = 100.0; // ✗ ; después de tipo</code></pre>
+
+<p><strong>Error:</strong></p>
+<pre class="language-markup"><code>error: &lt;identifier&gt; expected</code></pre>
+
+<p><strong>Correcto:</strong></p>
+<pre class="language-java"><code>double precio = 100.0; // ✓ ; al final de la sentencia</code></pre>
+
+<hr>
+
+<h4><strong>Error 3: Múltiples puntos y coma</strong></h4>
+
+<pre class="language-java"><code>double precio = 100.0;; // ✗ Doble ;;</code></pre>
+
+<p>Esto compila sin error, pero el segundo <code>;</code> se interpreta como una sentencia vacía (válida pero innecesaria).</p>
+
+<p><strong>Mejor práctica:</strong> Un solo <code>;</code> por sentencia.</p>
+
+<hr>
+
+<h4><strong>Error 4: Punto y coma después de llaves de bloque</strong></h4>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        double valor = 100.0;
+    }; // ✗ NO poner ; después de }
+}</code></pre>
+
+<p><strong>Las llaves <code>}</code> NO llevan punto y coma.</strong></p>
+
+<p><strong>Correcto:</strong></p>
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        double valor = 100.0;
+    } // ✓ Sin ;
+}</code></pre>
+
+<hr>
+
+<h3><strong>Sentencias que NO llevan punto y coma</strong></h3>
+
+<p><strong>Declaraciones de clase:</strong></p>
+
+<pre class="language-java"><code>public class MiClase { // ✓ Sin ;
+    // ...
+}</code></pre>
+
+<hr>
+
+<p><strong>Declaraciones de método:</strong></p>
+
+<pre class="language-java"><code>public static void main(String[] args) { // ✓ Sin ;
+    // ...
+}</code></pre>
+
+<hr>
+
+<p><strong>Llaves de cierre:</strong></p>
+
+<pre class="language-java"><code>{
+    double x = 10.0;
+} // ✓ Sin ;</code></pre>
+
+<hr>
+
+<p><strong>Regla simple:</strong> Solo las <strong>sentencias ejecutables</strong> llevan <code>;</code>, no las declaraciones de bloques.</p>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de salario con deducciones</strong></h3>
+
+<pre class="language-java"><code>public class CalculadoraSalarioNeto {
+
+    public static void main(String[] args) {
+
+        // Sentencia: mostrar título
+        System.out.println("===== CÁLCULO DE SALARIO NETO =====");
+
+        // Sentencia: declarar salario bruto
+        double salarioBruto = 18000.00;
+
+        // Sentencia: declarar tasa de seguro social
+        double tasaSeguroSocial = 3.5;
+
+        // Sentencia: calcular deducción seguro social
+        double deduccionSeguroSocial = salarioBruto * tasaSeguroSocial / 100.0;
+
+        // Sentencia: declarar tasa de impuesto
+        double tasaImpuestoRenta = 10.0;
+
+        // Sentencia: calcular deducción impuesto
+        double deduccionImpuesto = salarioBruto * tasaImpuestoRenta / 100.0;
+
+        // Sentencia: calcular total deducciones
+        double totalDeducciones = deduccionSeguroSocial + deduccionImpuesto;
+
+        // Sentencia: calcular salario neto
+        double salarioNeto = salarioBruto - totalDeducciones;
+
+        // Sentencias: mostrar desglose
+        System.out.println("Salario bruto: Lps " + salarioBruto);
+        System.out.println("----------------------------------");
+        System.out.println("Deducciones:");
+        System.out.println("  Seguro Social: Lps " + deduccionSeguroSocial);
+        System.out.println("  Impuesto Renta: Lps " + deduccionImpuesto);
+        System.out.println("  Total: Lps " + totalDeducciones);
+        System.out.println("==================================");
+        System.out.println("Salario neto: Lps " + salarioNeto);
+
+    }
+
+}</code></pre>
+
+<p><strong>Cada línea ejecutable termina con <code>;</code></strong></p>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>===== CÁLCULO DE SALARIO NETO =====
+Salario bruto: Lps 18000.0
+----------------------------------
+Deducciones:
+  Seguro Social: Lps 630.0
+  Impuesto Renta: Lps 1800.0
+  Total: Lps 2430.0
+==================================
+Salario neto: Lps 15570.0</code></pre>
+
+<hr>
+
+<h3><strong>Sentencias en múltiples líneas</strong></h3>
+
+<p>Una sentencia puede ocupar varias líneas por legibilidad:</p>
+
+<pre class="language-java"><code>double totalCompra = precioProducto1 +
+                     precioProducto2 +
+                     precioProducto3; // ✓ ; al final</code></pre>
+
+<p>El compilador sigue leyendo hasta encontrar el <code>;</code></p>
+
+<p><strong>Otro ejemplo:</strong></p>
+
+<pre class="language-java"><code>System.out.println("El precio total es: Lps " +
+                   precioTotal +
+                   " con descuento aplicado"); // ✓ ; al final</code></pre>
+
+<hr>
+
+<h3><strong>Una sentencia por línea (buena práctica)</strong></h3>
+
+<p>Aunque técnicamente puede poner múltiples sentencias en una línea:</p>
+
+<pre class="language-java"><code>double x = 10; double y = 20; double z = x + y; // Válido pero no recomendado</code></pre>
+
+<p><strong>La práctica recomendada es: una sentencia por línea</strong></p>
+
+<pre class="language-java"><code>double x = 10;
+double y = 20;
+double z = x + y;</code></pre>
+
+<p>Esto hace el código más legible y fácil de depurar.</p>
+
+<hr>
+
+<h3><strong>Sentencias vacías</strong></h3>
+
+<p>Un <code>;</code> solo crea una sentencia vacía (válida pero inútil):</p>
+
+<pre class="language-java"><code>; // Sentencia vacía</code></pre>
+
+<p>No hace nada, pero compila sin error.</p>
+
+<p><strong>Ejemplo con sentencia vacía accidental:</strong></p>
+
+<pre class="language-java"><code>double precio = 100.0;; // Segundo ; es sentencia vacía</code></pre>
+
+<p>Compila, pero el segundo <code>;</code> no hace nada.</p>
+
+<hr>
+
+<h3><strong>Ejemplo: Sistema de conversión de moneda</strong></h3>
+
+<pre class="language-java"><code>public class ConversionMoneda {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== CONVERSIÓN DE MONEDA =====");
+
+        // Cantidad en dólares
+        double cantidadDolares = 500.00;
+
+        // Tasa de cambio (1 USD = 24.50 Lps)
+        double tasaCambio = 24.50;
+
+        // Calcular equivalente en lempiras
+        double cantidadLempiras = cantidadDolares * tasaCambio;
+
+        // Comisión por conversión (2%)
+        double porcentajeComision = 2.0;
+        double montoComision = cantidadLempiras * porcentajeComision / 100.0;
+
+        // Monto final a recibir
+        double montoFinal = cantidadLempiras - montoComision;
+
+        // Mostrar resultados
+        System.out.println("Cantidad en USD: $" + cantidadDolares);
+        System.out.println("Tasa de cambio: " + tasaCambio + " Lps/USD");
+        System.out.println("--------------------------------");
+        System.out.println("Equivalente en Lps: Lps " + cantidadLempiras);
+        System.out.println("Comisión (2%): Lps " + montoComision);
+        System.out.println("================================");
+        System.out.println("Monto a recibir: Lps " + montoFinal);
+
+    }
+
+}</code></pre>
+
+<p><strong>Cada sentencia ejecutable termina con <code>;</code></strong></p>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>===== CONVERSIÓN DE MONEDA =====
+Cantidad en USD: $500.0
+Tasa de cambio: 24.5 Lps/USD
+--------------------------------
+Equivalente en Lps: Lps 12250.0
+Comisión (2%): Lps 245.0
+================================
+Monto a recibir: Lps 12005.0</code></pre>
+
+<hr>
+
+<h3><strong>Verificar puntos y coma en su código</strong></h3>
+
+<p><strong>Checklist:</strong></p>
+
+<ol>
+  <li>✓ ¿Cada declaración de variable termina con <code>;</code>?</li>
+  <li>✓ ¿Cada cálculo termina con <code>;</code>?</li>
+  <li>✓ ¿Cada <code>System.out.println</code> termina con <code>;</code>?</li>
+  <li>✓ ¿Las llaves <code>}</code> NO tienen <code>;</code>?</li>
+  <li>✓ ¿La declaración de clase NO tiene <code>;</code>?</li>
+  <li>✓ ¿La declaración de método NO tiene <code>;</code>?</li>
+</ol>
+
+<hr>
+
+<h3><strong>Buenas prácticas con sentencias</strong></h3>
+
+<p><strong>1. Una sentencia por línea</strong></p>
+
+<pre class="language-java"><code>// ✓ Recomendado
+double precio = 100.0;
+double descuento = 10.0;
+double total = precio - descuento;
+
+// ✗ No recomendado
+double precio = 100.0; double descuento = 10.0; double total = precio - descuento;</code></pre>
+
+<hr>
+
+<p><strong>2. Terminar SIEMPRE con punto y coma</strong></p>
+
+<p>No confíe en que el IDE lo agregue automáticamente. Desarrolle el hábito de escribirlo.</p>
+
+<hr>
+
+<p><strong>3. No poner <code>;</code> después de llaves</strong></p>
+
+<pre class="language-java"><code>public static void main(String[] args) {
+    // código
+} // ✓ Sin ;</code></pre>
+
+<hr>
+
+<p><strong>4. Dividir sentencias largas en múltiples líneas</strong></p>
+
+<pre class="language-java"><code>// ✓ Más legible
+double totalImpuesto = (precioProducto1 + precioProducto2 +
+                        precioProducto3) * tasaImpuesto / 100.0;</code></pre>
+
+<hr>
+
+<h3><strong>Ejemplo final: Calculadora de costo de envío</strong></h3>
+
+<pre class="language-java"><code>public class CalculadoraCostoEnvio {
+
+    public static void main(String[] args) {
+
+        System.out.println("===== CALCULADORA DE COSTO DE ENVÍO =====");
+
+        // Peso del paquete en kilogramos
+        double pesoPaquete = 5.5;
+
+        // Tarifa base por kilogramo
+        double tarifaPorKilo = 45.00;
+
+        // Calcular costo base
+        double costoBase = pesoPaquete * tarifaPorKilo;
+
+        // Cargo adicional por seguro (5% del costo base)
+        double porcentajeSeguro = 5.0;
+        double cargoSeguro = costoBase * porcentajeSeguro / 100.0;
+
+        // Cargo fijo de manejo
+        double cargoManejo = 75.00;
+
+        // Calcular costo total
+        double costoTotal = costoBase + cargoSeguro + cargoManejo;
+
+        // Mostrar desglose
+        System.out.println("Peso del paquete: " + pesoPaquete + " kg");
+        System.out.println("Tarifa por kg: Lps " + tarifaPorKilo);
+        System.out.println("------------------------------------------");
+        System.out.println("Costo base: Lps " + costoBase);
+        System.out.println("Seguro (5%): Lps " + cargoSeguro);
+        System.out.println("Cargo de manejo: Lps " + cargoManejo);
+        System.out.println("==========================================");
+        System.out.println("COSTO TOTAL: Lps " + costoTotal);
+
+    }
+
+}</code></pre>
+
+<p><strong>Observaciones:</strong></p>
+<ul>
+  <li>✓ Cada sentencia termina con <code>;</code></li>
+  <li>✓ Una sentencia por línea</li>
+  <li>✓ Las llaves NO tienen <code>;</code></li>
+  <li>✓ Código claro y legible</li>
+</ul>
+
+<hr>
+
+<p>Las sentencias son las instrucciones individuales que componen un programa Java, y cada una debe terminar
+obligatoriamente con punto y coma <code>;</code>. Este terminador indica al compilador dónde finaliza cada instrucción,
+permitiendo delimitar claramente las acciones del programa. Desarrollar el hábito de terminar cada sentencia con punto
+y coma y verificar que las llaves de bloque no lo lleven es fundamental para escribir código Java sintácticamente
+correcto.</p>

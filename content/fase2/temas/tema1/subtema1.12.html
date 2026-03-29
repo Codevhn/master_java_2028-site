@@ -1,0 +1,114 @@
+<h2>1.12: Robustez y manejo de errores en Java</h2>
+
+<p>La robustez, la capacidad de un programa para continuar funcionando correctamente incluso frente a situaciones
+inesperadas, errores y condiciones excepcionales, fue un objetivo de diseño fundamental de Java desde sus inicios. El
+equipo del Proyecto Green comprendía que el software que estaban creando se ejecutaría en dispositivos de consumo donde
+no habría programadores disponibles para depurar problemas, y en aplicaciones empresariales críticas donde las fallas
+podrían tener consecuencias financieras significativas. Java fue diseñado desde su fundamento para ayudar a los
+programadores a escribir software que fallara con gracia, manejara errores de manera predecible, y continuara operando
+correctamente incluso cuando las cosas no salían según lo planeado.</p>
+
+<p>En C y C++, el manejo de errores era típicamente realizado mediante códigos de retorno. Una función que podía fallar
+retornaría un valor especial para indicar error, típicamente un valor negativo, cero, o un puntero nulo. El código que
+llamaba la función era responsable de verificar este valor de retorno y tomar acción apropiada. Este enfoque era simple
+conceptualmente pero propenso a errores en la práctica. Era extremadamente fácil para los programadores olvidar
+verificar códigos de retorno, especialmente en código que involucraba múltiples llamadas a funciones en secuencia. Un
+error no verificado podía propagar silenciosamente, causando que el programa continuara ejecutándose con datos
+incorrectos y eventualmente fallara de manera confusa muy alejado del sitio del error original.</p>
+
+<p>Además, el modelo de códigos de retorno hacía difícil manejar múltiples tipos diferentes de errores. Una función solo
+podía retornar un valor, así que si había múltiples condiciones de error posibles, típicamente se retornaría un código
+numérico con diferentes valores representando diferentes errores, requiriendo que el llamador consultara documentación
+para interpretar el significado de cada código. El modelo también hacía difícil propagar errores a través de múltiples
+niveles de llamadas de función. Si una función de bajo nivel experimentaba un error que necesitaba ser manejado por
+código de alto nivel, cada función intermedia debía verificar explícitamente el código de retorno y propagarlo hacia
+arriba, agregando código repetitivo substancial.</p>
+
+<p>C++ había introducido excepciones como un mecanismo alternativo de manejo de errores, y Java adoptó y refinó este
+enfoque considerablemente. En el modelo de excepciones de Java, cuando ocurría una condición de error, el código lanzaba
+un objeto de excepción que contenía información sobre el error. Este objeto de excepción propagaba automáticamente hacia
+arriba a través de la pila de llamadas hasta que encontraba código que lo capturaba y manejaba. Si ningún código
+capturaba la excepción, el programa terminaba con un mensaje de error detallado mostrando exactamente dónde se originó
+el problema.</p>
+
+<p>Las excepciones de Java eran objetos, instancias de clases en una jerarquía de herencia bajo la clase
+<code>Throwable</code>. Esta orientación a objetos de las excepciones permitía que las excepciones llevaran información
+rica sobre las condiciones de error: no solo un código numérico sino mensajes descriptivos, trazas de pila completas
+mostrando la secuencia de llamadas que llevaron al error, e información contextual adicional específica al tipo de
+error. La jerarquía de herencia permitía categorizar excepciones, con excepciones más específicas heredando de
+excepciones más generales.</p>
+
+<p>La jerarquía de excepciones de Java se dividía en varias categorías importantes. En la raíz estaba
+<code>Throwable</code>. Directamente debajo estaban <code>Error</code> y <code>Exception</code>. Los errores
+representaban problemas graves a nivel de sistema que las aplicaciones típicamente no deberían intentar capturar o
+manejar, como <code>OutOfMemoryError</code> cuando la JVM agotaba memoria, o <code>StackOverflowError</code> cuando
+la recursión era demasiado profunda. Las excepciones representaban condiciones que las aplicaciones razonablemente
+podrían capturar y manejar.</p>
+
+<p>La categoría de excepciones se dividía adicionalmente en excepciones verificadas y excepciones no verificadas. Las
+excepciones no verificadas, aquellas que heredaban de <code>RuntimeException</code>, representaban errores de
+programación como <code>NullPointerException</code> cuando se intentaba usar una referencia nula,
+<code>ArrayIndexOutOfBoundsException</code> cuando se accedía fuera de límites de un array, o
+<code>ArithmeticException</code> cuando se dividía por cero. Estas excepciones podían ocurrir en cualquier lugar en
+el código y no era razonable requerir que fueran declaradas o capturadas en todas partes.</p>
+
+<p>Las excepciones verificadas representaban condiciones excepcionales que el código bien escrito debería anticipar y
+manejar: <code>IOException</code> para errores de entrada/salida, <code>SQLException</code> para problemas de base de
+datos, <code>ClassNotFoundException</code> cuando no se podía encontrar una clase. La característica distintiva e
+innovadora de las excepciones verificadas en Java era que el compilador las verificaba: si un método podía lanzar una
+excepción verificada, debía declararla en su firma con la palabra clave <code>throws</code>, y cualquier código que
+llamara ese método debía capturar y manejar la excepción o declararla como no manejada propagándola hacia arriba.</p>
+
+<p>Este sistema de excepciones verificadas era controversial. Los defensores argumentaban que forzaba a los programadores
+a pensar explícitamente sobre condiciones de error y aseguraba que los errores no fueran simplemente ignorados. Los
+críticos argumentaban que las excepciones verificadas agregaban verbosidad significativa al código, especialmente cuando
+múltiples niveles de llamadas de función necesitaban declarar o propagar excepciones. Algunos argumentaban que en la
+práctica, los programadores a menudo capturaban excepciones verificadas solo para satisfacer al compilador y luego las
+ignoraban o las manejaban inadecuadamente, derrotando el propósito de la verificación.</p>
+
+<p>Independientemente de las controversias, el mecanismo de excepciones general proporcionaba robustez significativa
+comparado con códigos de retorno. Las excepciones no podían ser ignoradas silenciosamente: si no eran capturadas, el
+programa terminaría con un mensaje de error claro indicando el problema. Las excepciones propagaban automáticamente a
+través de múltiples niveles de llamadas sin requerir código de propagación explícito. Las excepciones separaban
+claramente el código de manejo de errores del flujo de control normal, haciendo el código más fácil de leer y mantener.</p>
+
+<p>La estructura <code>try-catch-finally</code> de Java proporcionaba control flexible sobre el manejo de excepciones. Un
+bloque <code>try</code> envolvía código que podía lanzar excepciones. Los bloques <code>catch</code> especificaban qué
+hacer con tipos específicos de excepciones. Múltiples bloques <code>catch</code> podían manejar diferentes tipos de
+excepciones de diferentes maneras. El bloque <code>finally</code> ejecutaba incondicionalmente, independientemente de
+si ocurría una excepción o no, proporcionando un lugar para código de limpieza que debía ejecutarse en todos los casos,
+como cerrar archivos o liberar recursos.</p>
+
+<p>Más allá de las excepciones, Java incorporaba numerosas otras características de diseño que contribuían a la robustez.
+El sistema de tipos fuerte y la verificación de tipos en tiempo de compilación y tiempo de ejecución prevenían muchos
+errores que en lenguajes menos estrictos solo se descubrirían durante la ejecución. La inicialización automática de
+variables a valores por defecto sensibles (0 para números, <code>false</code> para booleanos, <code>null</code> para
+referencias) prevenía el uso de variables no inicializadas, un error común en C y C++ donde las variables locales
+contenían valores aleatorios de basura hasta que se inicializaban explícitamente.</p>
+
+<p>La verificación automática de límites de arrays era otra característica de robustez importante. Cada acceso a un array
+en Java verificaba que el índice estaba dentro de los límites válidos, lanzando
+<code>ArrayIndexOutOfBoundsException</code> si no lo estaba. Esta verificación prevenía desbordamientos de buffer que
+en C y C++ podían corromper memoria y causar fallos o vulnerabilidades de seguridad. Aunque había una pequeña
+penalización de rendimiento por estas verificaciones, los beneficios de robustez y seguridad eran considerados que
+valían el costo.</p>
+
+<p>La especificación completa del lenguaje y la máquina virtual contribuía a la robustez al eliminar comportamiento
+indefinido. En C y C++, numerosas construcciones tenían comportamiento indefinido o dependiente de la implementación:
+el orden de evaluación de argumentos de función, qué sucedía cuando se desbordaba la aritmética de enteros con signo,
+y muchas otras situaciones. Java especificaba comportamiento preciso para todas estas situaciones, eliminando esta
+fuente de bugs sutiles dependientes de plataforma.</p>
+
+<p>Sin embargo, la robustez de Java no era absoluta ni automática. Los programadores aún podían escribir código no
+robusto: capturando excepciones e ignorándolas sin manejo apropiado, creando condiciones de carrera en código
+concurrente, creando deadlocks mediante mal uso de sincronización, causando fugas lógicas de memoria manteniendo
+referencias a objetos innecesarios, o creando recursión sin fin. Java proporcionaba herramientas y mecanismos que
+facilitaban escribir código robusto, pero no podía garantizar robustez independientemente de cómo se usaran esas
+herramientas.</p>
+
+<p>A pesar de estas limitaciones, el enfoque de Java hacia la robustez representaba una mejora significativa sobre
+lenguajes anteriores como C y C++. La combinación de excepciones para manejo de errores, verificación de tipos fuerte,
+inicialización automática, verificación de límites, garbage collection, y especificación completa de comportamiento
+creaba un lenguaje donde era significativamente más fácil escribir software robusto y confiable. Los programas Java
+tendían a fallar de maneras más predecibles y diagnosticables que programas equivalentes en lenguajes menos robustos, y
+cuando fallaban, proporcionaban información de error más detallada que facilitaba identificar y corregir problemas.</p>

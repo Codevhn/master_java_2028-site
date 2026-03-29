@@ -1,0 +1,572 @@
+<h2>3.12: Primer programa Java para validar el entorno</h2>
+
+<p>Después de instalar el JDK, configurar variables de entorno, y establecer estructura de directorios, el paso final para
+  confirmar que el entorno está completamente funcional es escribir, compilar y ejecutar un programa Java real. Este
+  programa va más allá del simple "Hello, World" tradicional; es una herramienta de diagnóstico comprehensiva que verifica
+  todos los aspectos del entorno de desarrollo y proporciona información detallada sobre la configuración del sistema.
+  Este subtema guía a través de la creación de este programa de validación, explica cada componente, y demuestra cómo
+  usarlo para confirmar que el entorno está correctamente configurado y listo para desarrollo profesional.</p>
+
+<h3>Objetivo del programa de validación</h3>
+
+<ol>
+  <li>Confirmar que <code>javac</code> compila código correctamente</li>
+  <li>Confirmar que <code>java</code> ejecuta bytecode correctamente</li>
+  <li>Verificar versión de Java</li>
+  <li>Inspeccionar propiedades del sistema</li>
+  <li>Verificar que APIs estándar son accesibles</li>
+  <li>Proporcionar información de diagnóstico útil</li>
+  <li>Servir como referencia de sintaxis Java básica</li>
+</ol>
+
+<h3>Preparación: Crear estructura de proyecto</h3>
+
+<p><strong>Paso 1: Crear directorio del proyecto:</strong></p>
+
+<pre class="language-bash">
+  <code># Navegar a workspace de desarrollo
+cd ~/projects   # macOS/Linux
+# O
+cd C:\dev       # Windows
+
+# Crear directorio para programa de validación
+mkdir validacion-java
+cd validacion-java</code>
+</pre>
+
+<p><strong>Paso 2: Crear estructura básica:</strong></p>
+
+<pre class="language-bash">
+  <code>mkdir -p src</code>
+</pre>
+
+<p>Estructura resultante:</p>
+
+<pre class="language-markup">
+  <code>validacion-java/
+└── src/</code>
+</pre>
+
+<h3>Programa 1: Validación básica</h3>
+
+<p>Crear archivo <code>src/ValidacionBasica.java</code>:</p>
+
+<pre class="language-java">
+  <code>/**
+ * Programa de validación básica del entorno Java.
+ *
+ * Este programa verifica que el JDK está instalado correctamente
+ * y muestra información esencial del sistema.
+ *
+ * @author Tu Nombre
+ * @version 1.0
+ */
+public class ValidacionBasica {
+
+    public static void main(String[] args) {
+        // Encabezado
+        imprimirLinea('=', 60);
+        System.out.println("VALIDACIÓN DE ENTORNO JAVA");
+        imprimirLinea('=', 60);
+        System.out.println();
+
+        // Sección 1: Información de Java
+        System.out.println("[ INFORMACIÓN DE JAVA ]");
+        imprimirLinea('-', 60);
+        System.out.println("Versión Java: " + System.getProperty("java.version"));
+        System.out.println("Vendor: " + System.getProperty("java.vendor"));
+        System.out.println("Vendor URL: " + System.getProperty("java.vendor.url"));
+        System.out.println("Java Home: " + System.getProperty("java.home"));
+        System.out.println("Especificación: " + System.getProperty("java.specification.version"));
+        System.out.println();
+
+        // Sección 2: Información de JVM
+        System.out.println("[ INFORMACIÓN DE JVM ]");
+        imprimirLinea('-', 60);
+        System.out.println("Nombre JVM: " + System.getProperty("java.vm.name"));
+        System.out.println("Versión JVM: " + System.getProperty("java.vm.version"));
+        System.out.println("Vendor JVM: " + System.getProperty("java.vm.vendor"));
+        System.out.println();
+
+        // Sección 3: Sistema Operativo
+        System.out.println("[ SISTEMA OPERATIVO ]");
+        imprimirLinea('-', 60);
+        System.out.println("Nombre: " + System.getProperty("os.name"));
+        System.out.println("Versión: " + System.getProperty("os.version"));
+        System.out.println("Arquitectura: " + System.getProperty("os.arch"));
+        System.out.println();
+
+        // Sección 4: Información de Usuario y Rutas
+        System.out.println("[ USUARIO Y RUTAS ]");
+        imprimirLinea('-', 60);
+        System.out.println("Usuario: " + System.getProperty("user.name"));
+        System.out.println("Home Usuario: " + System.getProperty("user.home"));
+        System.out.println("Directorio Actual: " + System.getProperty("user.dir"));
+        System.out.println("Separador Rutas: " + System.getProperty("file.separator"));
+        System.out.println("Separador Path: " + System.getProperty("path.separator"));
+        System.out.println();
+
+        // Sección 5: Memoria de JVM
+        System.out.println("[ MEMORIA JVM ]");
+        imprimirLinea('-', 60);
+        Runtime runtime = Runtime.getRuntime();
+        long memoriaMaxima = runtime.maxMemory();
+        long memoriaTotal = runtime.totalMemory();
+        long memoriaLibre = runtime.freeMemory();
+        long memoriaUsada = memoriaTotal - memoriaLibre;
+
+        System.out.println("Memoria Máxima: " + formatearBytes(memoriaMaxima));
+        System.out.println("Memoria Total: " + formatearBytes(memoriaTotal));
+        System.out.println("Memoria Usada: " + formatearBytes(memoriaUsada));
+        System.out.println("Memoria Libre: " + formatearBytes(memoriaLibre));
+        System.out.println();
+
+        // Sección 6: Procesadores
+        System.out.println("[ PROCESADORES ]");
+        imprimirLinea('-', 60);
+        int procesadores = runtime.availableProcessors();
+        System.out.println("Procesadores: " + procesadores + " disponibles");
+        System.out.println();
+
+        // Resultado final
+        imprimirLinea('=', 60);
+        System.out.println("✓ VALIDACIÓN COMPLETADA EXITOSAMENTE");
+        System.out.println("  El entorno Java está correctamente configurado.");
+        imprimirLinea('=', 60);
+    }
+
+    /**
+     * Imprime una línea de caracteres repetidos.
+     *
+     * @param caracter El carácter a repetir
+     * @param longitud Número de veces a repetir
+     */
+    private static void imprimirLinea(char caracter, int longitud) {
+        for (int i = 0; i < longitud; i++) {
+            System.out.print(caracter);
+        }
+        System.out.println();
+    }
+
+    /**
+     * Formatea bytes a formato legible (KB, MB, GB).
+     *
+     * @param bytes Número de bytes
+     * @return String formateado con unidad apropiada
+     */
+    private static String formatearBytes(long bytes) {
+        if (bytes < 1024) {
+            return bytes + " B";
+        } else if (bytes < 1024 * 1024) {
+            return String.format("%.2f KB", bytes / 1024.0);
+        } else if (bytes < 1024 * 1024 * 1024) {
+            return String.format("%.2f MB", bytes / (1024.0 * 1024.0));
+        } else {
+            return String.format("%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0));
+        }
+    }
+}</code>
+</pre>
+
+<h3>Compilación del programa</h3>
+
+<p><strong>Paso 1: Navegar al directorio del proyecto:</strong></p>
+
+<pre class="language-bash">
+  <code>cd ~/projects/validacion-java</code>
+</pre>
+
+<p><strong>Paso 2: Compilar el código fuente:</strong></p>
+
+<pre class="language-bash">
+  <code>javac src/ValidacionBasica.java</code>
+</pre>
+
+<p>Sin salida significa éxito. Verificar que se creó <code>src/ValidacionBasica.class</code>:</p>
+
+<pre class="language-bash">
+  <code>ls -l src/   # macOS/Linux
+dir src\     # Windows</code>
+</pre>
+
+<p>Debe mostrar ambos archivos: <code>ValidacionBasica.java</code> (código fuente) y
+  <code>ValidacionBasica.class</code> (bytecode compilado).</p>
+
+<p><strong>Errores comunes de compilación:</strong></p>
+<ul>
+  <li><strong>"error: cannot find symbol":</strong> verificar que el código fue copiado exactamente, respetando
+    mayúsculas/minúsculas en nombres de clases y métodos.</li>
+  <li><strong>"javac: command not found":</strong> PATH no está configurado correctamente — revisar subtema 3.6.</li>
+</ul>
+
+<h3>Ejecución del programa</h3>
+
+<pre class="language-bash">
+  <code># Desde directorio raíz del proyecto (validacion-java/)
+java -cp src ValidacionBasica</code>
+</pre>
+
+<p><code>-cp src</code> establece el classpath al directorio <code>src</code> donde está el <code>.class</code>.
+  <code>ValidacionBasica</code> es el nombre de la clase (sin extensión).</p>
+
+<p><strong>Salida esperada:</strong></p>
+
+<pre class="language-markup">
+  <code>============================================================
+VALIDACIÓN DE ENTORNO JAVA
+============================================================
+
+[ INFORMACIÓN DE JAVA ]
+------------------------------------------------------------
+Versión Java: 21.0.1
+Vendor: Eclipse Adoptium
+Vendor URL: https://adoptium.net/
+Java Home: /Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+Especificación: 21
+
+[ INFORMACIÓN DE JVM ]
+------------------------------------------------------------
+Nombre JVM: OpenJDK 64-Bit Server VM
+Versión JVM: 21.0.1+12-LTS
+Vendor JVM: Eclipse Adoptium
+
+[ SISTEMA OPERATIVO ]
+------------------------------------------------------------
+Nombre: Mac OS X
+Versión: 14.2.1
+Arquitectura: aarch64
+
+[ USUARIO Y RUTAS ]
+------------------------------------------------------------
+Usuario: nombre_usuario
+Home Usuario: /Users/nombre_usuario
+Directorio Actual: /Users/nombre_usuario/projects/validacion-java
+Separador Rutas: /
+Separador Path: :
+
+[ MEMORIA JVM ]
+------------------------------------------------------------
+Memoria Máxima: 4.00 GB
+Memoria Total: 256.00 MB
+Memoria Usada: 8.45 MB
+Memoria Libre: 247.55 MB
+
+[ PROCESADORES ]
+------------------------------------------------------------
+Procesadores: 8 disponibles
+
+============================================================
+✓ VALIDACIÓN COMPLETADA EXITOSAMENTE
+  El entorno Java está correctamente configurado.
+============================================================</code>
+</pre>
+
+<h3>Análisis de la salida</h3>
+
+<p><strong>Versión Java correcta:</strong> debe coincidir con la versión instalada. Si muestra versión diferente, otra
+  instalación de Java tiene precedencia en PATH.</p>
+
+<p><strong>Vendor correcto:</strong> Eclipse Adoptium, Amazon Corretto, Azul, etc. Confirma qué distribución está
+  activa.</p>
+
+<p><strong>Java Home correcto:</strong> debe apuntar a la instalación del JDK y coincidir con
+  <code>JAVA_HOME</code>.</p>
+
+<p><strong>Arquitectura apropiada:</strong> <code>aarch64</code> para Apple Silicon (M1/M2/M3);
+  <code>x86_64</code> o <code>amd64</code> para Intel/AMD de 64-bit. Si muestra 32-bit, la instalación es
+  incorrecta.</p>
+
+<p><strong>Memoria disponible razonable:</strong> Memoria Máxima debe ser sustancial (varios GB). Si es muy baja
+  (&lt;512 MB), puede indicar límites de JVM no configurados apropiadamente.</p>
+
+<h3>Programa 2: Validación avanzada con tests de funcionalidad</h3>
+
+<p>Crear archivo <code>src/ValidacionAvanzada.java</code>:</p>
+
+<pre class="language-java">
+  <code>import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Programa de validación avanzada que testea funcionalidad de APIs Java.
+ * Verifica que APIs estándar están accesibles y funcionan correctamente.
+ */
+public class ValidacionAvanzada {
+
+    private static int testsEjecutados = 0;
+    private static int testsExitosos = 0;
+    private static int testsFallidos = 0;
+
+    public static void main(String[] args) {
+        imprimirEncabezado();
+        testStrings();
+        testColecciones();
+        testFechasYTiempo();
+        testSistemaArchivos();
+        testOperacionesMatematicas();
+        imprimirResumen();
+    }
+
+    private static void imprimirEncabezado() {
+        System.out.println("╔════════════════════════════════════════════════════════════╗");
+        System.out.println("║         VALIDACIÓN AVANZADA DE ENTORNO JAVA               ║");
+        System.out.println("╚════════════════════════════════════════════════════════════╝");
+        System.out.println();
+    }
+
+    private static void testStrings() {
+        System.out.println("[ TEST: Operaciones con Strings ]");
+        System.out.println("----------------------------------------------------------");
+
+        ejecutarTest("Concatenación de strings", () -> {
+            String saludo = "Hola";
+            String nombre = "Java";
+            String resultado = saludo + " " + nombre;
+            return resultado.equals("Hola Java");
+        });
+
+        ejecutarTest("Métodos de String", () -> {
+            String texto = " Desarrollo Java ";
+            return texto.trim().toUpperCase().contains("JAVA");
+        });
+
+        ejecutarTest("StringBuilder", () -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Java").append(" ").append("21");
+            return sb.toString().equals("Java 21");
+        });
+
+        System.out.println();
+    }
+
+    private static void testColecciones() {
+        System.out.println("[ TEST: Colecciones ]");
+        System.out.println("----------------------------------------------------------");
+
+        ejecutarTest("ArrayList", () -> {
+            List&lt;String&gt; lista = new ArrayList&lt;&gt;();
+            lista.add("Java");
+            lista.add("Python");
+            lista.add("JavaScript");
+            return lista.size() == 3 &amp;&amp; lista.contains("Java");
+        });
+
+        ejecutarTest("HashMap", () -> {
+            Map&lt;String, Integer&gt; mapa = new HashMap&lt;&gt;();
+            mapa.put("Java", 21);
+            mapa.put("Python", 3);
+            return mapa.get("Java") == 21;
+        });
+
+        System.out.println();
+    }
+
+    private static void testFechasYTiempo() {
+        System.out.println("[ TEST: Fechas y Tiempo (java.time API) ]");
+        System.out.println("----------------------------------------------------------");
+
+        ejecutarTest("LocalDateTime", () -> {
+            LocalDateTime ahora = LocalDateTime.now();
+            return ahora != null &amp;&amp; ahora.getYear() >= 2024;
+        });
+
+        ejecutarTest("DateTimeFormatter", () -> {
+            LocalDateTime fecha = LocalDateTime.of(2024, 1, 15, 10, 30);
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String fechaFormateada = fecha.format(formato);
+            return fechaFormateada.equals("15/01/2024 10:30");
+        });
+
+        System.out.println();
+    }
+
+    private static void testSistemaArchivos() {
+        System.out.println("[ TEST: Sistema de Archivos (NIO.2) ]");
+        System.out.println("----------------------------------------------------------");
+
+        ejecutarTest("Paths y Files", () -> {
+            try {
+                Path rutaTemporal = Paths.get(System.getProperty("java.io.tmpdir"));
+                return Files.exists(rutaTemporal) &amp;&amp; Files.isDirectory(rutaTemporal);
+            } catch (Exception e) {
+                return false;
+            }
+        });
+
+        ejecutarTest("Crear archivo temporal", () -> {
+            try {
+                Path archivoTemp = Files.createTempFile("test-java-", ".tmp");
+                boolean existe = Files.exists(archivoTemp);
+                Files.deleteIfExists(archivoTemp);
+                return existe;
+            } catch (IOException e) {
+                return false;
+            }
+        });
+
+        System.out.println();
+    }
+
+    private static void testOperacionesMatematicas() {
+        System.out.println("[ TEST: Operaciones Matemáticas ]");
+        System.out.println("----------------------------------------------------------");
+
+        ejecutarTest("Operaciones básicas", () -> {
+            int suma = 10 + 5;
+            int resta = 10 - 5;
+            int multiplicacion = 10 * 5;
+            double division = 10.0 / 4.0;
+            return suma == 15 &amp;&amp; resta == 5 &amp;&amp; multiplicacion == 50 &amp;&amp; division == 2.5;
+        });
+
+        ejecutarTest("Clase Math", () -> {
+            double raiz = Math.sqrt(16);
+            double potencia = Math.pow(2, 3);
+            int maximo = Math.max(10, 20);
+            return raiz == 4.0 &amp;&amp; potencia == 8.0 &amp;&amp; maximo == 20;
+        });
+
+        System.out.println();
+    }
+
+    private static void ejecutarTest(String nombreTest, TestCallable test) {
+        testsEjecutados++;
+        try {
+            boolean resultado = test.call();
+            if (resultado) {
+                testsExitosos++;
+                System.out.println("  ✓ " + nombreTest + " - ÉXITO");
+            } else {
+                testsFallidos++;
+                System.out.println("  ✗ " + nombreTest + " - FALLO");
+            }
+        } catch (Exception e) {
+            testsFallidos++;
+            System.out.println("  ✗ " + nombreTest + " - ERROR: " + e.getMessage());
+        }
+    }
+
+    private static void imprimirResumen() {
+        System.out.println("╔════════════════════════════════════════════════════════════╗");
+        System.out.println("║                   RESUMEN DE TESTS                        ║");
+        System.out.println("╠════════════════════════════════════════════════════════════╣");
+        System.out.println(String.format("║  Tests Ejecutados: %-39d║", testsEjecutados));
+        System.out.println(String.format("║  Tests Exitosos:   %-39d║", testsExitosos));
+        System.out.println(String.format("║  Tests Fallidos:   %-39d║", testsFallidos));
+        System.out.println("╠════════════════════════════════════════════════════════════╣");
+
+        if (testsFallidos == 0) {
+            System.out.println("║  ✓ TODOS LOS TESTS PASARON                                ║");
+            System.out.println("║    El entorno Java está completamente funcional.          ║");
+        } else {
+            System.out.println("║  ⚠ ALGUNOS TESTS FALLARON                                ║");
+            System.out.println("║    Revisar configuración del entorno.                    ║");
+        }
+
+        System.out.println("╚════════════════════════════════════════════════════════════╝");
+    }
+
+    @FunctionalInterface
+    interface TestCallable {
+        boolean call() throws Exception;
+    }
+}</code>
+</pre>
+
+<p><strong>Compilar y ejecutar:</strong></p>
+
+<pre class="language-bash">
+  <code>javac src/ValidacionAvanzada.java
+java -cp src ValidacionAvanzada</code>
+</pre>
+
+<p><strong>Salida esperada:</strong></p>
+
+<pre class="language-markup">
+  <code>╔════════════════════════════════════════════════════════════╗
+║         VALIDACIÓN AVANZADA DE ENTORNO JAVA               ║
+╚════════════════════════════════════════════════════════════╝
+
+[ TEST: Operaciones con Strings ]
+----------------------------------------------------------
+  ✓ Concatenación de strings - ÉXITO
+  ✓ Métodos de String - ÉXITO
+  ✓ StringBuilder - ÉXITO
+
+[ TEST: Colecciones ]
+----------------------------------------------------------
+  ✓ ArrayList - ÉXITO
+  ✓ HashMap - ÉXITO
+
+[ TEST: Fechas y Tiempo (java.time API) ]
+----------------------------------------------------------
+  ✓ LocalDateTime - ÉXITO
+  ✓ DateTimeFormatter - ÉXITO
+
+[ TEST: Sistema de Archivos (NIO.2) ]
+----------------------------------------------------------
+  ✓ Paths y Files - ÉXITO
+  ✓ Crear archivo temporal - ÉXITO
+
+[ TEST: Operaciones Matemáticas ]
+----------------------------------------------------------
+  ✓ Operaciones básicas - ÉXITO
+  ✓ Clase Math - ÉXITO
+
+╔════════════════════════════════════════════════════════════╗
+║                   RESUMEN DE TESTS                        ║
+╠════════════════════════════════════════════════════════════╣
+║  Tests Ejecutados: 11                                     ║
+║  Tests Exitosos:   11                                     ║
+║  Tests Fallidos:   0                                      ║
+╠════════════════════════════════════════════════════════════╣
+║  ✓ TODOS LOS TESTS PASARON                                ║
+║    El entorno Java está completamente funcional.          ║
+╚════════════════════════════════════════════════════════════╝</code>
+</pre>
+
+<h3>Qué se ha validado</h3>
+
+<p><strong>Compilador funcionando:</strong> <code>javac</code> está instalado y accesible, compila código fuente
+  correctamente, y genera bytecode válido.</p>
+
+<p><strong>Runtime funcionando:</strong> <code>java</code> está instalado y accesible, ejecuta bytecode correctamente,
+  y la JVM inicia apropiadamente.</p>
+
+<p><strong>APIs estándar accesibles:</strong> <code>System</code> para propiedades del sistema, <code>String</code> y
+  <code>StringBuilder</code>, colecciones (<code>ArrayList</code>, <code>HashMap</code>), API de tiempo
+  (<code>java.time</code>), API de archivos (<code>java.nio.file</code>), y <code>Math</code>.</p>
+
+<p><strong>Funcionalidad básica verificada:</strong> creación de objetos, llamadas a métodos, operaciones aritméticas,
+  manejo de excepciones, y entrada/salida básica.</p>
+
+<h3>Siguientes pasos después de validación exitosa</h3>
+
+<ol>
+  <li>Instalar IDE (IntelliJ IDEA, Eclipse, VS Code con extensiones Java)</li>
+  <li>Configurar sistema de construcción (Maven o Gradle)</li>
+  <li>Comenzar desarrollo de proyectos reales</li>
+  <li>Explorar frameworks (Spring Boot, Jakarta EE, etc.)</li>
+</ol>
+
+<h3>Guardar resultados de validación</h3>
+
+<pre class="language-bash">
+  <code># Guardar salida de validación básica
+java -cp src ValidacionBasica > validacion-entorno.txt
+
+# Guardar salida de validación avanzada
+java -cp src ValidacionAvanzada > validacion-funcionalidad.txt</code>
+</pre>
+
+<p>Estos archivos sirven como registro de configuración del entorno en un momento específico. Los programas de
+  validación no solo confirman que el entorno está correctamente configurado sino que también sirven como introducción
+  práctica a sintaxis Java, estructura de programas, uso de APIs estándar, y el flujo compilación-ejecución.</p>

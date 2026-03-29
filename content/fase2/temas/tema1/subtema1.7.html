@@ -1,0 +1,101 @@
+<h2>1.7: Java como lenguaje orientado a objetos desde su concepción</h2>
+
+<p>Cuando James Gosling y el equipo del Proyecto Green diseñaron Java a principios de la década de 1990, tomaron la
+decisión fundamental de hacer de la programación orientada a objetos el paradigma central y obligatorio del lenguaje,
+no una característica opcional añadida posteriormente. Esta decisión contrastaba significativamente con el enfoque de
+C++, el lenguaje orientado a objetos dominante de la época, que había añadido características orientadas a objetos a C
+mientras mantenía compatibilidad con la programación procedural tradicional. Java sería orientado a objetos desde su
+núcleo, con un modelo de objetos limpio y consistente que no arrastraba décadas de legado de programación procedural.</p>
+
+<p>La programación orientada a objetos como paradigma había estado en desarrollo desde la década de 1960, con raíces en
+lenguajes como Simula, y había sido refinada significativamente en Smalltalk durante los años 70. Los principios
+fundamentales de la POO —encapsulación, herencia, polimorfismo y abstracción— habían demostrado su valor para organizar
+sistemas de software complejos de manera modular y mantenible. Para la década de 1990, la industria había comenzado a
+reconocer que la programación orientada a objetos ofrecía ventajas significativas sobre la programación procedural
+tradicional para proyectos grandes con múltiples desarrolladores.</p>
+
+<p>El equipo de Java adoptó la orientación a objetos no por seguir una moda tecnológica, sino porque creían genuinamente
+que era la forma correcta de estructurar el software que estaban intentando crear. Los dispositivos electrónicos de
+consumo que imaginaban tendrían interfaces gráficas interactivas, responderían a eventos del usuario, se comunicarían
+con otros dispositivos en una red, y descargarían y ejecutarían código dinámicamente. Este tipo de software complejo,
+interactivo y distribuido se prestaba naturalmente a la descomposición en objetos con responsabilidades bien definidas
+que se comunicaban mediante mensajes.</p>
+
+<p>En Java, todo el código ejecutable debe existir dentro de una clase. No hay funciones globales flotando fuera de
+cualquier estructura organizacional, como existían en C y C++. Incluso el método <code>main</code>, el punto de entrada
+de un programa Java, debe ser un método estático dentro de alguna clase. Esta decisión de diseño forzaba a los
+programadores a pensar en términos de objetos y clases desde el primer momento, desde el programa "Hello, World" más
+simple. No había forma de escribir código Java sin comprometerse con el paradigma orientado a objetos.</p>
+
+<p>El modelo de objetos de Java era más simple y limpio que el de C++, eliminando deliberadamente características que el
+equipo consideraba complejas, confusas o propensas a errores. La herencia múltiple de clases fue eliminada por
+completo. Java adoptó un modelo más simple de herencia única de implementación: una clase podía extender exactamente
+una clase padre. Para compensar, Java introdujo interfaces, un mecanismo que permitía herencia múltiple de
+especificación sin herencia múltiple de implementación. Una interfaz era una especificación pura de qué métodos debía
+proporcionar una clase sin especificar cómo se implementaban. Una clase podía implementar múltiples interfaces, evitando
+las ambigüedades de la herencia múltiple mientras preservaba la flexibilidad.</p>
+
+<p>Todos los objetos en Java heredaban implícitamente de una clase raíz común llamada <code>Object</code>. Esta jerarquía
+de herencia universal significaba que cada objeto en Java compartía un conjunto mínimo de métodos comunes: métodos para
+obtener información sobre el tipo del objeto en tiempo de ejecución, para comparar objetos por igualdad, para obtener
+un código hash, y para obtener una representación en cadena. Esta raíz común simplificaba enormemente el diseño de
+estructuras de datos genéricas y algoritmos que podían trabajar con objetos de cualquier tipo.</p>
+
+<p>El mecanismo de paso de parámetros de Java reflejaba su orientación a objetos consistente. En Java, los tipos
+primitivos como <code>int</code>, <code>double</code> y <code>boolean</code> se pasaban por valor, significando que el
+método receptor obtenía una copia del valor. Las referencias a objetos también se pasaban por valor, pero como una
+referencia es esencialmente una dirección de memoria, pasar una copia de la referencia significaba que el método
+receptor tenía acceso al mismo objeto que el llamador. Este modelo era más simple y predecible que el complejo sistema
+de C++ de pasar por valor, por referencia, por referencia constante, y sus diversas combinaciones.</p>
+
+<p>El modelo de encapsulación de Java proporcionaba mecanismos claros para controlar el acceso a los miembros de una
+clase. Los modificadores de acceso <code>public</code>, <code>private</code>, <code>protected</code> y el acceso
+default a nivel de paquete permitían a los diseñadores de clases especificar exactamente qué partes eran su interfaz
+pública y qué partes eran detalles de implementación interna. Esta capacidad de ocultar detalles de implementación era
+fundamental para construir sistemas modulares donde los componentes podían evolucionar independientemente.</p>
+
+<p>El polimorfismo, la capacidad de tratar objetos de diferentes clases de manera uniforme cuando comparten una interfaz o
+clase padre común, era una característica central del diseño de Java. Cuando se declaraba una variable de tipo A y se
+le asignaba un objeto de tipo B donde B era una subclase de A, todas las invocaciones de métodos se resolverían
+dinámicamente basándose en el tipo real del objeto en tiempo de ejecución, no en el tipo declarado de la variable. Este
+polimorfismo de subtipado permitía escribir código que trabajaba con abstracciones sin necesitar conocer los tipos
+concretos específicos, facilitando la extensibilidad y el reemplazo de componentes.</p>
+
+<p>La gestión automática de memoria de Java mediante garbage collection era especialmente valiosa en el contexto de
+programación orientada a objetos. En un programa orientado a objetos típico, los objetos se crean y destruyen
+constantemente: objetos temporales que existen brevemente durante un cálculo, objetos que representan elementos de
+interfaz de usuario que se crean cuando se abre una ventana y se destruyen cuando se cierra. Rastrear manualmente cuándo
+liberar la memoria de cada uno de estos objetos sería extremadamente propenso a errores. El garbage collection
+automático permitía a los programadores crear objetos libremente sin preocuparse por su destrucción.</p>
+
+<p>Java también introdujo el concepto de clases internas, clases definidas dentro de otras clases. Este mecanismo era
+especialmente útil en programación orientada a objetos para implementar patrones como callbacks, adaptadores, y
+estrategias donde se necesitaba una clase pequeña estrechamente acoplada a su clase contenedora. Las clases internas
+tenían acceso a los miembros privados de su clase contenedora, facilitando la encapsulación al permitir que
+funcionalidad relacionada permaneciera privada mientras se beneficiaba del polimorfismo y otras características.</p>
+
+<p>El manejo de excepciones en Java fue diseñado específicamente para programación orientada a objetos. Las excepciones
+eran objetos, instancias de clases en una jerarquía de herencia bajo la clase <code>Throwable</code>. Esta orientación
+a objetos de las excepciones permitía que llevaran información rica sobre las condiciones de error, que pudieran ser
+categorizadas mediante herencia, y que pudieran ser capturadas y manejadas polimórficamente. El sistema de excepciones
+verificadas de Java forzaba a los diseñadores de clases a pensar explícitamente sobre las condiciones de error como
+parte del contrato de sus clases.</p>
+
+<p>La biblioteca estándar de Java fue diseñada consistentemente usando principios orientados a objetos. Las colecciones de
+datos se definían mediante interfaces (<code>List</code>, <code>Set</code>, <code>Map</code>) con múltiples
+implementaciones concretas (<code>ArrayList</code>, <code>LinkedList</code>, <code>HashMap</code>) que proporcionaban
+diferentes compromisos de rendimiento. Los streams de entrada/salida se organizaban en jerarquías de herencia que usaban
+el patrón Decorator para componer funcionalidad. Cada parte de la API reflejaba y demostraba los principios de diseño
+orientado a objetos.</p>
+
+<p>El compromiso de Java con la orientación a objetos desde su concepción significaba que no había escape del paradigma.
+La ventaja era consistencia: todo el código Java seguía los mismos patrones y usaba los mismos mecanismos de
+abstracción. Los equipos no necesitaban establecer convenciones sobre cuándo usar objetos versus funciones globales
+porque solo había una forma de hacer las cosas. Sin embargo, la desventaja era que algunas tareas que en programación
+procedural serían simples requerían más ceremonia, como tener que envolver funciones utilitarias en clases.</p>
+
+<p>Sin embargo, con el tiempo y la experiencia, la mayoría de los programadores apreciaron la consistencia que la
+orientación a objetos obligatoria proporcionaba. Los sistemas grandes escritos en Java tendían a ser más modulares y
+mantenibles que sistemas comparables en lenguajes que mezclaban paradigmas, porque todos en el equipo estaban usando el
+mismo conjunto de abstracciones y patrones. La decisión de hacer de Java un lenguaje puramente orientado a objetos desde
+su concepción fue validada por décadas de uso exitoso en proyectos de software grandes y complejos.</p>

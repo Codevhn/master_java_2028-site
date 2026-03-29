@@ -1,0 +1,521 @@
+<h2><strong>4.4 La declaración de la clase principal</strong></h2>
+
+<p>La declaración de la clase es la estructura fundamental donde reside todo el código que escribimos en Java. A diferencia
+de otros lenguajes donde el código puede existir "suelto", en Java absolutamente todo debe estar contenido dentro de una
+clase. La clase principal de un programa es aquella que contiene el método <code>main</code>, el punto de partida donde la JVM
+comienza a ejecutar nuestro código. Comprender cómo declarar correctamente una clase, qué significa cada parte de la
+declaración, y qué reglas debe seguir es esencial para escribir programas Java válidos y bien estructurados.</p>
+
+<hr>
+
+<h3><strong>Anatomía de la declaración de clase</strong></h3>
+
+<p><strong>Forma básica:</strong></p>
+
+<pre class="language-java"><code>class NombreClase {
+    // Aquí va el contenido de la clase
+}</code></pre>
+
+<p><strong>Componentes:</strong></p>
+
+<ol>
+  <li><strong><code>class</code></strong> - Palabra clave que indica "aquí comienza una clase"</li>
+  <li><strong><code>NombreClase</code></strong> - El nombre que le damos a la clase</li>
+  <li><strong><code>{ }</code></strong> - Las llaves que encierran todo el contenido de la clase</li>
+</ol>
+
+<hr>
+
+<h3><strong>Ejemplo mínimo de declaración de clase</strong></h3>
+
+<pre class="language-java"><code>class MiPrimeraClase {
+    public static void main(String[] args) {
+        System.out.println("Hola desde mi primera clase");
+    }
+}</code></pre>
+
+<p><strong>Desglose:</strong></p>
+
+<pre class="language-java"><code>class MiPrimeraClase {</code></pre>
+<ul>
+  <li><code>class</code> = palabra clave obligatoria</li>
+  <li><code>MiPrimeraClase</code> = nombre de la clase</li>
+  <li><code>{</code> = abre el contenido de la clase</li>
+</ul>
+
+<pre class="language-java"><code>public static void main(String[] args) {
+    System.out.println("Hola desde mi primera clase");
+}</code></pre>
+<p>Método <code>main</code> (punto de entrada del programa)</p>
+
+<pre class="language-java"><code>}</code></pre>
+<p><code>}</code> = cierra el contenido de la clase</p>
+
+<hr>
+
+<h3><strong>Reglas para el nombre de la clase</strong></h3>
+
+<p><strong>Reglas obligatorias (técnicas):</strong></p>
+
+<ol>
+  <li><strong>Debe comenzar con letra</strong> (A-Z, a-z)</li>
+  <li><strong>Puede contener letras, números y guión bajo</strong> (<code>_</code>)</li>
+  <li><strong>NO puede contener espacios</strong></li>
+  <li><strong>NO puede ser una palabra reservada de Java</strong> (<code>class</code>, <code>int</code>, <code>public</code>, etc.)</li>
+</ol>
+
+<p><strong>Ejemplos válidos técnicamente:</strong></p>
+
+<pre class="language-java"><code>class Calculadora { }   // ✓ Válido
+class Calculadora2 { }  // ✓ Válido (con número)
+class Mi_Clase { }      // ✓ Válido (con guión bajo)
+class calculadora { }   // ✓ Válido (minúsculas)</code></pre>
+
+<p><strong>Ejemplos inválidos:</strong></p>
+
+<pre class="language-java"><code>class 2Calculadora { }       // ✗ No puede empezar con número
+class Mi Clase { }           // ✗ No puede tener espacios
+class class { }              // ✗ "class" es palabra reservada
+class Calculadora-Básica { } // ✗ No puede tener guión (-)</code></pre>
+
+<hr>
+
+<h3><strong>Convención de nombres Java (PascalCase)</strong></h3>
+
+<p>Aunque técnicamente son válidos varios estilos, Java tiene una convención estándar que <strong>todos</strong> los programadores Java
+profesionales siguen:</p>
+
+<p><strong>PascalCase: Primera letra de cada palabra en mayúscula, sin espacios</strong></p>
+
+<pre class="language-java"><code>// ✓ RECOMENDADO (estilo Java estándar)
+class CalculadoraDescuento { }
+class SistemaInventario { }
+class ReporteVentasMensuales { }
+class ControlEmpleados { }</code></pre>
+
+<pre class="language-java"><code>// ✗ NO RECOMENDADO (funcionan pero no son estilo Java)
+class calculadora_descuento { } // Estilo snake_case (Python)
+class calculadoradescuento { }  // Todo junto, difícil de leer
+class CALCULADORADESCUENTO { }  // Todo mayúsculas</code></pre>
+
+<p><strong>¿Por qué seguir la convención?</strong></p>
+<ul>
+  <li>Todo código Java profesional la sigue</li>
+  <li>Hace el código más legible</li>
+  <li>Otros programadores esperan este estilo</li>
+  <li>IDEs y herramientas asumen este estilo</li>
+</ul>
+
+<hr>
+
+<h3><strong>La palabra clave <code>public</code></strong></h3>
+
+<p>Hasta ahora hemos visto:</p>
+<pre class="language-java"><code>class MiClase {
+    // ...
+}</code></pre>
+
+<p>Pero frecuentemente verá:</p>
+<pre class="language-java"><code>public class MiClase {
+    // ...
+}</code></pre>
+
+<p><strong>¿Qué significa <code>public</code>?</strong></p>
+
+<p><code>public</code> significa que la clase es <strong>visible desde cualquier parte</strong>.</p>
+
+<p><strong>Por ahora, la regla simple:</strong></p>
+
+<p><strong>Para programas ejecutables (con método <code>main</code>), siempre use <code>public</code>:</strong></p>
+
+<pre class="language-java"><code>public class MiPrograma {
+    public static void main(String[] args) {
+        // Código del programa
+    }
+}</code></pre>
+
+<p><strong>Razón:</strong> El programa principal debe ser accesible para que la JVM pueda ejecutarlo.</p>
+
+<hr>
+
+<h3><strong>Estructura completa de una clase ejecutable</strong></h3>
+
+<pre class="language-java"><code>public class NombrePrograma {
+    public static void main(String[] args) {
+        // Aquí van las instrucciones del programa
+    }
+}</code></pre>
+
+<p><strong>Esta es la estructura que usaremos para TODOS nuestros programas por ahora.</strong></p>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de precio con descuento</strong></h3>
+
+<p><strong>Archivo: CalculadoraPrecio.java</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraPrecio {
+    public static void main(String[] args) {
+        // Datos del producto
+        double precioOriginal = 850.00;
+        double porcentajeDescuento = 20.00;
+
+        // Calcular descuento
+        double montoDescuento = precioOriginal * porcentajeDescuento / 100;
+
+        // Calcular precio final
+        double precioFinal = precioOriginal - montoDescuento;
+
+        // Mostrar resultados
+        System.out.println("===== CALCULADORA DE PRECIO =====");
+        System.out.println("Precio original: Lps " + precioOriginal);
+        System.out.println("Descuento (" + porcentajeDescuento + "%): Lps " + montoDescuento);
+        System.out.println("Precio final: Lps " + precioFinal);
+        System.out.println("=================================");
+    }
+}</code></pre>
+
+<p><strong>Declaración de la clase:</strong></p>
+<pre class="language-java"><code>public class CalculadoraPrecio {</code></pre>
+
+<ul>
+  <li><code>public</code> = clase visible públicamente</li>
+  <li><code>class</code> = declaración de clase</li>
+  <li><code>CalculadoraPrecio</code> = nombre de la clase</li>
+  <li><code>{</code> = inicio del contenido</li>
+</ul>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>===== CALCULADORA DE PRECIO =====
+Precio original: Lps 850.0
+Descuento (20.0%): Lps 170.0
+Precio final: Lps 680.0
+=================================</code></pre>
+
+<hr>
+
+<h3><strong>Contenido de la clase: El método main</strong></h3>
+
+<p>Dentro de las llaves <code>{ }</code> de la clase va el contenido. Para programas ejecutables, el contenido principal es el
+<strong>método main</strong>.</p>
+
+<pre class="language-java"><code>public class MiPrograma {
+
+    public static void main(String[] args) {
+        // Instrucciones del programa
+    }
+
+}</code></pre>
+
+<p><strong>El método <code>main</code> debe tener exactamente esta firma:</strong></p>
+<pre class="language-java"><code>public static void main(String[] args)</code></pre>
+
+<ul>
+  <li><code>public</code> = accesible públicamente</li>
+  <li><code>static</code> = pertenece a la clase (no necesita crear objeto)</li>
+  <li><code>void</code> = no retorna valor</li>
+  <li><code>main</code> = nombre del método (debe ser exactamente "main")</li>
+  <li><code>String[] args</code> = parámetro que recibe argumentos</li>
+</ul>
+
+<p><strong>Por ahora, memorice esta línea exactamente como está.</strong> La explicaremos en detalle en el siguiente subtema.</p>
+
+<hr>
+
+<h3><strong>Ejemplo: Sistema de cálculo de impuesto</strong></h3>
+
+<p><strong>Archivo: CalculadoraImpuesto.java</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraImpuesto {
+    public static void main(String[] args) {
+        // Datos de la venta
+        double montoVenta = 5000.00;
+        double tasaImpuesto = 15.00;
+
+        // Calcular impuesto
+        double montoImpuesto = montoVenta * tasaImpuesto / 100;
+
+        // Calcular total
+        double montoTotal = montoVenta + montoImpuesto;
+
+        // Mostrar desglose
+        System.out.println("===== CÁLCULO DE IMPUESTO =====");
+        System.out.println("Monto de venta: Lps " + montoVenta);
+        System.out.println("Impuesto (" + tasaImpuesto + "%): Lps " + montoImpuesto);
+        System.out.println("-------------------------------");
+        System.out.println("Total a pagar: Lps " + montoTotal);
+        System.out.println("===============================");
+    }
+}</code></pre>
+
+<p><strong>Estructura de la clase:</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraImpuesto { // Declaración de la clase
+
+    public static void main(String[] args) { // Método main
+        // Código del programa
+    }
+
+} // Fin de la clase</code></pre>
+
+<hr>
+
+<h3><strong>Las llaves <code>{ }</code> delimitan la clase</strong></h3>
+
+<p><strong>Todo lo que está entre <code>{</code> y <code>}</code> pertenece a la clase:</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo { // ← Abre la clase
+
+    public static void main(String[] args) {
+        System.out.println("Dentro de la clase");
+    }
+
+} // ← Cierra la clase</code></pre>
+
+<p><strong>Fuera de las llaves = fuera de la clase = ERROR</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) {
+        System.out.println("Correcto");
+    }
+}
+
+System.out.println("Esto está fuera de la clase"); // ✗ ERROR</code></pre>
+
+<p><strong>Error de compilación:</strong></p>
+<pre class="language-markup"><code>error: class, interface, or enum expected</code></pre>
+
+<p>En Java, <strong>TODO</strong> debe estar dentro de una clase.</p>
+
+<hr>
+
+<h3><strong>Ejemplo: Calculadora de salario neto</strong></h3>
+
+<p><strong>Archivo: CalculadoraSalarioNeto.java</strong></p>
+
+<pre class="language-java"><code>public class CalculadoraSalarioNeto {
+    public static void main(String[] args) {
+        // Salario bruto mensual
+        double salarioBruto = 15000.00;
+
+        // Deducciones
+        double deduccionSeguroSocial = salarioBruto * 3.5 / 100;
+        double deduccionImpuestoRenta = salarioBruto * 10.0 / 100;
+
+        // Calcular total de deducciones
+        double totalDeducciones = deduccionSeguroSocial + deduccionImpuestoRenta;
+
+        // Calcular salario neto
+        double salarioNeto = salarioBruto - totalDeducciones;
+
+        // Mostrar desglose
+        System.out.println("===== DESGLOSE DE SALARIO =====");
+        System.out.println("Salario bruto: Lps " + salarioBruto);
+        System.out.println("-------------------------------");
+        System.out.println("Deducciones:");
+        System.out.println("  Seguro Social: Lps " + deduccionSeguroSocial);
+        System.out.println("  Imp. Renta: Lps " + deduccionImpuestoRenta);
+        System.out.println("  Total: Lps " + totalDeducciones);
+        System.out.println("-------------------------------");
+        System.out.println("Salario neto: Lps " + salarioNeto);
+        System.out.println("===============================");
+    }
+}</code></pre>
+
+<p><strong>Salida:</strong></p>
+<pre class="language-markup"><code>===== DESGLOSE DE SALARIO =====
+Salario bruto: Lps 15000.0
+-------------------------------
+Deducciones:
+  Seguro Social: Lps 525.0
+  Imp. Renta: Lps 1500.0
+  Total: Lps 2025.0
+-------------------------------
+Salario neto: Lps 12975.0
+===============================</code></pre>
+
+<hr>
+
+<h3><strong>Errores comunes en la declaración de clase</strong></h3>
+
+<h4><strong>Error 1: Olvidar la palabra <code>class</code></strong></h4>
+
+<pre class="language-java"><code>public MiPrograma { // ✗ Falta "class"
+    public static void main(String[] args) {
+        // ...
+    }
+}</code></pre>
+
+<p><strong>Solución:</strong></p>
+<pre class="language-java"><code>public class MiPrograma { // ✓ Correcto
+    // ...
+}</code></pre>
+
+<hr>
+
+<h4><strong>Error 2: Nombre de clase con espacios</strong></h4>
+
+<pre class="language-java"><code>public class Mi Programa { // ✗ Espacio en el nombre
+    // ...
+}</code></pre>
+
+<p><strong>Solución:</strong></p>
+<pre class="language-java"><code>public class MiPrograma { // ✓ Sin espacios
+    // ...
+}</code></pre>
+
+<hr>
+
+<h4><strong>Error 3: Olvidar llaves</strong></h4>
+
+<pre class="language-java"><code>public class MiPrograma // ✗ Falta {
+    public static void main(String[] args) {
+        System.out.println("Error");
+    }
+// ✗ Falta }</code></pre>
+
+<p><strong>Solución:</strong></p>
+<pre class="language-java"><code>public class MiPrograma { // ✓ Con llave de apertura
+    public static void main(String[] args) {
+        System.out.println("Correcto");
+    }
+} // ✓ Con llave de cierre</code></pre>
+
+<hr>
+
+<h4><strong>Error 4: Llaves desbalanceadas</strong></h4>
+
+<pre class="language-java"><code>public class MiPrograma {
+    public static void main(String[] args) {
+        System.out.println("Error");
+    }
+// ✗ Falta cerrar llave de la clase</code></pre>
+
+<p><strong>Solución:</strong> Contar las llaves:</p>
+<ul>
+  <li>Cada <code>{</code> debe tener su correspondiente <code>}</code></li>
+</ul>
+
+<hr>
+
+<h3><strong>Buenas prácticas en la declaración de clase</strong></h3>
+
+<p><strong>1. Siempre usar <code>public</code> para la clase principal</strong></p>
+
+<pre class="language-java"><code>public class ProgramaPrincipal { // ✓ Con public
+    public static void main(String[] args) {
+        // ...
+    }
+}</code></pre>
+
+<hr>
+
+<p><strong>2. Nombre descriptivo en PascalCase</strong></p>
+
+<pre class="language-java"><code>// ✓ Descriptivo
+public class CalculadoraImpuestoVentas {
+    // ...
+}
+
+// ✗ Genérico
+public class Programa1 {
+    // ...
+}</code></pre>
+
+<hr>
+
+<p><strong>3. Una clase por archivo</strong></p>
+
+<pre class="language-markup"><code>proyecto/
+├── CalculadoraDescuento.java → Una clase
+├── ReporteVentas.java        → Una clase
+└── SistemaNomina.java        → Una clase</code></pre>
+
+<hr>
+
+<p><strong>4. Indentar correctamente el contenido</strong></p>
+
+<pre class="language-java"><code>public class Ejemplo {
+    public static void main(String[] args) { // Indentado 4 espacios
+        System.out.println("Hola");          // Indentado 8 espacios
+    }
+}</code></pre>
+
+<p>La indentación (sangría) hace el código más legible.</p>
+
+<hr>
+
+<h3><strong>Plantilla para nuevos programas</strong></h3>
+
+<p><strong>Use esta plantilla para crear nuevos programas:</strong></p>
+
+<pre class="language-java"><code>public class NombreDelPrograma {
+    public static void main(String[] args) {
+        // Su código aquí
+    }
+}</code></pre>
+
+<p><strong>Reemplace:</strong></p>
+<ul>
+  <li><code>NombreDelPrograma</code> con el nombre de su programa (sin espacios, PascalCase)</li>
+  <li>Nombre del archivo debe coincidir: <code>NombreDelPrograma.java</code></li>
+</ul>
+
+<hr>
+
+<h3><strong>Ejemplo final: Control de gastos mensuales</strong></h3>
+
+<p><strong>Archivo: ControlGastosMensuales.java</strong></p>
+
+<pre class="language-java"><code>public class ControlGastosMensuales {
+    public static void main(String[] args) {
+        // Gastos del mes
+        double gastoAlquiler = 5000.00;
+        double gastoAlimentacion = 3500.00;
+        double gastoTransporte = 1200.00;
+        double gastoServicios = 2500.00;
+        double gastosVarios = 1800.00;
+
+        // Calcular total de gastos
+        double totalGastos = gastoAlquiler + gastoAlimentacion +
+                             gastoTransporte + gastoServicios + gastosVarios;
+
+        // Ingreso mensual
+        double ingresoMensual = 18000.00;
+
+        // Calcular saldo
+        double saldoMensual = ingresoMensual - totalGastos;
+
+        // Mostrar reporte
+        System.out.println("===== CONTROL DE GASTOS MENSUALES =====");
+        System.out.println("Ingresos: Lps " + ingresoMensual);
+        System.out.println("---------------------------------------");
+        System.out.println("Gastos:");
+        System.out.println("  Alquiler: Lps " + gastoAlquiler);
+        System.out.println("  Alimentación: Lps " + gastoAlimentacion);
+        System.out.println("  Transporte: Lps " + gastoTransporte);
+        System.out.println("  Servicios: Lps " + gastoServicios);
+        System.out.println("  Varios: Lps " + gastosVarios);
+        System.out.println("  ----------------");
+        System.out.println("  Total gastos: Lps " + totalGastos);
+        System.out.println("---------------------------------------");
+        System.out.println("Saldo mensual: Lps " + saldoMensual);
+        System.out.println("=======================================");
+    }
+}</code></pre>
+
+<p><strong>Declaración de la clase:</strong></p>
+<ul>
+  <li>✓ Usa <code>public class</code></li>
+  <li>✓ Nombre descriptivo (<code>ControlGastosMensuales</code>)</li>
+  <li>✓ Sigue PascalCase</li>
+  <li>✓ Coincide con nombre de archivo</li>
+  <li>✓ Llaves balanceadas</li>
+  <li>✓ Contiene método <code>main</code></li>
+</ul>
+
+<hr>
+
+<p>La declaración de la clase es la estructura fundamental que contiene todo nuestro código Java. Siguiendo las reglas
+simples de usar <code>public class</code>, nombres descriptivos en PascalCase, y asegurando que el nombre coincide con el archivo,
+creamos programas bien estructurados que compilan sin errores y son fáciles de entender y mantener.</p>

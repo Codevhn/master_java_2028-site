@@ -1,0 +1,78 @@
+<h2>1.2: El proyecto Green y los orígenes de Java</h2>
+
+<p>En 1990, Sun Microsystems reconoció que el futuro de la computación no residía únicamente en estaciones de trabajo y
+servidores, sino en la convergencia de la electrónica de consumo, las telecomunicaciones y la computación. La empresa
+identificó una oportunidad estratégica en el mercado emergente de dispositivos electrónicos inteligentes y decidió
+formar un equipo especial para explorar esta área. Esta iniciativa se conocería internamente como el Proyecto Green, y
+su objetivo era crear tecnología que permitiera a Sun participar en lo que la empresa anticipaba sería una revolución en
+la electrónica de consumo.</p>
+
+<p>Patrick Naughton, un ingeniero de Sun que estaba frustrado con las herramientas de desarrollo disponibles en la empresa
+y había amenazado con renunciar, fue uno de los primeros en ser reclutado para este proyecto especial. James Gosling, un
+programador canadiense brillante que ya había demostrado su capacidad técnica excepcional en proyectos anteriores de
+Sun, fue designado como líder técnico del equipo. Mike Sheridan asumió el rol de líder de negocio del proyecto. Estos
+tres formaron el núcleo inicial de lo que eventualmente crecería a un equipo de aproximadamente una docena de
+ingenieros.</p>
+
+<p>El equipo Green se instaló en oficinas separadas de las operaciones principales de Sun, específicamente en Sand Hill
+Road en Menlo Park, California. Esta separación física era deliberada: Sun quería que el equipo operara con autonomía,
+libre de las restricciones y la burocracia de la estructura corporativa principal. El equipo adoptó una cultura de
+startup dentro de la corporación más grande, trabajando con intensidad y enfoque en su visión de dispositivos
+electrónicos inteligentes interconectados.</p>
+
+<p>El objetivo inicial del proyecto no era crear un lenguaje de programación. El equipo Green estaba enfocado en construir
+tecnología para lo que llamaban "dispositivos electrónicos de consumo de próxima generación": televisores interactivos,
+controles remotos programables, sistemas de entretenimiento doméstico inteligentes, y otros aparatos que combinarían
+hardware, software y conectividad de red. La visión era que estos dispositivos no solo ejecutarían software, sino que
+podrían descargarlo dinámicamente, actualizarse remotamente, y comunicarse entre sí en una red doméstica.</p>
+
+<p>Rápidamente se hizo evidente que las herramientas de desarrollo existentes eran inadecuadas para esta visión. C++ era el
+lenguaje dominante para desarrollo de sistemas en ese momento, pero presentaba problemas fundamentales para el contexto
+de dispositivos electrónicos de consumo. La gestión manual de memoria era propensa a errores que podían causar que un
+dispositivo dejara de funcionar, algo inaceptable en productos de consumo donde no hay programadores disponibles para
+depurar. Los punteros y la aritmética de punteros introducían vulnerabilidades de seguridad que serían especialmente
+peligrosas en dispositivos conectados a redes. La dependencia de plataforma significaba que el código debía ser
+reescrito para cada arquitectura de procesador diferente, multiplicando el esfuerzo de desarrollo.</p>
+
+<p>James Gosling tomó la decisión de crear un nuevo lenguaje de programación específicamente diseñado para los requisitos
+únicos del proyecto Green. Este nuevo lenguaje necesitaba ser lo suficientemente simple para que el código fuera
+confiable y mantenible, lo suficientemente seguro para ejecutarse en dispositivos de consumo conectados a redes, lo
+suficientemente portable para funcionar en la diversidad de procesadores que se usarían en diferentes dispositivos, y lo
+suficientemente eficiente para operar dentro de las restricciones de memoria y procesamiento de la electrónica de
+consumo.</p>
+
+<p>Inicialmente, Gosling llamó a este nuevo lenguaje Oak, nombre inspirado por un roble que podía ver desde la ventana de
+su oficina. El lenguaje Oak incorporaba ideas de varios lenguajes existentes: la sintaxis familiar de C para facilitar
+la adopción por programadores experimentados, el modelo de objetos y la orientación a objetos de Smalltalk y C++, la
+gestión automática de memoria de Lisp, y la seguridad de tipos de lenguajes académicos como Mesa. Sin embargo, Oak no
+era simplemente una combinación de características existentes; Gosling tomó decisiones de diseño deliberadas y a menudo
+controversiales para eliminar características de C++ que consideraba peligrosas o innecesariamente complejas.</p>
+
+<p>Para demostrar las capacidades del lenguaje y la plataforma que estaban desarrollando, el equipo Green construyó un
+dispositivo de demostración llamado Star7, también conocido como "*7" (pronunciado "star seven"). Este era un
+dispositivo de mano con pantalla táctil que podía controlar otros dispositivos electrónicos en una red doméstica
+simulada. La interfaz del Star7 presentaba un personaje animado llamado Duke, una pequeña criatura triangular roja que
+se convertiría posteriormente en la mascota no oficial de Java. Duke guiaba al usuario a través de las funcionalidades
+del dispositivo, demostrando conceptos de interfaz gráfica, animación, y control de dispositivos remotos, todo
+programado en el lenguaje Oak.</p>
+
+<p>El equipo Green presentó su trabajo a Sun y propuso formar una nueva empresa subsidiaria para comercializar esta
+tecnología en el mercado de electrónica de consumo. Sun aprobó la propuesta, y en 1992 se creó FirstPerson, Inc., una
+empresa completamente subsidiaria de Sun dedicada a llevar esta tecnología al mercado. FirstPerson buscó activamente
+asociaciones con fabricantes de electrónica y empresas de cable para implementar sistemas de televisión interactiva y
+otros dispositivos de consumo inteligentes.</p>
+
+<p>Sin embargo, el mercado de electrónica de consumo resultó ser más difícil de penetrar de lo anticipado. Las empresas de
+cable y los fabricantes de dispositivos tenían procesos de toma de decisiones lentos, ciclos de desarrollo de hardware
+largos, y estaban enfocados en estándares existentes y tecnologías probadas. Varios proyectos importantes en los que
+FirstPerson esperaba participar no se materializaron o seleccionaron tecnologías competidoras. Para 1994, quedó claro
+que el mercado de dispositivos electrónicos de consumo inteligentes no estaba maduro para adoptar la tecnología que
+FirstPerson ofrecía, y la empresa fue disuelta, reintegrándose al equipo con Sun Microsystems.</p>
+
+<p>Esta aparente falla comercial podría haber sido el final de la historia del lenguaje Oak, pero precisamente en ese
+momento, otro fenómeno tecnológico estaba explotando: la World Wide Web. El navegador Mosaic había sido lanzado en 1993
+y estaba catalizando un crecimiento exponencial de Internet. El equipo que había trabajado en Oak reconoció rápidamente
+que su lenguaje, diseñado originalmente para dispositivos electrónicos de consumo heterogéneos conectados en red, era
+perfectamente adecuado para el nuevo mundo de aplicaciones distribuidas en Internet. El enfoque cambiaría dramáticamente
+del hardware de consumo al software de Internet, y el lenguaje Oak estaba a punto de renacer con un nuevo nombre y un
+nuevo propósito que transformaría la industria del software.</p>

@@ -1,0 +1,168 @@
+<h2>2.9: Ejecución de un programa Java dentro de la JVM</h2>
+
+<p>El proceso de ejecución de un programa Java es donde la arquitectura de la plataforma Java realmente cobra vida.
+  Mientras que la compilación transforma código fuente legible por humanos en bytecode portable, es durante la ejecución
+  que este bytecode es interpretado o compilado a código nativo y realmente realiza el trabajo útil que el programa fue
+  diseñado para hacer. La ejecución de Java es un proceso extraordinariamente complejo que involucra múltiples subsistemas
+  de la JVM trabajando en concierto: el cargador de clases, el verificador de bytecode, el intérprete, el compilador
+  Just-In-Time, el garbage collector, el gestor de threads, y otros. Comprender cómo estos componentes interactúan durante
+  la ejecución proporciona perspectiva esencial sobre el comportamiento de runtime de los programas Java y las decisiones
+  de optimización que pueden mejorar el rendimiento.</p>
+
+<p>La ejecución comienza cuando un usuario o script invoca el launcher de Java, típicamente mediante el comando java,
+  especificando qué programa ejecutar. El launcher es un ejecutable nativo pequeño específico de plataforma que actúa como
+  bootstrap para la JVM. Su primer trabajo es parsear los argumentos de línea de comandos para determinar opciones de
+  configuración de la JVM, como cuánta memoria asignar al heap, qué garbage collector usar, qué opciones de logging
+  habilitar, y otras configuraciones que afectan el comportamiento de la JVM. También identifica qué clase contiene el
+  método main que será el punto de entrada del programa.</p>
+
+<p>Una vez que el launcher ha procesado los argumentos, carga la biblioteca nativa de la JVM en el espacio de direcciones
+  del proceso. Esta biblioteca, jvm.dll en Windows o libjvm.so en Linux o libjvm.dylib en macOS, contiene toda la
+  implementación de la máquina virtual: el intérprete de bytecode, el compilador JIT, el garbage collector, el cargador de
+  clases, y todos los demás subsistemas. Cargar esta biblioteca es el paso que transforma el proceso del launcher en una
+  JVM en funcionamiento. El control es entonces transferido a código de inicialización dentro de la biblioteca de la JVM.</p>
+
+<p>El código de inicialización de la JVM realiza una secuencia compleja de operaciones de setup. Crea el heap, el área de
+  memoria donde todos los objetos Java serán asignados durante la ejecución. El tamaño del heap es determinado por las
+  opciones de línea de comandos si fueron especificadas, o por heurísticas por defecto basadas en la memoria del sistema
+  si no fueron especificadas. La JVM típicamente crea el heap con tamaño inicial más pequeño que el máximo, permitiendo
+  que crezca dinámicamente según las necesidades del programa pero con un límite superior que previene que consuma toda la
+  memoria del sistema.</p>
+
+<p>El área de método, también llamada metaspace en JVMs modernas, es creada para almacenar representaciones internas de
+  clases cargadas. A diferencia del heap que contiene instancias de objetos, el área de método contiene las definiciones
+  de clases: información sobre qué campos tiene cada clase, qué métodos, qué superclase, qué interfaces implementa, y el
+  bytecode que implementa los métodos. El área de método crece dinámicamente a medida que más clases son cargadas durante
+  la ejecución del programa.</p>
+
+<p>La JVM crea pilas de thread para los threads que ejecutarán código Java. Inicialmente se crea al menos una pila para el
+  thread principal que ejecutará el método main. Cada pila de thread almacena los marcos de activación de los métodos que
+  están actualmente ejecutándose en ese thread. Un marco de activación contiene las variables locales del método, una pila
+  de operandos usada por las instrucciones de bytecode para computación, y metadata sobre el método. A medida que los
+  métodos llaman a otros métodos, nuevos marcos son empujados en la pila. Cuando los métodos retornan, sus marcos son
+  removidos de la pila.</p>
+
+<p>Después de que las estructuras de datos fundamentales están inicializadas, la JVM procede a cargar la clase inicial
+  especificada en la línea de comandos. Si el comando fue java com.empresa.Aplicacion, la JVM invoca el cargador de clases
+  para localizar y cargar la clase com.empresa.Aplicacion. El cargador de clases busca un archivo
+  com/empresa/Aplicacion.class en el classpath, lee el archivo binario .class, y pasa su contenido al verificador de
+  bytecode.</p>
+
+<p>El verificador de bytecode realiza análisis exhaustivo del bytecode para asegurar que es seguro y bien formado antes de
+  permitir que se ejecute. Esta verificación es crítica para la seguridad de Java porque previene que bytecode
+  maliciosamente construido explote vulnerabilidades en la JVM. El verificador asegura que todas las instrucciones de
+  bytecode son válidas y tienen los operandos correctos. Verifica que el uso de la pila de operandos es consistente: que
+  cada instrucción encuentra los tipos correctos de valores en la pila y deja los tipos correctos de valores cuando
+  completa. Verifica que las variables locales son usadas correctamente: que son inicializadas antes de ser leídas, que
+  los tipos almacenados en slots de variables locales coinciden con los tipos que las instrucciones esperan. Verifica que
+  los saltos de control de flujo solo van a instrucciones válidas dentro del método, no pueden saltar a medio de una
+  instrucción o fuera del método.</p>
+
+<p>Solo después de que el bytecode pasa todas estas verificaciones la JVM construye una representación interna de la clase
+  en el área de método. Esta representación incluye el constant pool de la clase, descriptores de todos los campos y
+  métodos, el bytecode para cada método, y metadata adicional. La clase pasa a través de varias etapas de preparación: se
+  asigna espacio para variables estáticas de la clase, se inicializan a valores por defecto, y eventualmente los
+  inicializadores estáticos de la clase son ejecutados si los hay.</p>
+
+<p>Con la clase inicial cargada y preparada, la JVM busca el método main con la firma public static void main(String[]
+  args). Si este método no existe o no tiene exactamente esta firma, la JVM reporta un error y termina. Si el método
+  existe, la JVM crea un array de String conteniendo los argumentos de línea de comandos que fueron pasados al programa y
+  prepara para invocar main con este array como argumento.</p>
+
+<p>La invocación del método main marca el comienzo real de la ejecución del programa. La JVM crea un marco de activación
+  para el método main en la pila del thread principal. Este marco contiene slots para las variables locales del método,
+  incluyendo el parámetro args, y una pila de operandos vacía. El program counter del thread es establecido para apuntar a
+  la primera instrucción de bytecode del método main, y el intérprete de bytecode comienza a ejecutar.</p>
+
+<p>El intérprete de bytecode es el componente de la JVM que lee y ejecuta instrucciones de bytecode una por una. Para cada
+  instrucción, el intérprete decodifica qué operación representa y realiza esa operación. Las instrucciones de bytecode
+  operan sobre la pila de operandos y las variables locales del marco de activación actual. Instrucciones como iload
+  cargan un valor entero de una variable local en la pila de operandos. Instrucciones como iconst empujan constantes
+  enteras pequeñas en la pila. Instrucciones aritméticas como iadd sacan dos enteros de la pila, los suman, y empujan el
+  resultado de vuelta. Instrucciones como istore sacan un valor de la pila y lo almacenan en una variable local.</p>
+
+<p>Cuando el código invoca un método, la JVM debe realizar una secuencia de operaciones para ejecutar ese método. Primero,
+  los argumentos para el método son empujados en la pila de operandos. Luego, una instrucción de invocación de método
+  (invokevirtual para métodos de instancia, invokestatic para métodos estáticos, invokespecial para constructores y
+  métodos privados, invokeinterface para métodos de interfaz) es ejecutada. Esta instrucción hace que la JVM cree un nuevo
+  marco de activación para el método siendo invocado, transfiera los argumentos de la pila del llamador a las variables
+  locales del marco del método llamado, y comience a ejecutar el bytecode del método llamado.</p>
+
+<p>Cuando un método retorna, ya sea mediante una instrucción return explícita o alcanzando el final del método para métodos
+  void, la JVM remueve el marco de activación del método de la pila. Si el método retorna un valor, ese valor es empujado
+  en la pila de operandos del método llamador. La ejecución continúa en el método llamador desde la instrucción
+  inmediatamente después de la invocación de método.</p>
+
+<p>Mientras el intérprete ejecuta el bytecode, la JVM recopila estadísticas de perfilado. Cuenta cuántas veces cada método
+  es invocado. Registra qué ramas de instrucciones condicionales son tomadas con más frecuencia. Para sitios de llamada
+  polimórficos donde el método específico invocado depende del tipo de runtime del receptor, registra qué tipos son vistos
+  típicamente. Esta información de perfilado es usada por el compilador Just-In-Time para tomar decisiones de
+  optimización.</p>
+
+<p>Cuando un método ha sido ejecutado suficientes veces para ser considerado "caliente", la JVM programa el método para
+  compilación JIT. Un thread compilador en segundo plano toma el bytecode del método, lo analiza, y genera código de
+  máquina nativo equivalente optimizado para el procesador en el que se está ejecutando. Este código nativo es almacenado
+  en un área de memoria especial llamada el code cache. Una vez que la compilación está completa, las invocaciones
+  subsecuentes del método ejecutan el código nativo compilado en lugar de interpretar el bytecode, resultando en mejoras
+  dramáticas de rendimiento.</p>
+
+<p>El código compilado por JIT no es simplemente traducción directa de bytecode a instrucciones nativas. El compilador
+  realiza optimizaciones extensivas. Métodos pequeños frecuentemente llamados pueden ser inlined, significando que su
+  código es insertado directamente en el sitio de llamada en lugar de realizar una invocación de método. Esto elimina la
+  sobrecarga de invocación de método y permite optimizaciones adicionales. Verificaciones que el análisis del compilador
+  puede probar que siempre tienen éxito pueden ser eliminadas. Cálculos cuyos resultados pueden ser determinados en tiempo
+  de compilación pueden ser pre-computados. Código que el análisis muestra que nunca puede ejecutar puede ser eliminado.</p>
+
+<p>Las optimizaciones especulativas son particularmente poderosas. Si el perfilado muestra que una rama condicional casi
+  siempre se toma en una dirección, el compilador genera código optimizado para ese caso común con verificación y código
+  alternativo menos optimizado para el caso raro. Si un sitio de llamada polimórfico casi siempre ve objetos de un tipo
+  específico, el compilador genera una verificación de tipo rápida inline seguida de código optimizado para ese tipo, con
+  fallback a invocación polimórfica completa para otros tipos. Estas optimizaciones especulativas requieren que la JVM
+  pueda deoptimizar: si las suposiciones especulativas resultan incorrectas, la JVM debe descartar el código nativo y
+  volver a interpretación o recompilar con suposiciones diferentes.</p>
+
+<p>Durante toda la ejecución del programa, el garbage collector trabaja en segundo plano gestionando memoria
+  automáticamente. Cuando el código crea objetos con new, la JVM asigna memoria del heap. En el caso simple, esto es
+  extremadamente rápido, simplemente incrementando un puntero por el tamaño del objeto. A medida que la ejecución continúa
+  y más objetos son creados, eventualmente una región del heap se llena, disparando una garbage collection.</p>
+
+<p>Durante una garbage collection, el recolector identifica qué objetos en el heap son aún alcanzables desde el código
+  ejecutándose, considerados vivos, y cuáles ya no son alcanzables desde ningún lugar, considerados muertos. Los objetos
+  vivos deben ser preservados; los objetos muertos pueden ser reclamados. Los garbage collectors modernos típicamente
+  copian objetos vivos a una nueva región y reclaiman la región vieja completa, lo cual es más eficiente que intentar
+  reclamar objetos individuales muertos. Este proceso puede requerir pausar brevemente la ejecución de la aplicación
+  mientras el recolector escanea la memoria, aunque garbage collectors concurrentes sofisticados minimizan estas pausas
+  ejecutando mayormente en paralelo con la aplicación.</p>
+
+<p>Si el código crea threads adicionales, la JVM gestiona estos threads, mapeándolos típicamente a threads nativos del
+  sistema operativo. Cada thread tiene su propia pila donde sus marcos de activación de método son almacenados. Los
+  threads comparten el heap y el área de método, permitiéndoles comunicarse mediante acceso a objetos compartidos. Cuando
+  el código usa sincronización (bloques synchronized, métodos synchronized), la JVM adquiere y libera locks que previenen
+  que múltiples threads ejecuten ciertas secciones de código simultáneamente, previniendo condiciones de carrera.</p>
+
+<p>El manejo de excepciones durante la ejecución involucra búsqueda en la pila de llamadas de un manejador apropiado.
+  Cuando se lanza una excepción, la JVM busca en el método actual un bloque catch que pueda manejar el tipo de excepción
+  lanzada. Si no se encuentra ninguno, el marco de activación del método actual es descartado y la búsqueda continúa en el
+  método llamador. Este proceso de desenrollado de pila continúa hasta que se encuentra un manejador o la pila se
+  desenrolla completamente, en cuyo caso el thread termina con excepción no capturada.</p>
+
+<p>La carga de clases continúa dinámicamente durante toda la ejecución. Cuando el código hace referencia a una clase que
+  aún no ha sido cargada, el cargador de clases es invocado para cargarla. Esto permite que los programas Java comiencen a
+  ejecutar rápidamente sin cargar todas las clases que podrían necesitar por adelantado. Solo las clases realmente
+  necesarias son cargadas, y son cargadas justo a tiempo cuando se necesitan. Esta carga dinámica también permite que las
+  aplicaciones carguen plugins o extensiones en tiempo de ejecución, descubriendo y cargando clases que no eran conocidas
+  cuando el programa fue compilado.</p>
+
+<p>Cuando el método main eventualmente retorna, o cuando todo el código llama System.exit(), la JVM comienza el proceso de
+  terminación. Ejecuta shutdown hooks, threads especiales registrados para ejecutar durante terminación. Permite que
+  threads daemon completen o los termina forzosamente. Libera recursos, descarga bibliotecas nativas, y eventualmente
+  termina el proceso.</p>
+
+<p>La ejecución de un programa Java es un proceso dinámico y adaptativo donde la JVM continuamente monitorea el
+  comportamiento del programa y ajusta su estrategia de ejecución. El código comienza interpretado para inicio rápido,
+  transiciona a compilación JIT para métodos calientes para mejor rendimiento, y puede ser deoptimizado y recompilado si
+  las suposiciones de optimización resultan incorrectas. La memoria es gestionada automáticamente con el garbage collector
+  adaptándose a los patrones de asignación del programa. Los threads son creados y destruidos dinámicamente. Las clases
+  son cargadas según se necesitan. Esta naturaleza dinámica y adaptativa es lo que permite que la JVM proporcione tanto
+  inicio rápido como rendimiento de estado estable alto, y es parte de lo que hace a Java adecuado para una gama tan
+  amplia de aplicaciones desde scripts de corta duración hasta servicios empresariales de larga ejecución.</p>

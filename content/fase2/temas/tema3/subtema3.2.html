@@ -1,0 +1,130 @@
+<h2>3.2: Requisitos previos del sistema operativo</h2>
+
+<p>Antes de instalar el JDK, es fundamental verificar que la máquina cumple con los requisitos mínimos de hardware y
+  software necesarios para ejecutar Java efectivamente.</p>
+
+<h3>Requisitos de hardware</h3>
+
+<p><strong>Memoria RAM:</strong></p>
+<ul>
+  <li>Mínimo: 2 GB</li>
+  <li>Recomendado: 4 GB para desarrollo básico</li>
+  <li>Ideal: 8 GB o más (IDEs, múltiples aplicaciones, proyectos grandes)</li>
+</ul>
+
+<p>La memoria es crítica porque el proceso de compilación, ejecución de aplicaciones Java, y los IDEs modernos (IntelliJ
+  IDEA, Eclipse) consumen recursos significativos.</p>
+
+<p><strong>Espacio en disco:</strong></p>
+<ul>
+  <li>Instalación JDK: 300 MB - 1 GB</li>
+  <li>Entorno completo recomendado: mínimo 10 GB libres</li>
+  <li>Proyectos y código fuente</li>
+  <li>Dependencias Maven/Gradle (pueden acumular varios GB)</li>
+  <li>IDE (1-3 GB)</li>
+  <li>Archivos de construcción generados</li>
+</ul>
+
+<p><strong>Procesador:</strong></p>
+<ul>
+  <li>Cualquier procesador moderno x86-64 (64-bit) de los últimos 10 años</li>
+  <li>Procesadores multi-core benefician significativamente la compilación de proyectos grandes (paralelización de builds)</li>
+</ul>
+
+<h3>Sistemas operativos soportados</h3>
+
+<p><strong>Windows:</strong></p>
+<ul>
+  <li>Versiones soportadas: Windows 10, Windows 11</li>
+  <li>Versiones anteriores: Windows 8.1 (según versión JDK)</li>
+  <li>Solo versiones 64-bit son soportadas por JDKs modernos</li>
+</ul>
+
+<p><strong>macOS:</strong></p>
+<ul>
+  <li>Versiones: macOS 10.13 (High Sierra) y posteriores</li>
+  <li>Intel x86-64: builds específicos</li>
+  <li>Apple Silicon (ARM64/M1/M2/M3): builds específicos</li>
+  <li>Descargar el build correcto para la arquitectura del procesador</li>
+</ul>
+
+<p><strong>Linux:</strong></p>
+<ul>
+  <li>Distribuciones soportadas: Ubuntu, Debian, Fedora, RHEL, CentOS, otras mayores</li>
+  <li>Versiones: Distribuciones lanzadas en los últimos 3-5 años generalmente soportadas</li>
+  <li>glibc en versión apropiada (Debian/Ubuntu)</li>
+  <li>Bibliotecas equivalentes (sistemas basados en RPM)</li>
+</ul>
+
+<h3>Permisos y privilegios</h3>
+
+<p><strong>Instalación con privilegios administrativos:</strong></p>
+<ul>
+  <li>Windows: Ejecutar instalador como Administrador</li>
+  <li>macOS/Linux: Privilegios sudo o root para instalaciones en ubicaciones del sistema</li>
+</ul>
+
+<p><strong>Instalación sin privilegios administrativos:</strong></p>
+<ul>
+  <li>Descomprimir manualmente archivo tar.gz o zip en directorio de usuario</li>
+  <li>No requiere permisos especiales, pero configuración manual de variables de entorno necesaria</li>
+</ul>
+
+<p><strong>Entornos corporativos:</strong></p>
+<ul>
+  <li>Coordinar con IT para instalación o permisos apropiados</li>
+  <li>Algunas organizaciones proporcionan imágenes pre-configuradas con JDK</li>
+</ul>
+
+<h3>Software adicional requerido o recomendado</h3>
+
+<p><strong>Linux:</strong></p>
+<ul>
+  <li>Bibliotecas X11 (para aplicaciones Java con GUI)</li>
+  <li>gcc y herramientas de desarrollo (si se usa JNI o compilación de código nativo)</li>
+</ul>
+
+<p><strong>macOS:</strong></p>
+<ul>
+  <li>Xcode Command Line Tools (beneficioso, especialmente si se usa Homebrew)</li>
+</ul>
+
+<p><strong>Todos los sistemas:</strong></p>
+<ul>
+  <li>Navegador web moderno (documentación, descargas, herramientas web-based)</li>
+</ul>
+
+<h3>Verificación de requisitos previos</h3>
+
+<p><strong>Verificar versión del sistema operativo — Windows:</strong></p>
+<pre class="language-bash">
+  <code>winver
+systeminfo</code>
+</pre>
+
+<p><strong>Verificar versión del sistema operativo — macOS:</strong></p>
+<pre class="language-bash">
+  <code>sw_vers</code>
+</pre>
+
+<p><strong>Verificar versión del sistema operativo — Linux:</strong></p>
+<pre class="language-bash">
+  <code>lsb_release -a
+# o
+cat /etc/os-release</code>
+</pre>
+
+<p><strong>Verificar memoria RAM:</strong></p>
+<ul>
+  <li>Windows: Task Manager → Rendimiento</li>
+  <li>macOS: Activity Monitor → Memoria</li>
+  <li>Linux: <code>free -h</code></li>
+</ul>
+
+<p><strong>Verificar espacio en disco:</strong></p>
+<ul>
+  <li>Windows: Explorador de Archivos → Propiedades de unidad</li>
+  <li>macOS/Linux: <code>df -h</code></li>
+</ul>
+
+<p>Cumplir estos requisitos asegura instalación exitosa del JDK y entorno de desarrollo funcional.</p>

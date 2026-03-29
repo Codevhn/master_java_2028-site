@@ -1,0 +1,137 @@
+<h2>2.12: Versiones LTS vs versiones no LTS</h2>
+
+<p>El concepto de Long-Term Support, comúnmente abreviado como LTS, representa uno de los cambios más significativos e
+  impactantes en la estrategia de evolución de Java introducido con el nuevo modelo de lanzamiento de cadencia de seis
+  meses que comenzó con Java 9. Comprender la distinción entre versiones LTS y versiones de característica no-LTS, las
+  implicaciones prácticas de esta distinción para diferentes tipos de usuarios y organizaciones, y cómo navegar el paisaje
+  de versiones de Java en la era post-2017 es conocimiento esencial para cualquier profesional tomando decisiones sobre
+  qué versión de Java adoptar, cuándo actualizar, y cómo planear estrategias de actualización a largo plazo.</p>
+
+<p>Antes de Java 9, el modelo de lanzamiento de Java era impredecible e irregular. Las versiones mayores ocurrían cuando
+  estaban "listas", lo cual en la práctica significaba cada dos a cinco años dependiendo de cuán ambiciosas eran las
+  características planeadas y cuántos retrasos se encontraban. Java 6 fue lanzado en diciembre 2006, Java 7 no llegó hasta
+  julio 2011, casi cinco años después. Java 8 llegó en marzo 2014, casi tres años después de Java 7. Estos largos períodos
+  entre lanzamientos creaban múltiples problemas. Las características nuevas se retrasaban años esperando el siguiente
+  lanzamiento mayor. Los desarrolladores esperaban impacientes por nuevas capacidades del lenguaje. Las mejoras de
+  rendimiento y correcciones de errores que no eran suficientemente críticas para backporting a versiones existentes
+  quedaban atrapadas esperando el siguiente lanzamiento mayor.</p>
+
+<p>Con Java 9 en septiembre 2017, Oracle anunció un cambio radical: Java movería a lanzamientos predecibles cada seis
+  meses. Cada seis meses habría un nuevo lanzamiento de característica de Java, numerado secuencialmente: Java 10 en marzo
+  2018, Java 11 en septiembre 2018, Java 12 en marzo 2019, y así sucesivamente. Este modelo de lanzamiento rápido
+  permitiría que características fueran entregadas tan pronto como estuvieran listas en lugar de esperar años. Sin
+  embargo, este cambio creó un desafío fundamental: las organizaciones empresariales no podían realistamente actualizar
+  sus sistemas de producción cada seis meses. Los ciclos de testing, validación, y despliegue en entornos corporativos
+  típicamente toman meses. Actualizar cada seis meses sería prácticamente imposible para muchas organizaciones.</p>
+
+<p>La solución fue el concepto de Long-Term Support. Ciertos lanzamientos serían designados como versiones LTS que
+  recibirían actualizaciones de soporte extendidas por un período mucho más largo que lanzamientos de característica
+  regulares. Las versiones no-LTS recibirían actualizaciones solo hasta el siguiente lanzamiento de seis meses, en cuyo
+  punto se esperaría que los usuarios actualizaran a la nueva versión. Las versiones LTS recibirían actualizaciones de
+  seguridad, correcciones de errores críticos, y parches de estabilidad por años, permitiendo que organizaciones
+  permanezcan en una versión estable mientras continúan recibiendo actualizaciones importantes.</p>
+
+<p>El calendario inicial especificaba que cada tres años habría una versión LTS. Java 11 (septiembre 2018) fue designado el
+  primer LTS bajo el nuevo modelo, aunque Java 8, lanzado antes del cambio de modelo, fue retroactivamente tratado como
+  LTS debido a su amplia adopción. Java 17 (septiembre 2021) fue el siguiente LTS, tres años después de Java 11. Java 21
+  (septiembre 2023) fue el LTS más reciente. Este patrón de un LTS cada tres años proporciona objetivos de actualización
+  predecibles para organizaciones que planean sus roadmaps tecnológicos con años de anticipación.</p>
+
+<p>Las diferencias prácticas entre versiones LTS y no-LTS son profundas. Una versión LTS como Java 17 recibe
+  actualizaciones de Oracle por al menos ocho años desde su lanzamiento inicial, aunque otros proveedores como Azul y Red
+  Hat proporcionan soporte aún más largo, potencialmente una década o más. Durante este período, la versión recibe
+  actualizaciones regulares trimestrales que incluyen parches de seguridad para vulnerabilidades descubiertas,
+  correcciones para errores críticos que afectan estabilidad o corrección, y ocasionalmente backports de mejoras de
+  rendimiento importantes. Estas actualizaciones no introducen nuevas características de lenguaje o cambios que rompan
+  compatibilidad; son puramente mantenimiento conservador.</p>
+
+<p>En contraste, una versión no-LTS como Java 18 recibe actualizaciones solo durante los seis meses hasta que Java 19 es
+  lanzado. Después de ese punto, no hay más actualizaciones de seguridad, no más correcciones de errores, nada. Se espera
+  que los usuarios de versiones no-LTS actualicen a cada nuevo lanzamiento de seis meses para continuar recibiendo
+  actualizaciones. Este modelo es viable para ciertos tipos de usuarios pero impractico para muchos otros.</p>
+
+<p>Para desarrolladores individuales, entusiastas, y proyectos open source que pueden actualizar rápidamente, las versiones
+  no-LTS son atractivas porque proporcionan acceso inmediato a las características más nuevas del lenguaje, mejoras de
+  biblioteca, y optimizaciones de rendimiento. Un desarrollador trabajando en un proyecto personal puede actualizar a Java
+  19 tan pronto como se lanza, experimentar con características nuevas, y actualizar a Java 20 seis meses después sin
+  fricción significativa. Para este tipo de uso, estar en la versión más reciente de Java proporciona la mejor experiencia
+  de desarrollo.</p>
+
+<p>Sin embargo, para organizaciones empresariales ejecutando sistemas críticos de negocio, actualizar cada seis meses es
+  irreal. Una actualización de Java en producción requiere testing exhaustivo para asegurar que no introduce regresiones o
+  incompatibilidades. Requiere validación de rendimiento para asegurar que no degrada throughput o latencia. Requiere
+  coordinación entre múltiples equipos. Requiere ventanas de mantenimiento planificadas para deployment. Este proceso
+  típicamente toma semanas o meses. Realizar esto cada seis meses consumiría recursos de ingeniería enormes y crearía
+  riesgo continuo de desestabilización de sistemas de producción.</p>
+
+<p>Para estas organizaciones, las versiones LTS son la única opción práctica. Pueden adoptar una versión LTS como Java 17,
+  testing y desplegarla cuidadosamente, luego permanecer en esa versión por años mientras reciben actualizaciones de
+  seguridad y estabilidad. Pueden planear su próxima actualización mayor para el siguiente LTS, Java 21, dándose años para
+  planear, presupuestar, y ejecutar la actualización. Este modelo se alinea con cómo las organizaciones empresariales
+  gestionan otros sistemas de infraestructura crítica.</p>
+
+<p>Las implicaciones de licenciamiento también difieren. Oracle proporciona builds gratuitas de OpenJDK para todas las
+  versiones, tanto LTS como no-LTS, pero estas builds solo reciben actualizaciones hasta el siguiente lanzamiento, incluso
+  para versiones LTS. Para recibir el soporte a largo plazo completo de una versión LTS, las organizaciones típicamente
+  necesitan soporte comercial de Oracle u otro proveedor. Oracle ofrece subscripciones de Java SE que incluyen
+  actualizaciones a largo plazo. Proveedores alternativos como Azul, Red Hat, Amazon, y otros ofrecen sus propios acuerdos
+  de soporte para versiones LTS con diferentes términos y cronogramas.</p>
+
+<p>Los proveedores de soporte comercial frecuentemente extienden soporte para versiones LTS más allá de los compromisos
+  mínimos de Oracle. Azul proporciona soporte para Java 8 hasta 2030 y más allá bajo ciertos planes. Red Hat proporciona
+  soporte similar extendido. Esta disponibilidad de soporte a muy largo plazo es crítica para industrias altamente
+  reguladas como finanzas y healthcare donde los sistemas pueden necesitar mantenerse estables por décadas y donde los
+  costos de actualización son prohibitivos.</p>
+
+<p>La adopción de versiones muestra patrones claros. Las versiones LTS, particularmente Java 8, 11, y 17, dominan uso de
+  producción. Encuestas de la comunidad Java consistentemente muestran que la vasta mayoría de aplicaciones de producción
+  ejecutan en versiones LTS. Java 8, a pesar de haber sido lanzado en 2014, aún retiene porción significativa de uso de
+  producción en 2024 debido a su estado LTS y soporte extendido disponible. Java 11 y 17 han visto adopción creciente a
+  medida que organizaciones actualizan desde Java 8.</p>
+
+<p>Las versiones no-LTS ven adopción principalmente entre early adopters, proyectos que priorizan tener las características
+  más recientes sobre estabilidad a largo plazo, y organizaciones con procesos de actualización suficientemente ágiles
+  para actualizar cada seis meses. Algunas organizaciones tech-forward adoptan este modelo deliberadamente, viendo el
+  esfuerzo de actualización continua como inversión que previene la acumulación de deuda técnica que hace actualizaciones
+  mayores cada varios años progresivamente más difíciles.</p>
+
+<p>El mecanismo de características preview proporciona un puente entre versiones LTS y no-LTS. Las características mayores
+  de lenguaje son frecuentemente introducidas como "preview features" en versiones no-LTS, permitiendo que la comunidad
+  las experimente y proporcione feedback antes de finalización. Después de refinamiento basándose en feedback, la
+  característica es finalizada en un lanzamiento subsecuente, potencialmente una versión LTS. Por ejemplo, records fueron
+  introducidos como preview en Java 14, refinados en Java 15, y finalizados en Java 16. Para cuando Java 17 LTS fue
+  lanzado, records eran una característica estable madura. Este proceso asegura que las características que llegan a
+  versiones LTS han sido bien vetadas.</p>
+
+<p>Las estrategias de actualización organizacionales típicamente se centran en versiones LTS. Una estrategia común es "LTS
+  a LTS": permanecer en una versión LTS hasta que la siguiente LTS ha estado disponible por algún tiempo (permitiendo que
+  early adopters descubran y reporten problemas), entonces actualizar directamente de una LTS a la siguiente. Por ejemplo,
+  una organización en Java 11 podría planear actualizar a Java 17 después de que Java 17 ha estado disponible por 6-12
+  meses, saltando completamente Java 12, 13, 14, 15, y 16. Esto minimiza frecuencia de actualización mientras asegura que
+  la organización reciba años de mejoras acumuladas cuando actualiza.</p>
+
+<p>Algunas organizaciones adoptan estrategias más agresivas, actualizando a cada LTS poco después del lanzamiento. Esto les
+  da acceso a características y mejoras más rápidamente pero requiere más esfuerzo de actualización. Otras adoptan
+  estrategias más conservadoras, esperando hasta que el soporte para su versión LTS actual se aproxima a expiración antes
+  de actualizar, maximizando estabilidad pero arriesgando acumulación de deuda técnica que hace actualizaciones
+  subsecuentes más difíciles.</p>
+
+<p>Los ambientes de desarrollo versus producción también frecuentemente difieren. Las organizaciones pueden usar versiones
+  LTS en producción para estabilidad mientras permiten a los desarrolladores usar versiones más recientes no-LTS en
+  desarrollo para acceder a características de productividad nuevas, mejores mensajes de error del compilador, y
+  herramientas mejoradas. Mientras el código sea compatible con la versión de producción (verificable mediante compilación
+  cross-version), este modelo proporciona lo mejor de ambos mundos.</p>
+
+<p>Las pruebas de compatibilidad entre versiones son facilitadas por el mecanismo --release del compilador que permite
+  compilar código para una versión objetivo más antigua de Java mientras se usa un JDK más nuevo. Esto permite a los
+  desarrolladores usar herramientas modernas mientras aseguran que su código ejecutará en la versión más antigua
+  desplegada en producción. Las pipelines de CI/CD frecuentemente incluyen testing contra múltiples versiones de Java para
+  asegurar compatibilidad.</p>
+
+<p>El modelo LTS versus no-LTS representa un balance pragmático entre dos necesidades competitivas: el deseo de iterar
+  rápidamente, entregar características frecuentemente, y evolucionar el lenguaje responsivamente a feedback de la
+  comunidad; y la necesidad de estabilidad a largo plazo, actualizaciones predecibles, y soporte extendido que las
+  organizaciones empresariales requieren. Al proporcionar ambos modelos simultáneamente, Java acomoda ambos early adopters
+  que quieren la última tecnología y organizaciones conservadoras que priorizan estabilidad. Esta flexibilidad es parte de
+  por qué Java continúa siendo relevante para rango tan amplio de casos de uso desde startups experimentales hasta
+  sistemas bancarios críticos para misiones que han operado por décadas.</p>

@@ -1,0 +1,137 @@
+<h2>2.13: Ciclo de vida y soporte de versiones de Java</h2>
+
+<p>El ciclo de vida y el soporte de las versiones de Java son aspectos críticos que toda organización debe comprender
+  profundamente al tomar decisiones sobre qué versión adoptar, cuándo actualizar, y cómo planificar estrategias
+  tecnológicas a largo plazo. A diferencia de software de escritorio de consumo donde las actualizaciones pueden ser más
+  casuales, Java típicamente forma parte de la infraestructura crítica de sistemas empresariales donde las decisiones de
+  versión tienen implicaciones de múltiples años sobre seguridad, estabilidad, cumplimiento regulatorio, costos de
+  soporte, y capacidad de contratar desarrolladores familiarizados con la versión en uso. El ciclo de vida de una versión
+  de Java desde su lanzamiento inicial hasta su eventual fin de vida es un proceso cuidadosamente gestionado con fases
+  distintas, cada una con características y consideraciones diferentes.</p>
+
+<p>El ciclo de vida comienza con el desarrollo y lanzamiento de una nueva versión. Bajo el modelo de cadencia de seis meses
+  establecido con Java 9, los lanzamientos de característica ocurren puntualmente cada marzo y septiembre. Cada
+  lanzamiento pasa por un proceso de desarrollo que incluye propuestas de características mediante el Java Enhancement
+  Proposal (JEP) process, implementación en el repositorio de OpenJDK, múltiples builds de milestone durante el desarrollo
+  (early access builds que permiten testing por la comunidad), una fase de estabilización de características donde no se
+  agregan características nuevas y el enfoque es en corrección de errores, y finalmente el lanzamiento de disponibilidad
+  general (GA) que es la versión oficialmente soportada.</p>
+
+<p>Inmediatamente después del lanzamiento GA, la versión entra en su fase de soporte activo. Para versiones no-LTS, este
+  período de soporte activo dura exactamente seis meses hasta que el siguiente lanzamiento de característica es publicado.
+  Durante estos seis meses, la versión recibe Critical Patch Updates (CPUs) trimestrales que incluyen parches de seguridad
+  para vulnerabilidades descubiertas y correcciones para errores críticos que afectan estabilidad o corrección. Estos CPUs
+  son lanzados en un cronograma predecible: típicamente en enero, abril, julio, y octubre. Después de seis meses, cuando
+  el siguiente lanzamiento de característica está disponible, la versión no-LTS anterior ya no recibe actualizaciones de
+  ningún tipo. No hay período de soporte extendido, no hay actualizaciones de seguridad adicionales, nada. La expectativa
+  es que los usuarios actualicen a la nueva versión.</p>
+
+<p>Para versiones LTS, el ciclo de vida es dramáticamente diferente y mucho más largo. Una versión LTS entra primero en un
+  período de Premier Support que típicamente dura cinco años desde el lanzamiento GA. Durante Premier Support, la versión
+  recibe los mismos CPUs trimestrales que las versiones no-LTS: parches de seguridad, correcciones de errores críticos, y
+  ocasionalmente backports de mejoras de rendimiento importantes que se consideran suficientemente valiosas y seguras para
+  incluir. Oracle y otros proveedores garantizan que durante Premier Support, la versión permanece completamente soportada
+  para uso de producción con compromisos de tiempo de respuesta para problemas críticos.</p>
+
+<p>Después de que Premier Support expira, las versiones LTS transicionan a Extended Support, que típicamente dura tres años
+  adicionales. Durante Extended Support, la versión continúa recibiendo actualizaciones de seguridad y correcciones de
+  errores críticos, aunque la frecuencia puede reducirse y las correcciones de errores no críticos pueden no ser
+  backported. Extended Support típicamente requiere una subscripción de soporte comercial paga; no está disponible
+  gratuitamente. Las organizaciones que necesitan permanecer en una versión más allá de Premier Support deben tener
+  acuerdos de soporte comercial en lugar.</p>
+
+<p>Algunos proveedores ofrecen incluso Sustaining Support más allá de Extended Support. Durante Sustaining Support, que
+  puede extenderse muchos años adicionales, no se realizan nuevas correcciones de errores o parches de seguridad, pero el
+  soporte técnico está disponible para ayudar con problemas, y se pueden solicitar fixes de emergencia para problemas
+  críticos que afectan producción, típicamente a costos premium significativos. Sustaining Support es principalmente para
+  organizaciones que por razones regulatorias, técnicas, o financieras no pueden actualizar pero aún necesitan algún nivel
+  de soporte.</p>
+
+<p>Los cronogramas de soporte específicos varían entre proveedores. Oracle proporciona ocho años de soporte total (cinco
+  años Premier más tres años Extended) para versiones LTS. Azul Systems proporciona cronogramas de soporte aún más largos,
+  con soporte para Java 8 extendiéndose hasta 2030 y potencialmente más allá bajo ciertos planes comerciales. Red Hat
+  proporciona soporte similar extendido. Amazon Corretto proporciona actualizaciones gratuitas para versiones LTS durante
+  todo su período de soporte sin requerir subscripciones comerciales. Esta variación entre proveedores da a las
+  organizaciones opciones basadas en sus necesidades de soporte y presupuestos.</p>
+
+<p>Las actualizaciones trimestrales durante el soporte activo siguen un patrón numerado específico. Por ejemplo, después
+  del lanzamiento inicial de Java 17.0.0 en septiembre 2021, las actualizaciones subsecuentes fueron numeradas 17.0.1
+  (octubre 2021), 17.0.2 (enero 2022), 17.0.3 (abril 2022), y así sucesivamente. Cada actualización incluye todas las
+  correcciones de actualizaciones anteriores más nuevas correcciones. Las organizaciones típicamente aplican cada CPU
+  trimestralmente en producción para mantenerse actuales con parches de seguridad. No aplicar CPUs oportunamente deja
+  sistemas vulnerables a exploits conocidos públicamente.</p>
+
+<p>El proceso de aplicar CPUs en entornos de producción requiere planificación. Aunque las actualizaciones están diseñadas
+  para ser drop-in replacements que no rompen compatibilidad, el testing prudente es siempre necesario. Las organizaciones
+  típicamente siguen un patrón de aplicar el CPU primero a entornos de desarrollo, luego staging/QA donde el testing
+  automatizado y manual verifica que no hay regresiones, y finalmente producción durante ventanas de mantenimiento
+  planificadas. Este proceso significa que los CPUs pueden tomar semanas desde lanzamiento hasta deployment de producción
+  completo.</p>
+
+<p>Las vulnerabilidades de seguridad descubiertas en Java reciben identificadores CVE (Common Vulnerabilities and
+  Exposures) y son publicadas en Oracle Security Alerts con descripción de la vulnerabilidad, qué versiones son afectadas,
+  severidad (usando CVSS scoring), y qué actualizaciones corrigen la vulnerabilidad. Las organizaciones de seguridad
+  monitorean estos alerts y priorizan patching basándose en severidad y si sus sistemas son afectados. Las
+  vulnerabilidades críticas que permiten ejecución de código remoto sin autenticación requieren patching de emergencia;
+  las vulnerabilidades menores que requieren acceso local autenticado pueden ser programadas con maintenance regular.</p>
+
+<p>El fin de vida de una versión marca cuando todo soporte oficial termina. Después de EOL (End of Life), no hay más
+  actualizaciones de seguridad, no hay más correcciones de errores, y el soporte técnico ya no está disponible. Continuar
+  ejecutando una versión después de EOL crea riesgos de seguridad significativos porque vulnerabilidades descubiertas
+  después de EOL nunca serán parcheadas. Las organizaciones reguladas (finanzas, healthcare) frecuentemente tienen
+  requisitos de cumplimiento que prohíben ejecutar software después de EOL. Los auditores de seguridad marcan software EOL
+  como hallazgos críticos.</p>
+
+<p>Java 8, lanzado en marzo 2014, es un caso de estudio interesante en ciclos de vida de versión. Debido a su popularidad
+  enorme, Oracle extendió su soporte múltiples veces más allá de los cronogramas originales. Premier Support fue
+  originalmente programado para terminar en 2019 pero fue extendido. En 2023, una década después del lanzamiento, Java 8
+  aún retenía cuota de mercado significativa, y múltiples proveedores continuaban proporcionando actualizaciones bajo
+  acuerdos comerciales. Este ciclo de vida extraordinariamente largo refleja tanto el éxito de Java 8 como los desafíos
+  que las organizaciones enfrentan actualizando sistemas heredados complejos.</p>
+
+<p>Las decisiones de actualización son motivadas por múltiples factores. Las consideraciones de seguridad son primarias:
+  ejecutar versiones no soportadas es simplemente irresponsable para sistemas críticos. El deseo de acceder a
+  características de lenguaje nuevas que mejoran productividad de desarrolladores es otro motivador. Las mejoras de
+  rendimiento en JVMs más nuevas pueden reducir costos de infraestructura mediante mejor throughput o menor uso de
+  memoria. Las presiones de reclutamiento son reales: los desarrolladores quieren trabajar con tecnología moderna, y las
+  organizaciones que usan versiones antiguas de Java pueden tener dificultad atrayendo talento.</p>
+
+<p>Sin embargo, las actualizaciones tienen costos. El testing de compatibilidad consume recursos de ingeniería. Los
+  frameworks y bibliotecas de terceros pueden requerir actualizaciones a versiones más nuevas que soportan la nueva
+  versión de Java. El código que dependía de APIs deprecadas puede necesitar refactorización. Los scripts de deployment,
+  configuración de CI/CD, y tooling pueden requerir ajustes. Para sistemas grandes con millones de líneas de código, estos
+  costos de actualización pueden ser substanciales, midiendo persona-meses o incluso persona-años de esfuerzo.</p>
+
+<p>Las estrategias de modernización varían. Algunas organizaciones adoptan "big bang" upgrades donde todo se actualiza
+  simultáneamente. Esto minimiza el período de tiempo ejecutando múltiples versiones pero crea riesgo concentrado. Otras
+  adoptan actualizaciones graduales, ejecutando múltiples versiones de Java en paralelo y migrando aplicaciones
+  incrementalmente. Esto distribuye riesgo y esfuerzo pero crea complejidad operacional de gestionar múltiples runtimes.</p>
+
+<p>El testing de compatibilidad puede ser facilitado por herramientas. El comando jdeps analiza dependencias de bytecode y
+  identifica usos de APIs que han sido deprecadas o removidas en versiones más nuevas de Java. Los test suites
+  automatizados comprensivos pueden ser ejecutados contra la nueva versión para identificar regresiones. Los benchmarks de
+  rendimiento pueden verificar que el throughput y latencia no degradan. Los servicios de canary deployment donde un
+  subconjunto pequeño de tráfico de producción ejecuta en la nueva versión pueden proporcionar validación del mundo real
+  antes del rollout completo.</p>
+
+<p>Las consideraciones de licenciamiento también afectan ciclos de vida. Los cambios de licenciamiento de Oracle con Java
+  11 crearon confusión donde algunas organizaciones no estaban seguras si necesitaban licencias comerciales o podían usar
+  builds gratuitas de OpenJDK. Comprender exactamente qué builds son gratuitas, qué builds requieren subscripciones, qué
+  nivel de soporte viene con qué builds, y cómo estas consideraciones intersectan con cronogramas de ciclo de vida es
+  crítico para planificación. Proveedores alternativos de OpenJDK como Adoptium, Corretto, y Azul simplificaron esto al
+  proporcionar builds claramente gratuitas con cronogramas de soporte transparentes.</p>
+
+<p>La comunicación interna sobre ciclos de vida de versión es importante. Los equipos de desarrollo necesitan comprender
+  qué versiones son soportadas, cuándo el soporte expira, y qué eso significa para timelines de actualización. Los equipos
+  de operaciones necesitan comprender cronogramas de patching y planificar ventanas de mantenimiento. La gerencia necesita
+  comprender implicaciones de presupuesto de subscripciones de soporte y esfuerzo de ingeniería de actualización. Los
+  equipos de cumplimiento y auditoría necesitan rastrear que las versiones de producción permanecen dentro de períodos de
+  soporte.</p>
+
+<p>El ciclo de vida y soporte de versiones de Java representa el balance entre la evolución continua de la plataforma y la
+  necesidad de estabilidad a largo plazo que las organizaciones empresariales requieren. Los cronogramas de soporte
+  cuidadosamente gestionados, la disponibilidad de versiones LTS con soporte medido en años o décadas, los CPUs
+  predecibles y regulares, y la diversidad de proveedores de soporte proporcionan a las organizaciones las herramientas
+  necesarias para gestionar versiones de Java responsablemente mientras controlan riesgo y costo. Comprender estos ciclos
+  de vida profundamente es esencial para tomar decisiones informadas que balanceen innovación con estabilidad, costo con
+  valor, y agilidad con prudencia.</p>

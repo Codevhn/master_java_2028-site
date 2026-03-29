@@ -1,0 +1,436 @@
+<h2>3.8: Gestión de múltiples versiones de Java</h2>
+
+<p>En el desarrollo profesional de Java, es extremadamente común necesitar trabajar con múltiples versiones del JDK
+  simultáneamente. Un desarrollador puede estar manteniendo un proyecto legacy que requiere Java 8, desarrollando una
+  aplicación nueva con Java 21, y experimentando con características preview en la versión más reciente. Intentar
+  gestionar esto reinstalando constantemente versiones diferentes o modificando manualmente variables de entorno cada vez
+  es ineficiente, propenso a errores, y frustrante.</p>
+
+<h3>¿Por qué múltiples versiones?</h3>
+
+<p><strong>1. Mantenimiento de proyectos legacy:</strong> Un proyecto antiguo escrito para Java 8 puede no actualizarse
+  fácilmente, requiriendo esa versión para compilar y ejecutar mientras se trabaja en un proyecto nuevo con Java 17 o
+  21.</p>
+
+<p><strong>2. Compatibilidad con diferentes clientes/proyectos:</strong> Un cliente puede requerir Java 11 por política
+  corporativa, otro permitir Java 17, y un proyecto personal usar Java 21.</p>
+
+<p><strong>3. Testing de compatibilidad:</strong> Verificar que una biblioteca funciona en Java 11, 17, y 21, o
+  replicar localmente lo que CI/CD ejecuta en múltiples versiones.</p>
+
+<p><strong>4. Exploración y aprendizaje:</strong> Aprender características nuevas en versiones recientes mientras se
+  mantiene una versión estable para trabajo de producción.</p>
+
+<p><strong>5. Requisitos de frameworks:</strong> Frameworks diferentes pueden requerir versiones mínimas de Java
+  distintas entre sí.</p>
+
+<h3>Conceptos fundamentales</h3>
+
+<p>El JDK está diseñado para soportar múltiples versiones instaladas simultáneamente, cada una en su propio directorio
+  completamente separado y auto-contenido.</p>
+
+<p><strong>Estructura típica con múltiples versiones en Windows:</strong></p>
+<pre class="language-markup">
+  <code>C:\Program Files\Eclipse Adoptium\
+├── jdk-8.0.392.8-hotspot\
+├── jdk-11.0.21.9-hotspot\
+├── jdk-17.0.9.9-hotspot\
+└── jdk-21.0.1.12-hotspot\</code>
+</pre>
+
+<p><strong>En macOS:</strong></p>
+<pre class="language-markup">
+  <code>/Library/Java/JavaVirtualMachines/
+├── temurin-8.jdk/
+├── temurin-11.jdk/
+├── temurin-17.jdk/
+└── temurin-21.jdk/</code>
+</pre>
+
+<p><strong>En Linux:</strong></p>
+<pre class="language-markup">
+  <code>/opt/
+├── jdk-8/
+├── jdk-11/
+├── jdk-17/
+└── jdk-21/</code>
+</pre>
+
+<p>Cambiar la versión activa requiere modificar JAVA_HOME y PATH para apuntar a la versión deseada. Existen tres
+  enfoques: edición manual (tedioso, no recomendado), scripts/aliases, y herramientas de gestión de versiones.</p>
+
+<h3>Método 1: Scripts y aliases (solución simple)</h3>
+
+<p><strong>Para bash/zsh (macOS/Linux) — agregar a <code>~/.bashrc</code> o <code>~/.zshrc</code>:</strong></p>
+<pre class="language-bash">
+  <code># ===== Gestión de Versiones Java =====
+
+java8() {
+    export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
+    export PATH=$JAVA_HOME/bin:$PATH
+    echo "Cambiado a Java 8"
+    java -version
+}
+
+java11() {
+    export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home
+    export PATH=$JAVA_HOME/bin:$PATH
+    echo "Cambiado a Java 11"
+    java -version
+}
+
+java17() {
+    export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
+    export PATH=$JAVA_HOME/bin:$PATH
+    echo "Cambiado a Java 17"
+    java -version
+}
+
+java21() {
+    export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+    export PATH=$JAVA_HOME/bin:$PATH
+    echo "Cambiado a Java 21"
+    java -version
+}
+
+# Establecer Java 21 como default
+java21</code>
+</pre>
+
+<p><strong>Uso:</strong></p>
+<pre class="language-bash">
+  <code>java11          # Cambiar a Java 11
+java -version   # Verificar versión activa
+java21          # Cambiar a Java 21
+
+source ~/.bashrc  # Aplicar cambios</code>
+</pre>
+
+<p><strong>Para macOS usando <code>/usr/libexec/java_home</code> (método recomendado en macOS):</strong></p>
+<pre class="language-bash">
+  <code># Función que usa java_home de macOS
+setjdk() {
+    if [ $# -eq 0 ]; then
+        echo "Uso: setjdk <versión>"
+        echo "Ejemplo: setjdk 21"
+        /usr/libexec/java_home -V
+        return 1
+    fi
+    export JAVA_HOME=$(/usr/libexec/java_home -v $1)
+    export PATH=$JAVA_HOME/bin:$PATH
+    echo "JAVA_HOME establecido a Java $1"
+    java -version
+}
+
+# Default a Java 21
+setjdk 21</code>
+</pre>
+
+<pre class="language-bash">
+  <code>setjdk 11   # Cambiar a Java 11
+setjdk 17   # Cambiar a Java 17
+/usr/libexec/java_home -V   # Ver versiones disponibles</code>
+</pre>
+
+<p><strong>Para Windows (PowerShell) — agregar al perfil <code>$PROFILE</code>:</strong></p>
+<pre class="language-powershell">
+  <code># Abrir perfil en editor
+notepad $PROFILE
+# Si no existe: New-Item -Path $PROFILE -Type File -Force</code>
+</pre>
+
+<pre class="language-powershell">
+  <code># ===== Gestión de Versiones Java =====
+
+function Set-Java8 {
+    $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-8.0.392.8-hotspot"
+    $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
+    Write-Host "Cambiado a Java 8" -ForegroundColor Green
+    java -version
+}
+
+function Set-Java17 {
+    $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.9.9-hotspot"
+    $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
+    Write-Host "Cambiado a Java 17" -ForegroundColor Green
+    java -version
+}
+
+function Set-Java21 {
+    $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21.0.1.12-hotspot"
+    $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
+    Write-Host "Cambiado a Java 21" -ForegroundColor Green
+    java -version
+}
+
+Set-Alias java17 Set-Java17
+Set-Alias java21 Set-Java21
+
+# Default a Java 21
+Set-Java21</code>
+</pre>
+
+<pre class="language-powershell">
+  <code>. $PROFILE   # Recargar perfil
+java21       # Cambiar a Java 21
+java17       # Cambiar a Java 17</code>
+</pre>
+
+<p><strong>Ventajas:</strong> simple, sin software adicional, control total. <strong>Desventajas:</strong> cambios solo
+  afectan la sesión actual, no integra con proyectos, requiere configuración manual inicial.</p>
+
+<h3>Método 2: SDKMAN (recomendado para macOS/Linux)</h3>
+
+<p>SDKMAN gestiona versiones de múltiples SDKs: JDK, Gradle, Maven, Kotlin, Scala, y más.</p>
+
+<p><strong>Instalación:</strong></p>
+<pre class="language-bash">
+  <code>curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+sdk version   # Verificar instalación</code>
+</pre>
+
+<p><strong>Uso básico:</strong></p>
+<pre class="language-bash">
+  <code># Ver versiones disponibles
+sdk list java
+
+# Instalar versiones
+sdk install java 21.0.1-tem
+sdk install java 17.0.9-tem
+sdk install java 11.0.21-tem
+sdk install java 21.0.1-amzn   # Amazon Corretto
+
+# Ver versiones instaladas
+sdk list java | grep installed
+
+# Cambiar versión para sesión actual
+sdk use java 11.0.21-tem
+
+# Establecer default global
+sdk default java 21.0.1-tem
+
+# Verificar versión activa
+sdk current java
+
+# Desinstalar
+sdk uninstall java 11.0.21-tem
+
+# Actualizar SDKMAN
+sdk update
+sdk upgrade</code>
+</pre>
+
+<p><strong>Configuración por proyecto con <code>.sdkmanrc</code>:</strong></p>
+<pre class="language-bash">
+  <code># Crear archivo en raíz del proyecto
+echo "java=17.0.9-tem" > .sdkmanrc
+
+# Al entrar al directorio del proyecto
+sdk env install   # Instala versión si no está instalada
+sdk env           # Activa la versión especificada</code>
+</pre>
+
+<p>Para activación automática al entrar al directorio, agregar a <code>~/.bashrc</code> o <code>~/.zshrc</code>:</p>
+<pre class="language-bash">
+  <code>sdkman_auto_env=true</code>
+</pre>
+
+<p><strong>Ventajas:</strong> instalación y gestión de versiones muy simple, gestiona múltiples SDKs, soporte para
+  configuración por proyecto. <strong>Desventajas:</strong> solo macOS/Linux (no Windows nativo, requiere WSL),
+  instalaciones en ubicación fija (<code>~/.sdkman</code>).</p>
+
+<h3>Método 3: jEnv (alternativa específica para Java)</h3>
+
+<p>jEnv gestiona únicamente versiones de Java, con énfasis en configuración por directorio.</p>
+
+<p><strong>Instalación:</strong></p>
+<pre class="language-bash">
+  <code># macOS con Homebrew
+brew install jenv
+
+# Linux (manual)
+git clone https://github.com/jenv/jenv.git ~/.jenv
+
+# Configurar shell (bash)
+echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(jenv init -)"' >> ~/.bashrc
+source ~/.bashrc
+
+# Configurar shell (zsh)
+echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(jenv init -)"' >> ~/.zshrc
+source ~/.zshrc</code>
+</pre>
+
+<p><strong>Uso básico:</strong></p>
+<pre class="language-bash">
+  <code># Agregar versiones ya instaladas a jEnv
+jenv add /Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home
+jenv add /Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
+jenv add /Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+
+# Ver versiones disponibles
+jenv versions
+
+# Cambiar versión global
+jenv global 21.0
+
+# Cambiar versión para directorio actual (crea .java-version)
+cd ~/proyectos/proyecto-legacy
+jenv local 11.0
+
+# Cambiar versión solo para sesión actual
+jenv shell 17.0
+
+# Verificar versión activa
+jenv version
+java -version</code>
+</pre>
+
+<p><strong>Habilitar plugins útiles:</strong></p>
+<pre class="language-bash">
+  <code>jenv enable-plugin export   # Configura JAVA_HOME automáticamente
+jenv enable-plugin maven
+jenv enable-plugin gradle</code>
+</pre>
+
+<p><strong>Ventajas:</strong> específico para Java, configuración por directorio con <code>.java-version</code>,
+  plugins para herramientas de construcción. <strong>Desventajas:</strong> no descarga versiones automáticamente, no
+  gestiona otros SDKs, requiere agregar cada versión manualmente.</p>
+
+<h3>Método 4: Jabba (multiplataforma incluyendo Windows)</h3>
+
+<p><strong>Instalación:</strong></p>
+<pre class="language-bash">
+  <code># macOS/Linux
+curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh</code>
+</pre>
+
+<pre class="language-powershell">
+  <code># Windows (PowerShell como Administrador)
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Invoke-Expression (Invoke-WebRequest https://github.com/shyiko/jabba/raw/master/install.ps1 -UseBasicParsing).Content</code>
+</pre>
+
+<pre class="language-bash">
+  <code># Listar versiones disponibles
+jabba ls-remote
+
+# Instalar y usar
+jabba install adopt@1.21.0-1
+jabba use adopt@1.21.0-1
+jabba alias default adopt@1.21.0-1</code>
+</pre>
+
+<h3>Comparación de métodos</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Método</th>
+      <th>Plataformas</th>
+      <th>Instalación automática</th>
+      <th>Configuración por proyecto</th>
+      <th>Complejidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Scripts</td>
+      <td>Todas</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Baja</td>
+    </tr>
+    <tr>
+      <td>SDKMAN</td>
+      <td>macOS, Linux</td>
+      <td>Sí</td>
+      <td>Sí (.sdkmanrc)</td>
+      <td>Media</td>
+    </tr>
+    <tr>
+      <td>jEnv</td>
+      <td>macOS, Linux</td>
+      <td>No</td>
+      <td>Sí (.java-version)</td>
+      <td>Media</td>
+    </tr>
+    <tr>
+      <td>Jabba</td>
+      <td>Todas</td>
+      <td>Sí</td>
+      <td>Sí</td>
+      <td>Media</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Recomendaciones por caso de uso</h3>
+
+<p><strong>Desarrollo individual en macOS/Linux:</strong> SDKMAN (más completo, gestiona también Maven/Gradle) o jEnv
+  (si solo se necesita gestión de Java).</p>
+
+<p><strong>Desarrollo individual en Windows:</strong> scripts PowerShell (simple), Jabba (más sofisticado), o SDKMAN
+  en WSL.</p>
+
+<p><strong>Para equipos:</strong> estandarizar en una herramienta común (típicamente SDKMAN), incluir archivo de
+  configuración de proyecto (<code>.sdkmanrc</code> o <code>.java-version</code>), y documentar en el README.</p>
+
+<p><strong>Para principiantes:</strong> empezar con scripts simples y migrar a una herramienta dedicada cuando la
+  necesidad sea clara.</p>
+
+<h3>Buenas prácticas</h3>
+
+<p><strong>1. Documentar versión requerida en el README del proyecto:</strong></p>
+<pre class="language-markup">
+  <code>## Requisitos
+- Java 17 o superior
+- Recomendado: Eclipse Temurin 17.0.9</code>
+</pre>
+
+<p><strong>2. Incluir archivo de configuración de versión</strong> (<code>.sdkmanrc</code>, <code>.java-version</code>,
+  o <code>.tool-versions</code>) en el repositorio.</p>
+
+<p><strong>3. Especificar versión en el sistema de construcción:</strong></p>
+<pre class="language-xml">
+  <code><!-- pom.xml (Maven) -->
+<properties>
+  <maven.compiler.source>17</maven.compiler.source>
+  <maven.compiler.target>17</maven.compiler.target>
+</properties></code>
+</pre>
+
+<pre class="language-groovy">
+  <code>// build.gradle (Gradle)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}</code>
+</pre>
+
+<p><strong>4. Configurar CI/CD con matrices de versiones:</strong></p>
+<pre class="language-yaml">
+  <code># GitHub Actions
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [11, 17, 21]
+    steps:
+      - uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}</code>
+</pre>
+
+<p><strong>5. Mantener las versiones instaladas actualizadas:</strong> aplicar CPUs de seguridad regularmente,
+  eliminar versiones muy antiguas ya no usadas, y mantener al menos una versión LTS reciente.</p>
+
+<p>La capacidad de gestionar múltiples versiones de Java eficientemente es habilidad esencial para desarrolladores
+  profesionales modernos. Ya sea mediante scripts simples o herramientas sofisticadas como SDKMAN, tener un método
+  establecido para cambiar entre versiones elimina fricción, previene errores, y permite trabajar productivamente en
+  múltiples proyectos con requisitos diferentes.</p>

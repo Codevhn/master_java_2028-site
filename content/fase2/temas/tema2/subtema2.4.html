@@ -1,0 +1,120 @@
+<h2>2.4: Qué es el JRE y cuál fue su función histórica</h2>
+
+<p>El Java Runtime Environment, conocido universalmente por sus siglas JRE, fue durante más de dos décadas un componente
+  fundamental del ecosistema Java cuya existencia respondía a una necesidad clara y específica: permitir que usuarios
+  finales ejecutaran aplicaciones Java sin necesidad de instalar el kit completo de desarrollo con todas sus herramientas
+  de compilación y desarrollo. El JRE representaba la distinción conceptual entre lo que se necesita para desarrollar
+  software Java y lo que se necesita simplemente para ejecutarlo. Comprender qué era el JRE, por qué existía como
+  componente separado, y por qué eventualmente fue discontinuado como distribución independiente proporciona perspectiva
+  importante sobre la evolución de la plataforma Java y las decisiones arquitectónicas que han dado forma a su ecosistema.</p>
+
+<p>Cuando Sun Microsystems lanzó Java inicialmente a mediados de los años 90, reconocieron inmediatamente que habría dos
+  audiencias distintas con necesidades diferentes. Los desarrolladores necesitaban el conjunto completo de herramientas de
+  desarrollo: compilador, debugger, generador de documentación, y todas las utilidades necesarias para crear software
+  Java. Sin embargo, los usuarios finales que simplemente querían ejecutar aplicaciones Java no necesitaban ninguna de
+  estas herramientas de desarrollo. No necesitaban compilar código, no necesitaban generar documentación, no necesitaban
+  herramientas de profiling. Solo necesitaban la Java Virtual Machine y las bibliotecas de runtime para ejecutar programas
+  Java ya compilados que otros habían desarrollado.</p>
+
+<p>Esta distinción llevó a la creación del JRE como un subconjunto del JDK. El JRE contenía exactamente los componentes
+  necesarios para ejecutar aplicaciones Java pero omitía todas las herramientas de desarrollo. Específicamente, el JRE
+  incluía la JVM, el motor de ejecución que interpreta y ejecuta bytecode Java. Incluía todas las bibliotecas estándar de
+  Java, las clases en paquetes como java.lang, java.util, java.io, javax.swing, y todos los demás paquetes que las
+  aplicaciones podrían necesitar en tiempo de ejecución. Incluía el launcher java que iniciaba la JVM y ejecutaba
+  programas, porque aunque java es técnicamente una herramienta de desarrollo, también es necesario para ejecutar
+  aplicaciones. Y incluía las bibliotecas nativas específicas de plataforma que la JVM necesitaba para interactuar con el
+  sistema operativo subyacente.</p>
+
+<p>Lo que el JRE no incluía era igualmente importante. No contenía el compilador javac porque los usuarios finales nunca
+  compilarían código. No contenía javadoc porque no generarían documentación. No contenía el debugger jdb porque no
+  depurarían aplicaciones. No contenía las herramientas de profiling y monitoreo porque típicamente no analizarían
+  rendimiento de aplicaciones en profundidad. Al omitir estos componentes, el JRE era significativamente más pequeño que
+  el JDK completo, típicamente 40-50% del tamaño, haciéndolo más rápido de descargar e instalar.</p>
+
+<p>El caso de uso primario y más visible del JRE durante la mayor parte de su historia fue en computadoras de escritorio de
+  usuarios finales. Cuando las aplicaciones Java de escritorio eran comunes, particularmente durante el auge de los
+  applets de Java en navegadores web a finales de los años 90 y principios de los 2000, los usuarios necesitaban tener el
+  JRE instalado para ejecutar estas aplicaciones. Los fabricantes de software que distribuían aplicaciones Java
+  típicamente instruían a los usuarios a descargar e instalar el JRE de java.com antes de poder ejecutar el software.
+  Oracle (y anteriormente Sun) proporcionaba instaladores fáciles de usar del JRE para Windows, macOS, y Linux que los
+  usuarios no técnicos podían ejecutar sin dificultad.</p>
+
+<p>Los navegadores web con soporte para applets de Java dependían particularmente del JRE. Cuando un navegador encontraba
+  un applet de Java embebido en una página web, necesitaba una JVM instalada para ejecutar ese applet. El plugin de
+  navegador de Java, que venía con el JRE, proporcionaba la integración entre el navegador y la JVM, permitiendo que los
+  applets ejecutaran dentro de páginas web. Durante el apogeo de los applets, el JRE era uno de los componentes de
+  software más ampliamente instalados en computadoras de escritorio, con cientos de millones de instalaciones globalmente.</p>
+
+<p>Los servidores de aplicaciones que ejecutaban software empresarial Java también usaban técnicamente solo el JRE, no el
+  JDK completo. Un servidor de producción ejecutando aplicaciones web Java o servicios empresariales solo necesitaba la
+  capacidad de ejecutar bytecode Java ya compilado; no necesitaba compilar código. Sin embargo, en la práctica, muchas
+  organizaciones instalaban el JDK completo en servidores porque las herramientas de diagnóstico y monitoreo adicionales
+  en el JDK eran valiosas para troubleshooting de producción. Esta práctica difuminaba algo la distinción entre JRE y JDK
+  en contextos de servidor.</p>
+
+<p>La gestión de versiones del JRE presentaba desafíos únicos. Porque el JRE era instalado por usuarios finales no
+  técnicos, necesitaba actualizarse regularmente para incluir parches de seguridad y correcciones de errores. Sin embargo,
+  hacer que millones de usuarios actualicen manualmente software era prácticamente imposible. Oracle implementó un
+  mecanismo de actualización automática que periódicamente verificaba nuevas versiones del JRE y solicitaba a los usuarios
+  actualizar. Este mecanismo ayudaba a mantener instalaciones del JRE seguras y actualizadas, pero también generaba quejas
+  de usuarios sobre solicitudes de actualización frecuentes.</p>
+
+<p>Las vulnerabilidades de seguridad en el JRE, particularmente en el plugin de navegador de Java, se convirtieron en una
+  preocupación significativa en los años 2010. Los atacantes descubrieron y explotaron numerosas vulnerabilidades que
+  permitían que applets maliciosos evadieran la sandbox de seguridad y ejecutaran código arbitrario en la máquina del
+  usuario. Estas vulnerabilidades de seguridad dañaron la reputación del JRE y llevaron a muchas organizaciones a
+  desinstalar el plugin de Java de sus navegadores. Los navegadores mismos comenzaron a desactivar el soporte de plugins
+  por defecto o a eliminarlo completamente, efectivamente terminando la era de los applets de Java.</p>
+
+<p>El declive de los applets y las aplicaciones Java de escritorio cambió fundamentalmente el propósito del JRE. A medida
+  que el desarrollo web se movía hacia tecnologías basadas en estándares web nativos como HTML5, CSS3, y JavaScript, menos
+  usuarios finales necesitaban el JRE instalado en sus computadoras. Java se consolidaba cada vez más como una tecnología
+  del lado del servidor para aplicaciones empresariales, donde la distinción entre JRE y JDK era menos relevante porque
+  los administradores de servidor eran suficientemente técnicos para usar el JDK completo.</p>
+
+<p>Con Java 9 en 2017, Oracle comenzó a señalar cambios en cómo distribuirían Java. El sistema de módulos introducido en
+  Java 9 permitía crear imágenes de runtime personalizadas que contenían exactamente los módulos necesarios para una
+  aplicación específica, ni más ni menos. La herramienta jlink permitía a los desarrolladores crear estas imágenes
+  personalizadas que podían ser distribuidas con la aplicación. Este enfoque eliminaba la necesidad de un JRE instalado
+  separadamente; cada aplicación podía venir con su propio runtime optimizado empaquetado con ella.</p>
+
+<p>Con Java 11 en 2018, Oracle oficialmente discontinuó la distribución del JRE como un producto separado. Ya no
+  proporcionaban descargas independientes del JRE. En su lugar, recomendaban que los desarrolladores usaran jlink para
+  crear imágenes de runtime personalizadas para sus aplicaciones, o que simplemente distribuyeran el JDK completo si
+  necesitaban una distribución de Java genérica. Esta decisión reflejaba la realidad de que pocos usuarios finales
+  necesitaban el JRE instalado globalmente, y los que necesitaban ejecutar Java típicamente lo hacían en contextos donde
+  el JDK completo era más apropiado.</p>
+
+<p>El concepto del JRE, aunque ya no existe como distribución separada, aún es relevante conceptualmente. Dentro del JDK,
+  sigue habiendo una distinción entre componentes de desarrollo y componentes de runtime. Las herramientas en el
+  directorio bin del JDK se dividen conceptualmente en herramientas de desarrollo como javac y javadoc, y herramientas de
+  runtime como java. Las bibliotecas en el directorio lib son todas necesarias en runtime. Un desarrollador que entiende
+  qué componentes son parte del "JRE conceptual" entiende qué necesita ser incluido cuando distribuye una aplicación Java.</p>
+
+<p>La desaparición del JRE como producto separado también simplificó el paisaje de distribución de Java. Los usuarios ya no
+  necesitaban decidir entre descargar el JRE o el JDK, o comprender la diferencia entre ellos. Los desarrolladores
+  descargaban el JDK. Los usuarios finales ejecutando aplicaciones Java o usaban una imagen de runtime empaquetada con la
+  aplicación, o en casos raros donde necesitaban Java instalado globalmente, podían instalar el JDK. Esta simplificación
+  eliminó confusión común donde usuarios descargaban el JRE cuando en realidad necesitaban el JDK para desarrollo, o
+  viceversa.</p>
+
+<p>La historia del JRE también ilustra cómo las prioridades y casos de uso de una tecnología pueden cambiar dramáticamente
+  durante su vida. El JRE fue creado para un mundo donde las aplicaciones Java de escritorio y los applets de navegador
+  eran casos de uso centrales. En ese mundo, separar el runtime del kit de desarrollo tenía sentido perfecto. A medida que
+  Java se movió casi exclusivamente al lado del servidor y el desarrollo móvil (Android), y a medida que las mejores
+  prácticas de distribución evolucionaron hacia imágenes de runtime personalizadas empaquetadas con aplicaciones, el JRE
+  separado se volvió menos relevante y eventualmente obsoleto.</p>
+
+<p>Para los desarrolladores modernos, especialmente aquellos que aprendieron Java después de 2018, el JRE puede parecer un
+  artefacto histórico curioso. Sin embargo, comprender su propósito y función proporciona contexto importante sobre la
+  evolución de Java. Explica por qué artículos y tutoriales más antiguos frecuentemente distinguen entre JDK y JRE.
+  Explica la estructura del directorio del JDK donde ciertos componentes son claramente de desarrollo mientras otros son
+  de runtime. Y explica decisiones de arquitectura en cómo las aplicaciones Java modernas son empaquetadas y distribuidas.</p>
+
+<p>El JRE también representa un ejemplo de cómo una solución técnica que fue perfecta para su tiempo puede volverse menos
+  apropiada a medida que el ecosistema evoluciona. La decisión de crear un JRE separado fue acertada cuando se tomó,
+  habilitando adopción amplia de Java en escritorio mientras minimizaba el tamaño de descarga e instalación para usuarios
+  finales. La decisión posterior de discontinuarlo fue igualmente acertada, reflejando que los casos de uso habían
+  cambiado y que alternativas mejores (imágenes de runtime personalizadas) estaban disponibles. Esta capacidad de adaptar
+  la arquitectura de distribución mientras se mantiene compatibilidad hacia atrás del código es parte de lo que ha
+  permitido a Java permanecer relevante durante décadas.</p>

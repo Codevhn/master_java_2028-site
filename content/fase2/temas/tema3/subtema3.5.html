@@ -1,0 +1,209 @@
+<h2>3.5: Descarga e instalación del JDK</h2>
+
+<p>La descarga e instalación del JDK es el primer paso práctico para establecer un entorno de desarrollo Java funcional.
+  Aunque el proceso es relativamente directo en sistemas operativos modernos, hacerlo correctamente desde el inicio
+  previene problemas posteriores y establece una base sólida para el trabajo de desarrollo. Este subtema cubre el proceso
+  completo desde identificar qué descargar hasta verificar que la instalación fue exitosa.</p>
+
+<h3>Paso 1: Seleccionar la distribución y versión</h3>
+
+<p>Basándose en los criterios discutidos en el subtema anterior, se recomienda <strong>Eclipse Temurin</strong>
+  (anteriormente AdoptOpenJDK) como opción general por ser gratuito, open source, bien mantenido con soporte LTS, neutral
+  (no atado a proveedor cloud específico), y ampliamente usado.</p>
+
+<p><strong>Elegir versión:</strong></p>
+<ul>
+  <li>Para proyectos nuevos: Java 21 LTS (versión LTS más reciente)</li>
+  <li>Para proyectos existentes: la versión que el proyecto requiere</li>
+  <li>Para aprendizaje: cualquier versión LTS reciente (17 o 21)</li>
+</ul>
+
+<h3>Paso 2: Descargar el JDK</h3>
+
+<p>El sitio oficial de Eclipse Temurin es <strong>adoptium.net</strong>. El proceso de descarga es el siguiente:</p>
+
+<ol>
+  <li>Abrir el sitio en el navegador.</li>
+  <li>Seleccionar opciones:
+    <ul>
+      <li><strong>Operating System:</strong> Detectado automáticamente (Windows/macOS/Linux)</li>
+      <li><strong>Architecture:</strong> Típicamente x64 (o ARM64 para Apple Silicon)</li>
+      <li><strong>Package Type:</strong> JDK (no JRE)</li>
+      <li><strong>Version:</strong> Seleccionar versión LTS deseada (21, 17, 11, o 8)</li>
+    </ul>
+  </li>
+  <li>Elegir formato de instalador:
+    <ul>
+      <li><strong>Windows:</strong> <code>.msi</code> (recomendado) o <code>.zip</code> (extracción manual)</li>
+      <li><strong>macOS:</strong> <code>.pkg</code> (recomendado) o <code>.tar.gz</code> (extracción manual)</li>
+      <li><strong>Linux:</strong> <code>.tar.gz</code>, <code>.deb</code>, o <code>.rpm</code></li>
+    </ul>
+  </li>
+  <li>Hacer click en el botón de descarga.</li>
+</ol>
+
+<p><strong>Tamaños típicos de descarga:</strong></p>
+<ul>
+  <li>JDK 21: ~180-200 MB</li>
+  <li>JDK 17: ~170-190 MB</li>
+  <li>JDK 11: ~160-180 MB</li>
+</ul>
+
+<h3>Paso 3: Instalación en Windows</h3>
+
+<p><strong>Usando instalador .msi (recomendado):</strong></p>
+<ol>
+  <li>Doble click en el archivo <code>.msi</code> descargado. Si aparece UAC, click "Sí" para permitir.</li>
+  <li>Seguir el wizard:
+    <ul>
+      <li><strong>Destination folder:</strong> Por defecto <code>C:\Program Files\Eclipse Adoptium\jdk-21.x.x\</code> (se puede cambiar)</li>
+      <li><strong>Features:</strong> Dejar todas las opciones seleccionadas</li>
+      <li><strong>Set JAVA_HOME:</strong> Marcar la opción si está disponible</li>
+    </ul>
+  </li>
+  <li>Click "Install" y esperar a que finalice. Click "Finish".</li>
+</ol>
+
+<p><strong>Usando archivo .zip (manual):</strong></p>
+<ol>
+  <li>Click derecho en el <code>.zip</code> → "Extract All"</li>
+  <li>Elegir ubicación (ejemplo: <code>C:\Java\jdk-21</code>) y extraer.</li>
+  <li>Continuar con configuración de variables de entorno (subtema 3.6).</li>
+</ol>
+
+<h3>Paso 3: Instalación en macOS</h3>
+
+<p><strong>Usando instalador .pkg (recomendado):</strong></p>
+<ol>
+  <li>Doble click en el archivo <code>.pkg</code> descargado. Si es necesario, aprobar desde "System Preferences → Security &amp; Privacy".</li>
+  <li>Seguir el wizard: Introduction → License (Agree) → Install (ingresar password de administrador).</li>
+  <li>Click "Close" al finalizar.</li>
+</ol>
+
+<p>El JDK quedará instalado en:</p>
+<pre class="language-bash">
+  <code>/Library/Java/JavaVirtualMachines/temurin-21.jdk/</code>
+</pre>
+
+<p><strong>Usando archivo .tar.gz (manual):</strong></p>
+<pre class="language-bash">
+  <code># Navegar a directorio de descarga
+cd ~/Downloads
+
+# Extraer
+tar -xzf OpenJDK21U-jdk_x64_mac_hotspot_21.x.x.tar.gz
+
+# Mover a ubicación apropiada
+sudo mv jdk-21.x.x.jdk /Library/Java/JavaVirtualMachines/</code>
+</pre>
+
+<h3>Paso 3: Instalación en Linux</h3>
+
+<p><strong>Método 1: Extracción manual (funciona en todas las distribuciones):</strong></p>
+<pre class="language-bash">
+  <code># Extraer
+tar -xzf OpenJDK21U-jdk_x64_linux_hotspot_21.x.x.tar.gz
+
+# Mover a directorio estándar (requiere sudo)
+sudo mv jdk-21.x.x /opt/jdk-21
+
+# O instalar en home directory (sin sudo)
+mkdir -p ~/java
+mv jdk-21.x.x ~/java/jdk-21</code>
+</pre>
+
+<p><strong>Método 2: Paquete .deb (Ubuntu/Debian):</strong></p>
+<pre class="language-bash">
+  <code># Instalar el .deb descargado
+sudo dpkg -i OpenJDK21U-jdk_x64_linux_hotspot_21.x.x.deb
+
+# Resolver dependencias si es necesario
+sudo apt-get install -f</code>
+</pre>
+
+<p><strong>Método 3: Paquete .rpm (Fedora/RHEL/CentOS):</strong></p>
+<pre class="language-bash">
+  <code># Con rpm
+sudo rpm -ivh OpenJDK21U-jdk_x64_linux_hotspot_21.x.x.rpm
+
+# O con yum/dnf
+sudo yum install OpenJDK21U-jdk_x64_linux_hotspot_21.x.x.rpm</code>
+</pre>
+
+<p><strong>Método 4: Gestor de paquetes con repositorio Adoptium (Ubuntu/Debian, recomendado):</strong></p>
+<pre class="language-bash">
+  <code># Agregar repositorio
+wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo apt-key add -
+echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
+
+# Actualizar e instalar
+sudo apt-get update
+sudo apt-get install temurin-21-jdk</code>
+</pre>
+
+<h3>Ubicaciones de instalación típicas</h3>
+
+<p><strong>Windows:</strong></p>
+<ul>
+  <li>Instalador: <code>C:\Program Files\Eclipse Adoptium\jdk-21.x.x\</code></li>
+  <li>Manual: donde se extrajo (ejemplo: <code>C:\Java\jdk-21\</code>)</li>
+</ul>
+
+<p><strong>macOS:</strong></p>
+<ul>
+  <li>Instalador: <code>/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home/</code></li>
+  <li>Manual: <code>/Library/Java/JavaVirtualMachines/</code> o <code>~/java/</code></li>
+</ul>
+
+<p><strong>Linux:</strong></p>
+<ul>
+  <li>Paquetes sistema: <code>/usr/lib/jvm/temurin-21-jdk-amd64/</code></li>
+  <li>Manual sistema: <code>/opt/jdk-21/</code></li>
+  <li>Manual usuario: <code>~/java/jdk-21/</code></li>
+</ul>
+
+<h3>Verificación post-instalación</h3>
+
+<p>Antes de configurar variables de entorno, verificar que los archivos fueron instalados correctamente.</p>
+
+<p><strong>Windows:</strong></p>
+<pre class="language-bash">
+  <code>dir "C:\Program Files\Eclipse Adoptium\jdk-21*"</code>
+</pre>
+
+<p><strong>macOS/Linux:</strong></p>
+<pre class="language-bash">
+  <code>ls /Library/Java/JavaVirtualMachines/   # macOS
+ls /opt/jdk-21/                          # Linux</code>
+</pre>
+
+<p>En ambos casos debe aparecer el directorio del JDK con la siguiente estructura:</p>
+<pre class="language-markup">
+  <code>jdk-21.x.x/
+├── bin/     # Ejecutables (java, javac, jar, etc.)
+├── conf/    # Archivos de configuración
+├── include/ # Headers C/C++ para JNI
+├── jmods/   # Módulos en formato JMOD
+├── legal/   # Licencias y avisos legales
+├── lib/     # Bibliotecas runtime
+└── release  # Metadata de versión</code>
+</pre>
+
+<h3>Consideraciones adicionales</h3>
+
+<p><strong>Instalaciones múltiples:</strong> Es perfectamente seguro tener múltiples versiones del JDK instaladas
+  simultáneamente. Cada versión reside en su propio directorio y la configuración de variables de entorno determina cuál
+  está activa.</p>
+
+<p><strong>Permisos:</strong> La instalación en ubicaciones del sistema requiere privilegios administrativos. La
+  instalación en directorios de usuario no requiere permisos especiales.</p>
+
+<p><strong>Espacio en disco:</strong> Verificar que hay al menos 500 MB a 1 GB libres. La instalación completa ocupa
+  aproximadamente 300-400 MB.</p>
+
+<p><strong>Actualizaciones futuras:</strong> Las versiones nuevas se instalan lado a lado y no sobrescriben la versión
+  anterior. Las versiones antiguas deben desinstalarse manualmente cuando ya no son necesarias.</p>
+
+<p>La instalación exitosa del JDK es solo el primer paso. El siguiente paso crítico es configurar las variables de entorno
+  JAVA_HOME y PATH para que el sistema pueda localizar y usar el JDK correctamente, tema que se cubre en detalle en el
+  próximo subtema.</p>
